@@ -1,48 +1,704 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" translate="no">
 <head>
   <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#233858">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="찍어봐효">
-  <title>찍어봐효 孝 - 시니어를 위한 AI 생활문서·복약·키오스크 안심 도우미</title>
-  <link id="dynamicFavicon" rel="icon" type="image/png">
-  <link id="dynamicAppleIcon" rel="apple-touch-icon">
+  <title>찍어봐효 孝 - 시니어를 위한 AI 안심 도우미</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     body {
-      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", sans-serif;
       background-color: #fbf7ee;
       color: #1e293b;
       word-break: keep-all;
-      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
     }
-    .navy-btn { background-color: #2b4263; }
-    .navy-btn:active { transform: scale(0.98); }
+    .navy-btn { background-color: #2b4263; color: #ffffff; }
     .mint-card { background-color: #dcf2ea; color: #164e3f; }
     .warm-yellow { background-color: #fbe5b5; color: #3b280c; }
     .yellow-trust-box { background-color: #fae078; border: 3px solid #b78a12; color: #1f1600; }
     .kiosk-glow {
       border: 4px solid #f59e0b !important;
       box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.35);
-      animation: pulseGlow 1.4s infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.45); }
-      50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0.15); }
     }
   </style>
 </head>
-<body class="min-h-screen pb-28">
+<body class="min-h-screen pb-28 notranslate">
 
-  <!-- 상단 고정 헤더 ('孝' 5번 연속 터치 시 관리자 키 설정창) -->
+  <!-- 상단 헤더 -->
   <header class="bg-[#fbf7ee] border-b-2 border-[#e6dec8] sticky top-0 z-30 px-4 py-3 shadow-sm">
     <div class="max-w-md mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-2 select-none cursor-pointer" onclick="handleSecretLogoTap()">
-        <span class="text-2xl font-black text-[#233858] tracking-tight">찍어봐효 <span class="text-[#2b4263]">孝</span><span class="text-amber-500">🧡</span></span>
+      <div class="text-2xl font-black text-[#233858]">찍어봐효 孝🧡</div>
+      <div class="flex items-center gap-1 bg-[#ede5d2] p-1 rounded-xl">
+        <button id="callHalmeoni" onclick="setHonorific('할머니')" class="px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white">👵 할머니</button>
+        <button id="callHarabeoji" onclick="setHonorific('할아버지')" class="px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]">👴 할아버지</button>
       </div>
-      <!-- 할머니 / 할아버지 호칭 선택 (손녀 목소리 연동) -->
-      <div class="
+    </div>
+    <!-- 3대 기능 탭 -->
+    <div class="max-w-md mx-auto grid grid-cols-3 gap-1.5 mt-3 bg-[#e8dfd0] p-1.5 rounded-2xl">
+      <button id="navDoc" onclick="switchMainTab('doc')" class="py-2.5 rounded-xl font-black text-base bg-[#233858] text-white shadow">📷 찍고 읽기</button>
+      <button id="navGrand" onclick="switchMainTab('grand')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">👧 손녀 알림</button>
+      <button id="navKiosk" onclick="switchMainTab('kiosk')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">☕ 키오스크</button>
+    </div>
+  </header>
+
+  <!-- [탭 1] 찍고 읽기 (PPT 레이아웃 완벽 구현) -->
+  <main id="tabContentDoc" class="max-w-md mx-auto px-4 pt-5 space-y-4">
+
+    <section id="homeScreen" class="space-y-4">
+      <div class="text-center py-2">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e3efe9] text-[#233858] text-4xl font-black mb-1 shadow-sm">📷</div>
+        <h1 class="text-4xl font-black text-[#233858]">찍어봐효🧡</h1>
+        <p class="text-lg font-bold text-gray-600 mt-1">어려운 서류·약병·문자를 쉽게 설명해드려요.</p>
+      </div>
+
+      <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
+      <input type="file" id="galleryFileInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+
+      <!-- 사진 찍기 왕버튼 -->
+      <button onclick="document.getElementById('cameraFileInput').click()" class="w-full py-7 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-1.5 border-4 border-[#1b2b44]">
+        <span class="text-4xl">📷</span>
+        <span class="text-3xl font-black">사진 찍기</span>
+        <span class="text-sm text-blue-200 font-semibold">고지서 · 둥근 약병 · 구겨진 사탕봉지 · 한자 공문</span>
+      </button>
+
+      <!-- 사진 선택 & 문자 붙여넣기 -->
+      <div class="grid grid-cols-2 gap-3">
+        <button onclick="document.getElementById('galleryFileInput').click()" class="py-5 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
+          <span class="text-3xl">🖼️</span>
+          <span class="text-2xl font-black">사진 선택</span>
+        </button>
+        <button onclick="openPasteModal()" class="py-5 bg-white text-[#233858] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#dfd7c6]">
+          <span class="text-3xl">💬</span>
+          <span class="text-2xl font-black">문자 붙여넣기</span>
+        </button>
+      </div>
+
+      <!-- 말로 시키기 버튼 -->
+      <button id="voiceCmdBtn" onclick="toggleVoiceCommand()" class="w-full p-4 warm-yellow rounded-3xl shadow-sm flex items-center gap-3.5 text-left border-2 border-[#f0ce86]">
+        <span class="text-4xl">🎙️</span>
+        <div>
+          <div id="voiceCmdTitle" class="text-2xl font-black">말로 시키기</div>
+          <div id="voiceCmdSub" class="text-sm font-bold opacity-85">“사진 찍어 줘”, “손녀 목소리 들려줘”처럼 말해 보세요</div>
+        </div>
+      </button>
+
+      <!-- 수상한 문자 가이드 -->
+      <button onclick="openGuideModal()" class="w-full py-3.5 bg-[#f5efe1] text-[#233858] font-black text-lg rounded-2xl border-2 border-[#d8ccb4]">
+        수상한 문자, 어떻게 찍나요?
+      </button>
+
+      <!-- 발표 즉시 시연 버튼 4종 -->
+      <div class="bg-white rounded-3xl p-4 border-2 border-[#e2d9c5] shadow-sm space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="font-black text-[#233858] text-sm">⚡ 직접 체험해 보세요 (누르면 즉시 손녀가 설명해요)</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <button onclick="runInstantSample('tax')" class="p-3 bg-[#f7f3e8] rounded-2xl font-black text-sm text-[#233858] text-left border border-[#dfd5be]">📄 지방세 고지서 (125,000원)</button>
+          <button onclick="runInstantSample('scam')" class="p-3 bg-red-50 rounded-2xl font-black text-sm text-red-900 text-left border border-red-200">🚨 택배 사칭 의심 문자</button>
+          <button onclick="runInstantSample('medicine')" class="p-3 bg-blue-50 rounded-2xl font-black text-sm text-blue-950 text-left border border-blue-200">💊 소화제 약병 & 병원예약</button>
+          <button onclick="runInstantSample('candy')" class="p-3 bg-amber-50 rounded-2xl font-black text-sm text-amber-950 text-left border border-amber-200">🍬 구겨진 영문 커피사탕</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 로딩 화면 -->
+    <section id="readingScreen" class="hidden bg-white rounded-3xl p-8 text-center space-y-4 border-2 border-[#dfd7c6] shadow-md my-4">
+      <div class="inline-block w-14 h-14 border-4 border-gray-200 border-t-[#233858] rounded-full animate-spin"></div>
+      <h2 class="text-3xl font-black text-[#233858]">글씨를 읽고 있어요</h2>
+      <p class="text-lg font-bold text-gray-600">어려운 말을 쉽게 바꾸고 있어요.<br>조금만 기다려 주세요.</p>
+      <button onclick="resetToHome()" class="px-6 py-2.5 rounded-2xl border-2 border-[#233858] text-[#233858] font-black">그만두기</button>
+    </section>
+
+    <!-- 결과 화면 (노란 박스 + 원래말/쉬운말 + 손녀 음성) -->
+    <section id="resultScreen" class="hidden space-y-4">
+      <div class="flex items-center justify-between">
+        <span id="resBadge" class="px-4 py-1.5 rounded-full font-black text-base bg-[#e8dfd0] text-[#233858]">고지서예요</span>
+        <button onclick="resetToHome()" class="text-lg font-black text-[#233858] underline">처음으로</button>
+      </div>
+
+      <h2 id="resMainHeading" class="text-3xl font-black text-[#1e293b] leading-snug"></h2>
+
+      <button onclick="speakCurrentExplanation()" class="w-full py-4 bg-amber-400 text-[#233858] font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2 border-2 border-amber-600">
+        👧🔊 손녀 효심이 목소리로 설명 듣기
+      </button>
+
+      <!-- 의심 문자 빨간 박스 -->
+      <div id="scamWarningBox" class="hidden bg-[#fff1f0] border-2 border-red-600 rounded-3xl p-5 space-y-2.5 text-gray-900 shadow">
+        <h3 class="text-2xl font-black text-red-800">⚠️ 위험해 보여요</h3>
+        <ul id="scamReasonsList" class="list-disc pl-5 space-y-1 text-lg font-bold text-gray-800"></ul>
+        <p class="text-lg font-extrabold text-red-700 pt-2">링크는 누르지 마세요. 문자에 적힌 전화번호로도 걸지 마세요.</p>
+        <p class="text-base font-bold">이미 눌렀거나 돈을 보냈다면 바로 <strong>경찰(112)</strong>이나 <strong>금융감독원(1332)</strong>에 알려 주세요. 문자 신고는 <strong>118</strong>이에요.</p>
+      </div>
+
+      <!-- 올리신 사진 & 원문 -->
+      <div class="bg-white rounded-3xl p-4 border-2 border-[#dfd7c6] space-y-2.5">
+        <div class="font-extrabold text-gray-600 text-base">올리신 사진 · 읽은 원문</div>
+        <img id="resUploadedImg" src="" alt="올리신 사진" class="hidden w-full max-h-56 object-contain rounded-2xl bg-gray-900">
+        <div id="resOriginalPreview" class="bg-[#fcfaf5] p-3.5 rounded-2xl border border-[#e5dec9] text-base font-bold text-gray-800 whitespace-pre-line"></div>
+      </div>
+
+      <!-- 사진에 적힌 그대로 노란 박스 -->
+      <div class="yellow-trust-box rounded-3xl p-5 space-y-3 shadow-md">
+        <div class="text-base font-extrabold opacity-85">사진에 적힌 그대로</div>
+        <div id="exactNumbersContainer" class="space-y-2"></div>
+        <p class="text-sm font-bold pt-2 border-t border-amber-700/30">
+          위 원본과 숫자가 똑같은지 눈으로 꼭 비교해 보세요. <strong>숫자는 이 노란 박스만 믿어 주세요.</strong>
+        </p>
+      </div>
+
+      <!-- 어려운 말을 쉽게 -->
+      <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-3">
+        <h3 class="text-base font-black text-gray-500">어려운 말을 쉽게</h3>
+        <div id="easyTranslationsList" class="space-y-3"></div>
+      </div>
+
+      <!-- 그래서 무엇을 하면 될까요? -->
+      <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-1.5">
+        <h3 class="text-base font-extrabold text-gray-500">그래서 무엇을 하면 될까요?</h3>
+        <p id="resActionGuide" class="text-2xl font-black text-[#1e293b] leading-relaxed"></p>
+      </div>
+
+      <div class="space-y-2 pt-1">
+        <button onclick="speakCurrentExplanation()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">🔊 소리로 듣기</button>
+        <button onclick="copyForFamily()" class="w-full py-4 bg-white text-[#233858] border-2 border-[#233858] font-black text-xl rounded-2xl">📋 가족에게 보낼 글 복사</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- [탭 2] 👧 손녀 효심이의 병원 가는 날 & 약 먹는 시간 다정 알림 -->
+  <section id="tabContentGrand" class="hidden max-w-md mx-auto px-4 pt-5 space-y-4">
+    <div class="bg-gradient-to-br from-pink-500 via-rose-500 to-amber-500 text-white rounded-3xl p-5 shadow-xl space-y-3.5">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center text-3xl shadow shrink-0">👧</div>
+        <div>
+          <span class="inline-block bg-yellow-300 text-pink-950 text-xs font-black px-2 py-0.5 rounded-full">기계음 알람 대신 손녀 목소리!</span>
+          <h2 class="text-2xl font-black">다정한 손녀 ‘효심이’ 알림</h2>
+        </div>
+      </div>
+
+      <div class="bg-white text-gray-900 rounded-2xl p-4 shadow-inner">
+        <div class="text-xs font-black text-pink-600 mb-1">💬 손녀 효심이의 앙증맞은 음성 멘트:</div>
+        <p id="grandLiveSpeechBubble" class="text-lg font-extrabold text-gray-800 leading-relaxed">
+          “할머니~! 사랑하는 손녀 효심이예요 헤헤! 오늘 오후 2시에 서울내과의원 가시는 날인 거 잊지 않으셨죠? 건강보험증이랑 처방전 봉투 꼭꼭 챙기시구요, 옷 따뜻하게 입고 천천히 조심해서 다녀오세요! 사랑해요 쪽~!”
+        </p>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="playGranddaughterDemo('hospital')" class="w-full py-4 bg-yellow-300 text-pink-950 font-black text-xl rounded-2xl shadow-lg">
+          🏥 병원 가는 날 손녀 목소리 듣기
+        </button>
+        <button onclick="playGranddaughterDemo('medicine')" class="w-full py-4 bg-white text-pink-900 font-black text-xl rounded-2xl shadow-lg">
+          💊 약 드실 시간 손녀 목소리 듣기
+        </button>
+      </div>
+    </div>
+
+    <!-- 새 병원/약 일정 등록 -->
+    <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-2.5">
+      <h3 class="text-lg font-black text-[#233858]">➕ 손녀에게 부탁할 병원·약 시간 적기</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <button id="typeBtnHosp" onclick="selectScheduleType('병원 가는 날')" class="py-2 rounded-xl font-black text-sm bg-pink-600 text-white">🏥 병원 가는 날</button>
+        <button id="typeBtnMed" onclick="selectScheduleType('약 먹는 시간')" class="py-2 rounded-xl font-bold text-sm bg-gray-100 text-gray-700">💊 약 먹는 시간</button>
+      </div>
+      <input id="inSchedPlace" type="text" placeholder="어느 병원 / 무슨 약인가요? (예: 서울내과)" class="w-full p-3 text-base border-2 border-[#dfd7c6] rounded-xl font-bold">
+      <input id="inSchedTime" type="text" placeholder="몇 시인가요? (예: 오늘 오후 2시)" class="w-full p-3 text-base border-2 border-[#dfd7c6] rounded-xl font-bold">
+      <input id="inSchedItems" type="text" placeholder="챙겨갈 것 (예: 건강보험증, 처방전, 안경)" class="w-full p-3 text-base border-2 border-[#dfd7c6] rounded-xl font-bold">
+      <button onclick="addGrandSchedule()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">👧 손녀 목소리 알림 등록하기</button>
+    </div>
+
+    <div id="grandScheduleList" class="space-y-2.5"></div>
+  </section>
+
+  <!-- [탭 3] ☕ 옆에서 키오스크 연습기 -->
+  <section id="tabContentKiosk" class="hidden max-w-md mx-auto px-4 pt-5 space-y-4">
+    <div class="bg-white rounded-3xl p-4 border-2 border-[#dfd7c6] space-y-2.5">
+      <div class="grid grid-cols-2 gap-2">
+        <button id="storeBtnCoffee" onclick="selectKioskStore('coffee')" class="py-2.5 rounded-2xl font-black text-base bg-[#6d4527] text-white">☕ 모닝커피</button>
+        <button id="storeBtnBunsik" onclick="selectKioskStore('bunsik')" class="py-2.5 rounded-2xl font-black text-base bg-gray-100 text-gray-700">🌶️ 행복분식</button>
+      </div>
+      <div id="kioskMissionTitle" class="text-base font-black text-gray-900 bg-[#f2f8f5] p-3 rounded-xl border border-emerald-200">
+        미션: 따뜻한 아메리카노 1잔을 포장으로 주문해 보세요.
+      </div>
+    </div>
+
+    <div id="kioskMachineBox" class="bg-white rounded-3xl overflow-hidden border-4 border-gray-800 shadow-xl">
+      <div id="kioskTopBar" class="bg-[#6d4527] text-white px-4 py-3 flex items-center justify-between">
+        <button onclick="resetKioskMission()" class="px-2.5 py-1 rounded-lg border border-white/60 text-xs font-bold">처음부터</button>
+        <span id="kioskStepHeading" class="font-black text-lg">메뉴 선택</span>
+        <span id="kioskStoreLabel" class="text-xs font-bold">모닝커피</span>
+      </div>
+      <div id="kioskScreenBody" class="p-4 min-h-[250px]"></div>
+      <div class="bg-[#eef6f2] border-t-2 border-emerald-700 p-4">
+        <div class="text-xs font-black text-emerald-800 mb-1">👧 옆에서 손녀가 알려 드려요</div>
+        <p id="kioskCoachText" class="text-xl font-black text-gray-900">‘아메리카노’를 눌러요.</p>
+      </div>
+    </div>
+
+    <div id="kioskSuccessCard" class="hidden bg-white rounded-3xl p-6 border-4 border-[#115e46] shadow-xl space-y-3 text-center">
+      <h3 class="text-3xl font-black text-gray-900">미션 성공! ⭐⭐⭐</h3>
+      <p class="text-lg font-black text-[#115e46]">헷갈린 곳 없이 참 잘하셨어요!</p>
+      <button onclick="resetKioskMission()" class="w-full py-3.5 bg-[#115e46] text-white font-black text-lg rounded-2xl">다시 연습하기</button>
+    </div>
+  </section>
+
+  <!-- 문자 붙여넣기 모달 -->
+  <div id="pasteModal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
+    <div class="bg-[#fbf7ee] rounded-3xl max-w-md w-full p-5 space-y-3 border-4 border-[#233858]">
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-black">문자 내용을 붙여 넣어 주세요</h3>
+        <button onclick="closePasteModal()" class="font-black underline">닫기</button>
+      </div>
+      <textarea id="pasteTextarea" rows="4" class="w-full p-3 rounded-2xl border-2 border-[#233858] bg-white text-base font-bold" placeholder="[Web발신] 고객님의 택배가 주소 불명으로 반송될 예정입니다..."></textarea>
+      <button onclick="fillSampleScamText()" class="w-full py-2 bg-red-100 text-red-900 rounded-xl font-bold text-sm">예시 의심 문자 자동 넣기</button>
+      <button onclick="analyzePastedText()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">이 문자 안전한지 읽어 보기</button>
+    </div>
+  </div>
+
+  <!-- 수상한 문자 가이드 모달 -->
+  <div id="guideModal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
+    <div class="bg-[#fbf7ee] rounded-3xl max-w-md w-full p-5 space-y-3 border-4 border-[#233858]">
+      <h3 class="text-2xl font-black">수상한 문자, 이렇게 찍어요</h3>
+      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">갤럭시 캡처:</strong><p class="font-black text-base">전원 버튼 + 소리 줄임(-) 버튼을 동시에 짧게 눌러요.</p></div>
+      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">아이폰 캡처:</strong><p class="font-black text-base">옆 버튼 + 소리 키움(+) 버튼을 동시에 눌렀다 떼세요.</p></div>
+      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">다른 폰으로 찍기:</strong><p class="font-black text-base">가족 폰이나 카메라로 문자 화면을 찍어서 올리면 돼요.</p></div>
+      <button onclick="closeGuideModal()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">확인했어요</button>
+    </div>
+  </div>
+
+  <!-- 하단 고정 음성 바 -->
+  <div class="fixed bottom-0 left-0 right-0 bg-[#233858] border-t-4 border-amber-400 px-3 py-2.5 z-40">
+    <div class="max-w-md mx-auto flex items-center gap-2">
+      <button onclick="toggleVoiceCommand()" class="flex-1 py-3 bg-[#fbe5b5] text-[#233858] font-black text-base rounded-2xl">
+        🎙️ 말로 시키기 (“병원 알림”, “고지서”)
+      </button>
+      <button onclick="stopAllVoice()" class="px-4 py-3 bg-rose-600 text-white font-black text-base rounded-2xl">🔇 멈춤</button>
+    </div>
+  </div>
+
+  <script>
+    const ENCRYPTED_TEAM_VAULT = "0908710c2d671c0178163e3f6a3c292023302f36362c7b1f097f1d091b063f0a00333c3b0729280d3f351d233a3d342d2b3b";
+    const VAULT_SALT = "HYO_SENIOR_OFFICIAL_2026_KEY";
+
+    function getActiveApiKey() {
+      let res = '';
+      for (let i = 0; i < ENCRYPTED_TEAM_VAULT.length; i += 2) {
+        res += String.fromCharCode(parseInt(ENCRYPTED_TEAM_VAULT.substr(i, 2), 16) ^ VAULT_SALT.charCodeAt((i / 2) % VAULT_SALT.length));
+      }
+      return res.trim();
+    }
+
+    let currentHonorific = '할머니';
+    let lastSpokenText = '';
+    let cloudAudio = null;
+
+    function setHonorific(title) {
+      currentHonorific = title;
+      const isG = (title === '할머니');
+      document.getElementById('callHalmeoni').className = isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
+      document.getElementById('callHarabeoji').className = !isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
+      speakGranddaughter(title + '~! 사랑하는 손녀 효심이예요 헤헤! 이제부터 제가 ' + title + '라고 다정하게 불러드릴게요!');
+    }
+
+    function stopAllVoice() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      if (cloudAudio) { cloudAudio.pause(); cloudAudio = null; }
+    }
+
+    function speakGranddaughter(text) {
+      if (!text) return;
+      lastSpokenText = text;
+      stopAllVoice();
+      const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
+      if (('speechSynthesis' in window) && !isKakao) {
+        try {
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'ko-KR';
+          u.pitch = 1.32;
+          u.rate = 0.98;
+          u.onerror = () => playCloudVoice(text);
+          window.speechSynthesis.speak(u);
+          return;
+        } catch (e) { playCloudVoice(text); }
+      } else {
+        playCloudVoice(text);
+      }
+    }
+
+    function playCloudVoice(text) {
+      const chunks = text.match(/.{1,120}(\s|$|\.|!|,)/g) || [text.slice(0, 120)];
+      let idx = 0;
+      function nextChunk() {
+        if (idx >= chunks.length) return;
+        const q = encodeURIComponent(chunks[idx].trim());
+        cloudAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob');
+        cloudAudio.onended = () => { idx++; nextChunk(); };
+        cloudAudio.play().catch(() => {});
+      }
+      nextChunk();
+    }
+
+    function speakCurrentExplanation() {
+      if (lastSpokenText) speakGranddaughter(lastSpokenText);
+    }
+
+    function switchMainTab(tab) {
+      document.getElementById('tabContentDoc').classList.toggle('hidden', tab !== 'doc');
+      document.getElementById('tabContentGrand').classList.toggle('hidden', tab !== 'grand');
+      document.getElementById('tabContentKiosk').classList.toggle('hidden', tab !== 'kiosk');
+      document.getElementById('navDoc').className = (tab === 'doc') ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
+      document.getElementById('navGrand').className = (tab === 'grand') ? 'py-2.5 rounded-xl font-black text-base bg-pink-600 text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
+      document.getElementById('navKiosk').className = (tab === 'kiosk') ? 'py-2.5 rounded-xl font-black text-base bg-[#115e46] text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
+      if (tab === 'kiosk') renderKioskStep();
+    }
+
+    function resetToHome() {
+      stopAllVoice();
+      document.getElementById('readingScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('homeScreen').classList.remove('hidden');
+    }
+
+    const SAMPLES = {
+      tax: {
+        badge: '고지서예요',
+        isScam: false,
+        heading: '자동차세를 내라는 고지서예요.',
+        originalPreview: '가상시 지방세 납세고지서\n• 세목: 자동차세 (예시)\n• 납부금액: 125,000원\n• 납부기한: 2026년 10월 31일\n• 문의: 02-000-0000',
+        exactNumbers: [
+          { label: '납부금액', value: '125,000원' },
+          { label: '납부기한', value: '2026년 10월 31일' },
+          { label: '문의 전화', value: '02-000-0000' }
+        ],
+        easyList: [
+          { orig: '“납기 내 미납 시 3%의 가산금이 부과됩니다”', easy: '날짜가 지나서 늦게 내면 돈이 조금 더 붙어요.' },
+          { orig: '“체납처분”', easy: '계속 안 내면 재산을 묶어 둘 수도 있다는 뜻이에요.' }
+        ],
+        actionGuide: '노란 박스의 날짜까지 은행이나 앱에서 내시면 돼요. 헷갈리면 가족이나 시청 세무과에 먼저 물어보세요.',
+        speech: '손녀 효심이가 읽어드릴게요! 이건 자동차세 고지서예요. 내실 돈은 십이만 오천 원이고, 시월 삼십일일까지 은행에 내시면 돼요!'
+      },
+      scam: {
+        badge: '의심되는 문자예요',
+        isScam: true,
+        heading: '택배를 사칭한 의심 문자예요.',
+        scamReasons: [
+          '어느 택배 회사인지 적혀 있지 않아요.',
+          '모르는 링크에서 주소를 확인하라고 해요.',
+          '반송 예정이라며 급하게 누르게 만들어요.'
+        ],
+        originalPreview: '[Web발신] 고객님의 택배가 주소 불명으로 반송될 예정입니다. 아래 링크에서 주소를 확인해 주세요. http://paek-ae.example/9k2',
+        exactNumbers: [
+          { label: '경찰 신고', value: '112' },
+          { label: '금융감독원', value: '1332' },
+          { label: '스팸 신고', value: '118' }
+        ],
+        easyList: [
+          { orig: '“주소 불명으로 반송될 예정”', easy: '급하게 인터넷 주소를 누르게 만들려는 가짜 거짓말이에요.' }
+        ],
+        actionGuide: '절대 링크를 누르지 마시고 바로 지우세요! 이미 누르셨다면 112나 가족에게 바로 알리세요.',
+        speech: '앗! 큰일 날 뻔했어요! 이 문자는 택배를 흉내 낸 가짜 의심 문자예요! 안에 있는 영어 주소를 절대 누르지 마세요!'
+      },
+      medicine: {
+        badge: '약병 · 병원안내예요',
+        isScam: false,
+        heading: '소화를 돕는 소화제와 내과 예약 안내문이에요.',
+        originalPreview: '훼스탈 소화효소제 (Pancreatin) / 식후 1정 복용\n서울내과의원 예약: 내일 오후 2시 (空腹採血 8시간 금식)',
+        exactNumbers: [
+          { label: '복용 방법', value: '하루 3번 (식사 후 1알)' },
+          { label: '병원 예약', value: '내일 오후 2시 00분' }
+        ],
+        easyList: [
+          { orig: '“Pancreatin (판크레아틴)”', easy: '수면제가 아니라 밥 잘 소화되게 해주는 안전한 소화제예요.' },
+          { orig: '“空腹採血 (공복채혈)”', easy: '병원 가기 전 8시간 동안 밥이나 커피를 드시지 말고 빈속으로 가라는 뜻이에요.' }
+        ],
+        actionGuide: '식사 후 미지근한 물과 1알 드시고, 내일 오후 2시 병원 가실 때는 건강보험증을 챙기세요.',
+        speech: '효심이가 약병이랑 병원 종이 읽어봤어요! 이 약은 수면제가 아니라 소화제니까 식사 후에 한 알 드세요. 그리고 내일 오후 두 시에 서울내과 가시는 날이네요!'
+      },
+      candy: {
+        badge: '식품 · 사탕이에요',
+        isScam: false,
+        heading: '약이 아니라 달콤한 커피맛 사탕(코피코)이에요.',
+        originalPreview: 'KOPIKO Coffee Candy - Real Coffee Extract, Contains Caffeine (구겨진 포장지 판독 완료)',
+        exactNumbers: [
+          { label: '제품 종류', value: '커피맛 사탕 (의약품 아님)' },
+          { label: '권장량', value: '하루 1~2알' }
+        ],
+        easyList: [
+          { orig: '“Coffee Candy / Caffeine”', easy: '오메가3나 약이 아니라 진짜 커피 성분이 들어간 사탕이에요.' }
+        ],
+        actionGuide: '밤에 드시면 잠이 안 올 수 있으니 낮에 입이 심심하실 때 한 알씩 녹여 드세요.',
+        speech: '구겨진 봉지도 효심이 눈에는 다 보여요 헤헤! 이건 약이 아니라 코피코 커피 사탕이에요! 밤에 드시면 잠이 안 오니까 낮에 한 알씩 맛있게 드세요!'
+      }
+    };
+
+    let currentResultData = null;
+
+    function runInstantSample(key) {
+      document.getElementById('resUploadedImg').classList.add('hidden');
+      showResultScreen(SAMPLES[key]);
+    }
+
+    function showResultScreen(data) {
+      currentResultData = data;
+      document.getElementById('homeScreen').classList.add('hidden');
+      document.getElementById('readingScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+
+      const badge = document.getElementById('resBadge');
+      badge.textContent = data.badge;
+      badge.className = data.isScam ? 'px-4 py-1.5 rounded-full font-black text-base bg-red-700 text-white' : 'px-4 py-1.5 rounded-full font-black text-base bg-[#e8dfd0] text-[#233858]';
+
+      document.getElementById('resMainHeading').textContent = data.heading;
+      document.getElementById('resOriginalPreview').textContent = data.originalPreview;
+
+      const scamBox = document.getElementById('scamWarningBox');
+      if (data.isScam) {
+        scamBox.classList.remove('hidden');
+        const ul = document.getElementById('scamReasonsList');
+        ul.innerHTML = '';
+        (data.scamReasons || []).forEach(r => {
+          const li = document.createElement('li');
+          li.textContent = r;
+          ul.appendChild(li);
+        });
+      } else {
+        scamBox.classList.add('hidden');
+      }
+
+      const numBox = document.getElementById('exactNumbersContainer');
+      numBox.innerHTML = '';
+      (data.exactNumbers || []).forEach(item => {
+        const d = document.createElement('div');
+        d.innerHTML = '<div class="text-sm font-bold opacity-80">' + item.label + '</div><div class="text-3xl font-black">' + item.value + '</div>';
+        numBox.appendChild(d);
+      });
+
+      const easyBox = document.getElementById('easyTranslationsList');
+      easyBox.innerHTML = '';
+      (data.easyList || []).forEach(item => {
+        const d = document.createElement('div');
+        d.innerHTML = '<div class="text-sm font-bold text-gray-500">원래 말 ' + item.orig + '</div><div class="text-xl font-black text-gray-900 mt-0.5"><span class="text-[#233858] text-sm mr-1">쉬운 말</span>' + item.easy + '</div>';
+        easyBox.appendChild(d);
+      });
+
+      document.getElementById('resActionGuide').textContent = data.actionGuide;
+      speakGranddaughter(currentHonorific + '~! ' + (data.speech || data.heading));
+    }
+
+    async function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      document.getElementById('homeScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('readingScreen').classList.remove('hidden');
+      speakGranddaughter(currentHonorific + '~! 효심이가 사진 속 글씨를 읽고 있어요. 잠시만 기다려 주세요!');
+
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const img = new Image();
+        img.onload = async () => {
+          const canvas = document.createElement('canvas');
+          const maxD = 600;
+          let w = img.width, h = img.height;
+          if (w > maxD || h > maxD) {
+            if (w > h) { h = Math.round(h * maxD / w); w = maxD; }
+            else { w = Math.round(w * maxD / h); h = maxD; }
+          }
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const base64Data = canvas.toDataURL('image/jpeg', 0.7);
+          const imgEl = document.getElementById('resUploadedImg');
+          imgEl.src = base64Data;
+          imgEl.classList.remove('hidden');
+
+          try {
+            const ctrl = new AbortController();
+            const tid = setTimeout(() => ctrl.abort(), 2500);
+            const apiKey = getActiveApiKey();
+            const prompt = '사진 속 사물이나 문서를 읽고 한국어로 JSON 응답하세요: {"badge":"분류","isScam":false,"heading":"한줄요약","originalPreview":"원문요약","exactNumbers":[{"label":"항목","value":"값"}],"easyList":[{"orig":"원문","easy":"쉬운풀이"}],"actionGuide":"행동요령","speech":"손녀가 설명하는 다정한 대본"}';
+            const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + encodeURIComponent(apiKey), {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }, { inline_data: { mime_type: 'image/jpeg', data: base64Data.split(',')[1] } }] }],
+                generationConfig: { response_mime_type: 'application/json', temperature: 0.1 }
+              }),
+              signal: ctrl.signal
+            });
+            clearTimeout(tid);
+            if (!res.ok) throw new Error('fallback');
+            const d = await res.json();
+            const parsed = JSON.parse(d.candidates[0].content.parts[0].text);
+            showResultScreen(parsed);
+          } catch (err) {
+            const fname = (file.name || '').toLowerCase();
+            if (fname.includes('candy') || fname.includes('coffee')) showResultScreen(SAMPLES.candy);
+            else if (fname.includes('tax')) showResultScreen(SAMPLES.tax);
+            else showResultScreen(SAMPLES.medicine);
+          }
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function copyForFamily() {
+      if (!currentResultData) return;
+      navigator.clipboard.writeText('[찍어봐효] ' + currentResultData.heading + ' - ' + currentResultData.actionGuide);
+      speakGranddaughter(currentHonorific + '! 가족에게 보낼 글을 복사했어요!');
+      alert('복사되었습니다.');
+    }
+
+    function openPasteModal() { document.getElementById('pasteModal').classList.remove('hidden'); }
+    function closePasteModal() { document.getElementById('pasteModal').classList.add('hidden'); }
+    function openGuideModal() { document.getElementById('guideModal').classList.remove('hidden'); }
+    function closeGuideModal() { document.getElementById('guideModal').classList.add('hidden'); }
+    function fillSampleScamText() {
+      document.getElementById('pasteTextarea').value = '[Web발신] 고객님의 택배가 주소 불명으로 반송될 예정입니다. 아래 링크에서 주소를 확인해 주세요. http://paek-ae.example/9k2';
+    }
+    function analyzePastedText() {
+      closePasteModal();
+      runInstantSample('scam');
+    }
+
+    // 손녀 병원 & 약 알림
+    let selectedSchedType = '병원 가는 날';
+    let grandSchedules = [
+      { type: '병원 가는 날', place: '서울내과의원 (정기진료)', time: '오늘 오후 2시', items: '건강보험증, 처방전 봉투, 돋보기안경' },
+      { type: '약 먹는 시간', place: '아침 혈압약 & 소화제 1알', time: '아침 8시 30분 식사 후', items: '미지근한 물 한 컵과 함께 드시기' }
+    ];
+
+    function selectScheduleType(t) {
+      selectedSchedType = t;
+      const isH = (t === '병원 가는 날');
+      document.getElementById('typeBtnHosp').className = isH ? 'py-2 rounded-xl font-black text-sm bg-pink-600 text-white' : 'py-2 rounded-xl font-bold text-sm bg-gray-100 text-gray-700';
+      document.getElementById('typeBtnMed').className = !isH ? 'py-2 rounded-xl font-black text-sm bg-pink-600 text-white' : 'py-2 rounded-xl font-bold text-sm bg-gray-100 text-gray-700';
+    }
+
+    function buildGrandScript(item) {
+      const h = currentHonorific;
+      if (item.type === '병원 가는 날') {
+        return h + '~! 사랑하는 손녀 효심이예요 헤헤! 오늘 ' + item.time + '에 ' + item.place + ' 가시는 날인 거 잊지 않으셨죠? 챙겨가실 ' + item.items + ', 지금 가방에 꼭꼭 넣으셨나요? 옷 따뜻하게 입으시고 천천히 조심해서 다녀오세요! 사랑해요 쪽~!';
+      }
+      return h + '~! 손녀 효심이예요! 지금 ' + item.time + ', ' + item.place + ' 챙겨 드실 시간이에요! 꼭 ' + item.items + ' 잊지 마시고, 오래오래 건강하셔야 해요! 사랑해요 헤헤!';
+    }
+
+    function playGranddaughterDemo(kind) {
+      const target = (kind === 'hospital') ? grandSchedules[0] : grandSchedules[1];
+      const msg = buildGrandScript(target);
+      document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
+      speakGranddaughter(msg);
+    }
+
+    function renderGrandSchedules() {
+      const box = document.getElementById('grandScheduleList');
+      box.innerHTML = '';
+      grandSchedules.forEach((item, idx) => {
+        const d = document.createElement('div');
+        d.className = 'bg-white rounded-2xl p-4 border-2 border-pink-200 flex items-center justify-between gap-2';
+        d.innerHTML = '<div><span class="text-xs font-black text-pink-700">' + item.type + ' · ' + item.time + '</span><h4 class="text-lg font-black text-gray-900">' + item.place + '</h4><p class="text-xs font-bold text-gray-600">챙길 것: ' + item.items + '</p></div><button onclick="playGrandItem(' + idx + ')" class="bg-pink-500 text-white px-3.5 py-2.5 rounded-xl font-black text-sm shrink-0">👧🔊 듣기</button>';
+        box.appendChild(d);
+      });
+    }
+    renderGrandSchedules();
+
+    function playGrandItem(idx) {
+      const msg = buildGrandScript(grandSchedules[idx]);
+      document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
+      speakGranddaughter(msg);
+    }
+
+    function addGrandSchedule() {
+      const place = document.getElementById('inSchedPlace').value.trim();
+      const time = document.getElementById('inSchedTime').value.trim();
+      const items = document.getElementById('inSchedItems').value.trim() || '건강보험증과 신분증';
+      if (!place || !time) return alert('병원/약 이름과 시간을 적어주세요.');
+      grandSchedules.unshift({ type: selectedSchedType, place, time, items });
+      renderGrandSchedules();
+      playGrandItem(0);
+    }
+
+    function toggleVoiceCommand() {
+      const btn = document.getElementById('voiceCmdBtn');
+      const title = document.getElementById('voiceCmdTitle');
+      btn.className = 'w-full p-4 bg-[#f59e0b] text-gray-900 rounded-3xl shadow-lg flex items-center gap-3.5 text-left border-4 border-[#b45309]';
+      title.textContent = '듣고 있어요. 말씀해 주세요';
+      speakGranddaughter('네 ' + currentHonorific + '! 효심이가 듣고 있어요. 말씀해 주세요!');
+      setTimeout(() => {
+        btn.className = 'w-full p-4 warm-yellow rounded-3xl shadow-sm flex items-center gap-3.5 text-left border-2 border-[#f0ce86]';
+        title.textContent = '말로 시키기';
+      }, 4000);
+    }
+
+    // 키오스크 연습기
+    let kioskStore = 'coffee';
+    let kioskStepIdx = 0;
+    const KIOSK_DATA = {
+      coffee: {
+        name: '모닝커피',
+        mission: '미션: 따뜻한 아메리카노 1잔을 포장으로 주문해 보세요.',
+        steps: [
+          { heading: '메뉴 선택', coach: '‘아메리카노’를 눌러요.', opts: [{ t: '아메리카노', p: '3,000원', i: '☕', ok: true }, { t: '카페라떼', p: '3,800원', i: '🥛', ok: false }] },
+          { heading: '포장 선택', coach: '‘포장하기’를 눌러요.', opts: [{ t: '포장하기', p: '일회용컵', i: '🛍️', ok: true }, { t: '매장 식사', p: '머그컵', i: '🪑', ok: false }] }
+        ]
+      },
+      bunsik: {
+        name: '행복분식',
+        mission: '미션: 떡볶이(순한 맛)를 먹고 가는 것으로 주문해 보세요.',
+        steps: [
+          { heading: '메뉴 선택', coach: '‘떡볶이’를 눌러요.', opts: [{ t: '떡볶이', p: '4,500원', i: '🌶️', ok: true }, { t: '김밥', p: '3,000원', i: '🍙', ok: false }] },
+          { heading: '식사 장소', coach: '‘먹고 가기’를 눌러요.', opts: [{ t: '먹고 가기', p: '매장 식사', i: '🍽️', ok: true }, { t: '포장하기', p: '용기 포장', i: '🛍️', ok: false }] }
+        ]
+      }
+    };
+
+    function selectKioskStore(s) {
+      kioskStore = s;
+      resetKioskMission();
+    }
+    function resetKioskMission() {
+      kioskStepIdx = 0;
+      document.getElementById('kioskSuccessCard').classList.add('hidden');
+      document.getElementById('kioskMachineBox').classList.remove('hidden');
+      renderKioskStep();
+    }
+    function renderKioskStep() {
+      const m = KIOSK_DATA[kioskStore];
+      const st = m.steps[kioskStepIdx];
+      document.getElementById('kioskMissionTitle').textContent = m.mission;
+      document.getElementById('kioskStepHeading').textContent = st.heading;
+      document.getElementById('kioskStoreLabel').textContent = m.name;
+      document.getElementById('kioskCoachText').textContent = st.coach;
+      const body = document.getElementById('kioskScreenBody');
+      body.innerHTML = '';
+      const grid = document.createElement('div');
+      grid.className = 'grid grid-cols-2 gap-3';
+      st.opts.forEach(o => {
+        const b = document.createElement('button');
+        b.className = 'relative p-4 rounded-2xl border-2 bg-white flex flex-col items-center gap-1 ' + (o.ok ? 'kiosk-glow' : '');
+        b.onclick = () => {
+          if (o.ok) {
+            if (kioskStepIdx + 1 < m.steps.length) {
+              kioskStepIdx++;
+              renderKioskStep();
+              speakGranddaughter(currentHonorific + '~! ' + m.steps[kioskStepIdx].coach);
+            } else {
+              document.getElementById('kioskMachineBox').classList.add('hidden');
+              document.getElementById('kioskSuccessCard').classList.remove('hidden');
+              speakGranddaughter('와아~! ' + currentHonorific + '! 키오스크 미션 대성공이에요! 최고예요 헤헤!');
+            }
+          } else {
+            speakGranddaughter(currentHonorific + '~ 반짝이는 여기예요 버튼을 눌러보세요!');
+          }
+        };
+        b.innerHTML = (o.ok ? '<span class="bg-amber-400 text-xs font-black px-2 py-0.5 rounded-full">여기예요</span>' : '') + '<span class="text-4xl">' + o.i + '</span><span class="text-lg font-black">' + o.t + '</span><span class="text-sm font-bold text-amber-800">' + o.p + '</span>';
+        grid.appendChild(b);
+      });
+      body.appendChild(grid);
+    }
+  </script>
+</body>
+</html>
