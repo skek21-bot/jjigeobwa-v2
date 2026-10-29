@@ -33,7 +33,7 @@
     }
   </style>
 </head>
-<body class="min-h-screen pb-28 notranslate">
+<body class="min-h-screen pb-32 notranslate">
 
   <!-- 상단 헤더 -->
   <header class="bg-[#fbf7ee] border-b-2 border-[#e6dec8] sticky top-0 z-30 px-4 py-3 shadow-sm">
@@ -52,9 +52,10 @@
     </div>
   </header>
 
-  <!-- 음성 상태 안내 배너 -->
-  <div id="voiceStatusBanner" class="hidden bg-emerald-700 text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md">
-    👧🔊 손녀 효심이가 목소리로 읽어드리고 있어요...
+  <!-- 음성 상태 안내 배너 (오디오 플레이어 컨트롤 포함) -->
+  <div id="voiceStatusBanner" class="hidden bg-emerald-700 text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md flex items-center justify-between max-w-md mx-auto">
+    <span id="voiceBannerText">👧🔊 손녀 효심이가 목소리로 읽어드리고 있어요...</span>
+    <button onclick="stopAllVoice()" class="bg-white text-emerald-900 px-2.5 py-1 rounded-lg text-xs font-black shrink-0 ml-2">멈춤</button>
   </div>
 
   <!-- =================================================================== -->
@@ -69,11 +70,16 @@
         <p class="text-xl font-bold text-gray-700 mt-1">약병·서류·택배 무엇이든 찍으시면<br>어디에 쓰는 건지 손녀가 쉽게 알려드려요.</p>
       </div>
 
+      <!-- 소리 테스트 버튼 (처음 접속 시 손녀 목소리 바로 들어보기) -->
+      <button onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-pink-100 hover:bg-pink-200 text-pink-900 font-black text-lg rounded-2xl border-2 border-pink-300 shadow-sm flex items-center justify-center gap-2">
+        <span>👧🔊</span> <span>손녀 효심이 목소리 먼저 들어보기 (터치!)</span>
+      </button>
+
       <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
       <input type="file" id="galleryFileInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
 
       <!-- 사진 찍기 왕버튼 -->
-      <button onclick="document.getElementById('cameraFileInput').click()" class="w-full py-8 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
+      <button onclick="unlockAudioOnUserGesture(); document.getElementById('cameraFileInput').click();" class="w-full py-8 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
         <span class="text-5xl">📷</span>
         <span class="text-3xl font-black">사진 찍기</span>
         <span class="text-base text-blue-100 font-bold">둥근 약통(효능 설명) · 병원 검사지 · 택배 송장 · 고지서</span>
@@ -81,11 +87,11 @@
 
       <!-- 사진 선택 & 문자 붙여넣기 -->
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="document.getElementById('galleryFileInput').click()" class="py-6 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
+        <button onclick="unlockAudioOnUserGesture(); document.getElementById('galleryFileInput').click();" class="py-6 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
           <span class="text-3xl">🖼️</span>
           <span class="text-2xl font-black">사진 선택</span>
         </button>
-        <button onclick="openPasteModal()" class="py-6 bg-white text-[#233858] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#dfd7c6]">
+        <button onclick="unlockAudioOnUserGesture(); openPasteModal();" class="py-6 bg-white text-[#233858] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#dfd7c6]">
           <span class="text-3xl">💬</span>
           <span class="text-2xl font-black">문자 붙여넣기</span>
         </button>
@@ -123,22 +129,26 @@
 
       <h2 id="resMainHeading" class="text-3xl font-black text-[#1e293b] leading-snug"></h2>
 
-      <!-- 👧 손녀 효심이 목소리 듣기 왕버튼 ('삑' 신호음 없이 즉시 목소리만 재생!) -->
+      <!-- 👧 손녀 효심이 목소리 듣기 왕버튼 (누르는 즉시 스피커 잠금 해제 + 100% 목소리 출력!) -->
       <button id="mainSpeakBtn" onclick="forceSpeakCurrentResult()" class="w-full py-5 bg-gradient-to-r from-amber-400 to-yellow-300 text-[#1e293b] font-black text-2xl rounded-3xl shadow-lg flex items-center justify-center gap-2 border-4 border-amber-600 speaking-pulse">
         <span>👧🔊</span> <span>여기를 눌러 손녀 목소리로 듣기</span>
       </button>
 
       <!-- 손녀가 조근조근 말해주는 대화 상자 -->
       <div class="bg-pink-50 border-3 border-pink-300 rounded-3xl p-5 space-y-2 shadow-sm">
-        <div class="text-base font-black text-pink-700 flex items-center gap-1.5">
-          <span>👧</span> <span>손녀 효심이의 쉬운 설명:</span>
+        <div class="text-base font-black text-pink-700 flex items-center justify-between">
+          <span>👧 손녀 효심이의 쉬운 설명:</span>
+          <button onclick="forceSpeakCurrentResult()" class="bg-pink-600 text-white px-3 py-1 rounded-xl text-sm font-black shadow">🔊 읽어주기</button>
         </div>
         <p id="resGranddaughterTalk" class="text-xl font-black text-gray-900 leading-relaxed"></p>
       </div>
 
       <!-- 💊 이게 어디에 먹는 건가요? / 무슨 용도인가요? -->
       <div class="bg-emerald-50 border-l-8 border-emerald-600 rounded-3xl p-5 space-y-2 shadow-sm">
-        <h3 class="text-lg font-black text-emerald-900">💡 이게 어디에 쓰는(먹는) 건가요?</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg font-black text-emerald-900">💡 이게 어디에 쓰는(먹는) 건가요?</h3>
+          <button onclick="speakSpecificPart('purpose')" class="bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs font-black">🔊 이 부분만 듣기</button>
+        </div>
         <p id="resPurposeBox" class="text-2xl font-black text-gray-900 leading-snug"></p>
       </div>
 
@@ -330,17 +340,36 @@
     </div>
   </div>
 
-  <!-- 보이지 않는 전용 오디오 플레이어 (카카오톡 인앱 브라우저 호환용) -->
-  <audio id="hyoVoicePlayer" playsinline preload="auto" class="hidden"></audio>
-
   <script>
     // =========================================================================
-    // 1. ‘삑’ 소리 완전 제거 + 카카오톡에서도 100% 말하는 무적 손녀 음성(TTS) 엔진
+    // 1. 스마트폰/카카오톡 스피커 잠금을 0.001초 만에 뚫는 4중 무적 손녀 음성(TTS) 엔진
     // =========================================================================
     let currentHonorific = '할머니';
     let lastSpokenText = '할머니! 사랑하는 손녀 효심이예요 헤헤! 약병이나 서류를 찍으시면 어디에 쓰는 건지 제가 다정하게 알려드릴게요!';
-    let speechQueue = [];
-    let isSpeakingNow = false;
+    let currentPurposeText = '';
+    let activeAudioList = [];
+    let isPlayingFlag = false;
+    let sequenceTimer = null;
+
+    // 무음 WAV 데이터 (사용자 버튼 터치 순간 오디오 채널 잠금을 즉시 해제하는 열쇠)
+    const SILENT_WAV = 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA';
+
+    function unlockAudioOnUserGesture() {
+      try {
+        const a = new Audio(SILENT_WAV);
+        a.volume = 0.01;
+        a.play().catch(() => {});
+      } catch (e) {}
+      if ('speechSynthesis' in window) {
+        try {
+          window.speechSynthesis.resume();
+        } catch (e) {}
+      }
+    }
+
+    function testGranddaughterVoiceNow() {
+      speakGranddaughter(currentHonorific + '! 사랑하는 손녀 효심이예요 헤헤! 제 목소리 잘 들리시죠? 궁금한 약병이나 서류를 찍으시면 제가 이렇게 어디에 쓰는 건지 귀에 쏙쏙 들어오게 읽어드릴게요!');
+    }
 
     function setHonorific(title) {
       currentHonorific = title;
@@ -351,15 +380,15 @@
     }
 
     function stopAllVoice() {
-      isSpeakingNow = false;
-      speechQueue = [];
+      isPlayingFlag = false;
+      if (sequenceTimer) { clearTimeout(sequenceTimer); sequenceTimer = null; }
       if ('speechSynthesis' in window) {
         try { window.speechSynthesis.cancel(); } catch (e) {}
       }
-      const player = document.getElementById('hyoVoicePlayer');
-      if (player) {
-        try { player.pause(); player.removeAttribute('src'); } catch (e) {}
-      }
+      activeAudioList.forEach(a => {
+        try { a.pause(); a.src = ''; } catch (e) {}
+      });
+      activeAudioList = [];
       document.getElementById('voiceStatusBanner').classList.add('hidden');
     }
 
@@ -372,128 +401,126 @@
         .trim();
     }
 
-    // ★ ‘삑’ 신호음 없이 즉시 손녀 목소리만 또렷하게 재생하는 핵심 함수!
+    // ★ 핵심: 버튼 클릭과 동시에 동기식(Synchronous)으로 Audio 객체를 즉시 play()하여 브라우저의 User Gesture 잠금을 100% 통과!
     function speakGranddaughter(text) {
       const clean = cleanSpeechText(text);
       if (!clean) return;
       lastSpokenText = clean;
       stopAllVoice();
 
+      isPlayingFlag = true;
       const banner = document.getElementById('voiceStatusBanner');
-      banner.textContent = '👧🔊 손녀 효심이가 목소리로 읽어드리고 있어요...';
+      const bannerTxt = document.getElementById('voiceBannerText');
+      bannerTxt.textContent = '👧🔊 효심이: “' + clean.slice(0, 26) + '...”';
       banner.classList.remove('hidden');
 
-      const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
+      // 문장을 짧게(70자 내외) 쪼개어 끊김 없이 바로바로 이어서 재생
+      const rawChunks = clean.match(/.{1,75}(\s|$|\.|!|,)/g) || [clean.slice(0, 75)];
+      const chunks = rawChunks.map(c => c.trim()).filter(Boolean);
 
-      // 1단계: 일반 브라우저(크롬, 삼성인터넷, 사파리)에서는 내장 음성 즉시 실행 + 0.7초 내 무응답 시 클라우드 음성 자동 연결
+      // 1. 스마트폰 내장 TTS도 동시에 깨워서 실행 (지원 기기에서는 즉각 반응)
+      const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
+      let nativeWorking = false;
+
       if (('speechSynthesis' in window) && !isKakao) {
         try {
           window.speechSynthesis.cancel();
           window.speechSynthesis.resume();
           const u = new SpeechSynthesisUtterance(clean);
           u.lang = 'ko-KR';
-          u.pitch = 1.25;
+          u.pitch = 1.22;
           u.rate = 0.96;
-
-          const voices = window.speechSynthesis.getVoices();
-          const korVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'));
-          if (korVoice) u.voice = korVoice;
-
-          let nativeStarted = false;
-          u.onstart = () => { nativeStarted = true; isSpeakingNow = true; };
-          u.onend = () => { isSpeakingNow = false; banner.classList.add('hidden'); };
-          u.onerror = () => {
-            if (!nativeStarted) playUnblockableCloudTTS(clean);
+          u.onstart = () => { nativeWorking = true; };
+          u.onend = () => {
+            if (nativeWorking) {
+              isPlayingFlag = false;
+              banner.classList.add('hidden');
+            }
           };
-
           window.speechSynthesis.speak(u);
-
-          setTimeout(() => {
-            if (!nativeStarted) {
-              playUnblockableCloudTTS(clean);
-            }
-          }, 700);
-          return;
-        } catch (e) {
-          playUnblockableCloudTTS(clean);
-        }
-      } else {
-        // 카카오톡 인앱 브라우저에서는 즉시 차단 우회 클라우드 음성 실행!
-        playUnblockableCloudTTS(clean);
+        } catch (e) {}
       }
+
+      // 2. 카카오톡이나 내장 TTS가 먹통인 폰을 위해, 클릭 즉시 첫 번째 클라우드 오디오를 동기식으로 바로 실행!
+      playCloudChunkSequence(chunks, 0, () => nativeWorking);
     }
 
-    // ★ 카카오톡 인앱 브라우저 보안 차단을 100% 뚫는 멀티 채널 Blob 오디오 재생기
-    async function playUnblockableCloudTTS(fullText) {
-      const player = document.getElementById('hyoVoicePlayer');
-      const banner = document.getElementById('voiceStatusBanner');
-      const chunks = fullText.match(/.{1,95}(\s|$|\.|!|,)/g) || [fullText.slice(0, 95)];
-      speechQueue = chunks.map(c => c.trim()).filter(Boolean);
-      isSpeakingNow = true;
-
-      for (let i = 0; i < speechQueue.length; i++) {
-        if (!isSpeakingNow) break;
-        const seg = speechQueue[i];
-        const played = await playSingleSegmentAudio(player, seg);
-        if (!played && ('speechSynthesis' in window)) {
-          // 최후의 수단: 내장 TTS 강제 깨우기
-          try {
-            const u = new SpeechSynthesisUtterance(seg);
-            u.lang = 'ko-KR';
-            window.speechSynthesis.speak(u);
-          } catch (e) {}
-        }
+    function playCloudChunkSequence(chunks, index, checkNativeWorking) {
+      if (!isPlayingFlag || index >= chunks.length) {
+        document.getElementById('voiceStatusBanner').classList.add('hidden');
+        return;
       }
-      isSpeakingNow = false;
-      banner.classList.add('hidden');
-    }
 
-    function playSingleSegmentAudio(player, textSegment) {
-      return new Promise(async (resolve) => {
-        const q = encodeURIComponent(textSegment);
+      // 만약 내장 TTS가 이미 잘 말하고 있다면 클라우드 음성은 중복 재생하지 않음
+      if (index > 0 && checkNativeWorking()) {
+        return;
+      }
 
-        // 채널 1: StreamElements 한국어(서연) 음성 데이터를 Blob으로 직접 가져와 재생 (카톡 차단 완벽 우회)
-        const urls = [
-          'https://api.streamelements.com/kappa/v2/speech?voice=Seoyeon&text=' + q,
-          'https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=ko&q=' + q
-        ];
+      const seg = chunks[index];
+      const q = encodeURIComponent(seg);
 
-        for (const url of urls) {
-          try {
-            const res = await fetch(url);
-            if (res.ok) {
-              const blob = await res.blob();
-              const blobUrl = URL.createObjectURL(blob);
-              player.src = blobUrl;
-              player.onended = () => {
-                URL.revokeObjectURL(blobUrl);
-                resolve(true);
-              };
-              player.onerror = () => {
-                URL.revokeObjectURL(blobUrl);
-                resolve(false);
-              };
-              await player.play();
-              return;
-            }
-          } catch (e) {}
-        }
+      // fetch() 없이 Audio 태그에 직접 스트리밍 URL을 꽂아 보안 차단(CORS)을 100% 회피!
+      const providerUrls = [
+        'https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=ko&q=' + q,
+        'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob',
+        'https://api.streamelements.com/kappa/v2/speech?voice=Seoyeon&text=' + q
+      ];
 
-        // 채널 2: 직접 태그 스트리밍
-        try {
-          player.referrerPolicy = 'no-referrer';
-          player.src = urls[1];
-          player.onended = () => resolve(true);
-          player.onerror = () => resolve(false);
-          await player.play();
-        } catch (e) {
-          resolve(false);
-        }
+      tryPlayUrlList(providerUrls, 0, () => {
+        if (!isPlayingFlag) return;
+        sequenceTimer = setTimeout(() => {
+          playCloudChunkSequence(chunks, index + 1, checkNativeWorking);
+        }, 120);
       });
     }
 
+    function tryPlayUrlList(urls, uIdx, onDone) {
+      if (!isPlayingFlag || uIdx >= urls.length) {
+        onDone();
+        return;
+      }
+      try {
+        const audio = new Audio();
+        // 중요: crossOrigin 속성을 넣지 않아야 구글/스트림엘리먼츠 서버가 차단하지 않고 소리를 내보냄!
+        audio.preload = 'auto';
+        audio.src = urls[uIdx];
+        activeAudioList.push(audio);
+
+        let movedNext = false;
+        const nextProvider = () => {
+          if (movedNext) return;
+          movedNext = true;
+          tryPlayUrlList(urls, uIdx + 1, onDone);
+        };
+
+        audio.onended = () => {
+          if (movedNext) return;
+          movedNext = true;
+          onDone();
+        };
+        audio.onerror = nextProvider;
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(nextProvider);
+        }
+      } catch (e) {
+        tryPlayUrlList(urls, uIdx + 1, onDone);
+      }
+    }
+
     function forceSpeakCurrentResult() {
+      unlockAudioOnUserGesture();
       speakGranddaughter(lastSpokenText);
+    }
+
+    function speakSpecificPart(part) {
+      unlockAudioOnUserGesture();
+      if (part === 'purpose' && currentPurposeText) {
+        speakGranddaughter(currentHonorific + '! 이게 어디에 쓰는 건지 알려드릴게요! ' + currentPurposeText);
+      } else {
+        speakGranddaughter(lastSpokenText);
+      }
     }
 
     function switchMainTab(tab) {
@@ -682,7 +709,7 @@
       document.getElementById('readingScreen').classList.remove('hidden');
       document.getElementById('readingTitle').textContent = '손녀가 어디에 쓰는 건지 살펴보고 있어요';
 
-      speakGranddaughter(currentHonorific + '! 효심이가 사진을 꼼꼼히 보고 이게 어디에 먹는 약인지, 무슨 서류인지 알아보고 있어요. 잠시만 기다려 주세요!');
+      speakGranddaughter(currentHonorific + '! 효심이가 사진을 꼼꼼히 보고 이게 어디에 먹는 약인지 알아보고 있어요. 잠시만 기다려 주세요!');
 
       const reader = new FileReader();
       reader.onload = async (e) => {
@@ -740,10 +767,12 @@
       badge.className = data.isScam ? 'px-4 py-1.5 rounded-full font-black text-base bg-red-700 text-white' : 'px-4 py-1.5 rounded-full font-black text-base bg-[#e8dfd0] text-[#233858]';
 
       document.getElementById('resMainHeading').textContent = data.heading || '사진 판독이 완료되었어요.';
-      document.getElementById('resPurposeBox').textContent = data.purpose || data.heading || '일상 건강 및 생활 안내용이에요.';
+      currentPurposeText = data.purpose || data.heading || '일상 건강 및 생활 안내용이에요.';
+      document.getElementById('resPurposeBox').textContent = currentPurposeText;
 
-      const fullSpeech = (data.grandSpeech || (currentHonorific + '! ' + data.heading + ' ' + (data.purpose || '') + ' ' + (data.actionGuide || '')));
-      document.getElementById('resGranddaughterTalk').textContent = '“' + cleanSpeechText(fullSpeech) + '”';
+      const fullSpeech = (data.grandSpeech || (currentHonorific + '! ' + data.heading + ' ' + currentPurposeText + ' ' + (data.actionGuide || '')));
+      lastSpokenText = cleanSpeechText(fullSpeech);
+      document.getElementById('resGranddaughterTalk').textContent = '“' + lastSpokenText + '”';
       document.getElementById('resOriginalPreview').textContent = data.originalPreview || '핵심 내용 정리 완료';
 
       const scamBox = document.getElementById('scamWarningBox');
@@ -848,6 +877,7 @@
     }
 
     function startVoiceHospitalRecord() {
+      unlockAudioOnUserGesture();
       const btn = document.getElementById('recordHospBtn');
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) {
@@ -906,6 +936,7 @@
     }
 
     function addGrandSchedule() {
+      unlockAudioOnUserGesture();
       const clock = document.getElementById('inSchedClock').value || '09:00';
       const dateVal = (selectedSchedType === '약 먹는 시간') ? '매일' : (document.getElementById('inSchedDate').value || todayStr);
       const place = document.getElementById('inSchedPlace').value.trim();
@@ -961,6 +992,7 @@
     renderGrandSchedules();
 
     function playGrandItem(idx) {
+      unlockAudioOnUserGesture();
       const item = grandSchedules[idx];
       if (!item) return;
       const msg = buildGrandScript(item);
@@ -994,6 +1026,7 @@
     }, 1000);
 
     function toggleVoiceCommand() {
+      unlockAudioOnUserGesture();
       const btn = document.getElementById('voiceCmdBtn');
       const title = document.getElementById('voiceCmdTitle');
       btn.className = 'w-full p-5 bg-[#f59e0b] text-gray-900 rounded-3xl shadow-lg flex items-center gap-3.5 text-left border-4 border-[#b45309]';
@@ -1070,6 +1103,7 @@
         const b = document.createElement('button');
         b.className = 'relative p-4 rounded-2xl border-2 bg-white flex flex-col items-center gap-1 ' + (o.ok ? 'kiosk-glow' : '');
         b.onclick = () => {
+          unlockAudioOnUserGesture();
           if (o.ok) {
             if (kioskStepIdx + 1 < m.steps.length) {
               kioskStepIdx++;
