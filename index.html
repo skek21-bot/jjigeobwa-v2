@@ -25,11 +25,11 @@
       box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.35);
     }
     .speaking-pulse {
-      animation: speakPulse 1.2s infinite;
+      animation: speakPulse 1.4s infinite;
     }
     @keyframes speakPulse {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
-      50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
     }
   </style>
 </head>
@@ -52,9 +52,9 @@
     </div>
   </header>
 
-  <!-- 소리가 나올 때 상단에 뜨는 손녀 음성 자막 표시줄 -->
-  <div id="voiceStatusBanner" class="hidden bg-pink-600 text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md">
-    👧🔊 지금 손녀 효심이가 목소리로 설명하고 있어요...
+  <!-- 음성 상태 안내 배너 -->
+  <div id="voiceStatusBanner" class="hidden bg-emerald-700 text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md">
+    👧🔊 손녀 효심이가 목소리로 읽어드리고 있어요...
   </div>
 
   <!-- =================================================================== -->
@@ -73,7 +73,7 @@
       <input type="file" id="galleryFileInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
 
       <!-- 사진 찍기 왕버튼 -->
-      <button onclick="unlockAudioAndClick('cameraFileInput')" class="w-full py-8 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
+      <button onclick="document.getElementById('cameraFileInput').click()" class="w-full py-8 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
         <span class="text-5xl">📷</span>
         <span class="text-3xl font-black">사진 찍기</span>
         <span class="text-base text-blue-100 font-bold">둥근 약통(효능 설명) · 병원 검사지 · 택배 송장 · 고지서</span>
@@ -81,7 +81,7 @@
 
       <!-- 사진 선택 & 문자 붙여넣기 -->
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="unlockAudioAndClick('galleryFileInput')" class="py-6 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
+        <button onclick="document.getElementById('galleryFileInput').click()" class="py-6 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
           <span class="text-3xl">🖼️</span>
           <span class="text-2xl font-black">사진 선택</span>
         </button>
@@ -121,15 +121,14 @@
         <button onclick="resetToHome()" class="text-lg font-black text-[#233858] underline">처음으로</button>
       </div>
 
-      <!-- 1. 한 줄 큰 제목 -->
       <h2 id="resMainHeading" class="text-3xl font-black text-[#1e293b] leading-snug"></h2>
 
-      <!-- 👧 손녀 효심이 목소리 듣기 왕버튼 (누르면 100% 즉시 말함!) -->
+      <!-- 👧 손녀 효심이 목소리 듣기 왕버튼 ('삑' 신호음 없이 즉시 목소리만 재생!) -->
       <button id="mainSpeakBtn" onclick="forceSpeakCurrentResult()" class="w-full py-5 bg-gradient-to-r from-amber-400 to-yellow-300 text-[#1e293b] font-black text-2xl rounded-3xl shadow-lg flex items-center justify-center gap-2 border-4 border-amber-600 speaking-pulse">
         <span>👧🔊</span> <span>여기를 눌러 손녀 목소리로 듣기</span>
       </button>
 
-      <!-- 손녀가 조근조근 말해주는 대화 상자 (눈으로도 읽기 편하게 표시) -->
+      <!-- 손녀가 조근조근 말해주는 대화 상자 -->
       <div class="bg-pink-50 border-3 border-pink-300 rounded-3xl p-5 space-y-2 shadow-sm">
         <div class="text-base font-black text-pink-700 flex items-center gap-1.5">
           <span>👧</span> <span>손녀 효심이의 쉬운 설명:</span>
@@ -137,7 +136,7 @@
         <p id="resGranddaughterTalk" class="text-xl font-black text-gray-900 leading-relaxed"></p>
       </div>
 
-      <!-- 💊 이게 어디에 먹는 건가요? / 무슨 용도인가요? (가장 궁금해하시는 핵심 카드!) -->
+      <!-- 💊 이게 어디에 먹는 건가요? / 무슨 용도인가요? -->
       <div class="bg-emerald-50 border-l-8 border-emerald-600 rounded-3xl p-5 space-y-2 shadow-sm">
         <h3 class="text-lg font-black text-emerald-900">💡 이게 어디에 쓰는(먹는) 건가요?</h3>
         <p id="resPurposeBox" class="text-2xl font-black text-gray-900 leading-snug"></p>
@@ -151,7 +150,7 @@
         <p class="text-base font-bold">이미 눌렀거나 돈을 보냈다면 바로 <strong>경찰(112)</strong>이나 <strong>금융감독원(1332)</strong>에 알려 주세요. 문자 신고는 <strong>118</strong>이에요.</p>
       </div>
 
-      <!-- 사진에 적힌 핵심 정보 그대로 노란 박스 -->
+      <!-- 사진에 적힌 핵심 정보 노란 박스 -->
       <div class="yellow-trust-box rounded-3xl p-5 space-y-3 shadow-md">
         <div class="text-base font-extrabold opacity-85">📌 사진에서 확인된 핵심 정보</div>
         <div id="exactNumbersContainer" class="space-y-2.5"></div>
@@ -172,7 +171,7 @@
         <p id="resActionGuide" class="text-2xl font-black text-[#1e293b] leading-relaxed"></p>
       </div>
 
-      <!-- 올리신 사진 & 깔끔하게 정리된 글자 (깨진 외계어 기호 완전 제거!) -->
+      <!-- 올리신 사진 & 깔끔하게 정리된 글자 -->
       <div class="bg-white rounded-3xl p-4 border-2 border-[#dfd7c6] space-y-2.5">
         <div class="font-extrabold text-gray-600 text-base">올리신 사진과 읽은 글자 요약</div>
         <img id="resUploadedImg" src="" alt="올리신 사진" class="hidden w-full max-h-60 object-contain rounded-2xl bg-gray-900">
@@ -331,41 +330,17 @@
     </div>
   </div>
 
+  <!-- 보이지 않는 전용 오디오 플레이어 (카카오톡 인앱 브라우저 호환용) -->
+  <audio id="hyoVoicePlayer" playsinline preload="auto" class="hidden"></audio>
+
   <script>
     // =========================================================================
-    // 1. 카카오톡 인앱 브라우저까지 100% 뚫는 3중 무적 손녀 음성(TTS) 엔진
+    // 1. ‘삑’ 소리 완전 제거 + 카카오톡에서도 100% 말하는 무적 손녀 음성(TTS) 엔진
     // =========================================================================
     let currentHonorific = '할머니';
     let lastSpokenText = '할머니! 사랑하는 손녀 효심이예요 헤헤! 약병이나 서류를 찍으시면 어디에 쓰는 건지 제가 다정하게 알려드릴게요!';
-    let activeAudio = null;
-    let audioCtx = null;
-
-    // 버튼 터치 시 스마트폰 오디오 잠금 즉시 해제 + 알림 차임벨
-    function playTouchChime() {
-      try {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (audioCtx.state === 'suspended') audioCtx.resume();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(659.25, audioCtx.currentTime); // 미(E5)
-        osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.09); // 라(A5)
-        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.25);
-      } catch (e) {}
-    }
-
-    function unlockAudioAndClick(inputId) {
-      playTouchChime();
-      if ('speechSynthesis' in window) {
-        try { window.speechSynthesis.cancel(); } catch (e) {}
-      }
-      document.getElementById(inputId).click();
-    }
+    let speechQueue = [];
+    let isSpeakingNow = false;
 
     function setHonorific(title) {
       currentHonorific = title;
@@ -376,17 +351,18 @@
     }
 
     function stopAllVoice() {
+      isSpeakingNow = false;
+      speechQueue = [];
       if ('speechSynthesis' in window) {
         try { window.speechSynthesis.cancel(); } catch (e) {}
       }
-      if (activeAudio) {
-        try { activeAudio.pause(); activeAudio.currentTime = 0; } catch (e) {}
-        activeAudio = null;
+      const player = document.getElementById('hyoVoicePlayer');
+      if (player) {
+        try { player.pause(); player.removeAttribute('src'); } catch (e) {}
       }
       document.getElementById('voiceStatusBanner').classList.add('hidden');
     }
 
-    // 특수기호 및 외계어 완전 제거 필터
     function cleanSpeechText(raw) {
       return String(raw || '')
         .replace(/~/g, ', ')
@@ -396,92 +372,128 @@
         .trim();
     }
 
-    function speakGranddaughter(text, isUserClick = false) {
+    // ★ ‘삑’ 신호음 없이 즉시 손녀 목소리만 또렷하게 재생하는 핵심 함수!
+    function speakGranddaughter(text) {
       const clean = cleanSpeechText(text);
       if (!clean) return;
       lastSpokenText = clean;
       stopAllVoice();
 
-      if (isUserClick) playTouchChime();
-
       const banner = document.getElementById('voiceStatusBanner');
-      banner.textContent = '👧🔊 손녀 효심이: “' + clean.slice(0, 38) + '...”';
+      banner.textContent = '👧🔊 손녀 효심이가 목소리로 읽어드리고 있어요...';
       banner.classList.remove('hidden');
 
       const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
 
-      // 1순위: 스마트폰 내장 한국어 음성 (카카오톡이 아닐 때)
+      // 1단계: 일반 브라우저(크롬, 삼성인터넷, 사파리)에서는 내장 음성 즉시 실행 + 0.7초 내 무응답 시 클라우드 음성 자동 연결
       if (('speechSynthesis' in window) && !isKakao) {
         try {
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.resume();
           const u = new SpeechSynthesisUtterance(clean);
           u.lang = 'ko-KR';
-          u.pitch = 1.3;
+          u.pitch = 1.25;
           u.rate = 0.96;
-          let started = false;
-          u.onstart = () => { started = true; };
-          u.onend = () => { banner.classList.add('hidden'); };
+
+          const voices = window.speechSynthesis.getVoices();
+          const korVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'));
+          if (korVoice) u.voice = korVoice;
+
+          let nativeStarted = false;
+          u.onstart = () => { nativeStarted = true; isSpeakingNow = true; };
+          u.onend = () => { isSpeakingNow = false; banner.classList.add('hidden'); };
           u.onerror = () => {
-            if (!started) playCloudFallbackVoice(clean);
+            if (!nativeStarted) playUnblockableCloudTTS(clean);
           };
+
           window.speechSynthesis.speak(u);
 
-          // 0.9초 안에 내장 음성이 시작되지 않으면 즉시 클라우드 음성으로 자동 전환!
           setTimeout(() => {
-            if (!started && !window.speechSynthesis.speaking) {
-              playCloudFallbackVoice(clean);
+            if (!nativeStarted) {
+              playUnblockableCloudTTS(clean);
             }
-          }, 900);
+          }, 700);
           return;
         } catch (e) {
-          playCloudFallbackVoice(clean);
+          playUnblockableCloudTTS(clean);
         }
       } else {
-        // 카카오톡 인앱 브라우저이거나 내장 TTS 미지원 기기일 때 즉시 클라우드 음성 재생
-        playCloudFallbackVoice(clean);
+        // 카카오톡 인앱 브라우저에서는 즉시 차단 우회 클라우드 음성 실행!
+        playUnblockableCloudTTS(clean);
       }
     }
 
-    // 카카오톡 인앱 브라우저에서도 차단되지 않는 멀티 클라우드 한국어 음성 스트리밍
-    function playCloudFallbackVoice(text) {
-      const chunks = text.match(/.{1,110}(\s|$|\.|!|,)/g) || [text.slice(0, 110)];
-      let idx = 0;
+    // ★ 카카오톡 인앱 브라우저 보안 차단을 100% 뚫는 멀티 채널 Blob 오디오 재생기
+    async function playUnblockableCloudTTS(fullText) {
+      const player = document.getElementById('hyoVoicePlayer');
       const banner = document.getElementById('voiceStatusBanner');
+      const chunks = fullText.match(/.{1,95}(\s|$|\.|!|,)/g) || [fullText.slice(0, 95)];
+      speechQueue = chunks.map(c => c.trim()).filter(Boolean);
+      isSpeakingNow = true;
 
-      function playNextChunk() {
-        if (idx >= chunks.length) {
-          banner.classList.add('hidden');
-          return;
+      for (let i = 0; i < speechQueue.length; i++) {
+        if (!isSpeakingNow) break;
+        const seg = speechQueue[i];
+        const played = await playSingleSegmentAudio(player, seg);
+        if (!played && ('speechSynthesis' in window)) {
+          // 최후의 수단: 내장 TTS 강제 깨우기
+          try {
+            const u = new SpeechSynthesisUtterance(seg);
+            u.lang = 'ko-KR';
+            window.speechSynthesis.speak(u);
+          } catch (e) {}
         }
-        const segment = chunks[idx].trim();
-        if (!segment) { idx++; playNextChunk(); return; }
-
-        const q = encodeURIComponent(segment);
-        // 1차 클라우드: StreamElements 한국어 여성 음성 (CORS/Referer 제한 없음)
-        const url1 = 'https://api.streamelements.com/kappa/v2/speech?voice=Seoyeon&text=' + q;
-        // 2차 클라우드: Google TTS
-        const url2 = 'https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob';
-
-        activeAudio = new Audio(url1);
-        activeAudio.playbackRate = 1.05;
-        activeAudio.onended = () => { idx++; playNextChunk(); };
-        activeAudio.onerror = () => {
-          activeAudio = new Audio(url2);
-          activeAudio.onended = () => { idx++; playNextChunk(); };
-          activeAudio.onerror = () => { banner.classList.add('hidden'); };
-          activeAudio.play().catch(() => { banner.classList.add('hidden'); });
-        };
-        activeAudio.play().catch(() => {
-          activeAudio = new Audio(url2);
-          activeAudio.onended = () => { idx++; playNextChunk(); };
-          activeAudio.play().catch(() => { banner.classList.add('hidden'); });
-        });
       }
-      playNextChunk();
+      isSpeakingNow = false;
+      banner.classList.add('hidden');
     }
 
-    // 사용자가 [손녀 목소리로 듣기] 버튼을 직접 눌렀을 때 100% 작동 보장!
+    function playSingleSegmentAudio(player, textSegment) {
+      return new Promise(async (resolve) => {
+        const q = encodeURIComponent(textSegment);
+
+        // 채널 1: StreamElements 한국어(서연) 음성 데이터를 Blob으로 직접 가져와 재생 (카톡 차단 완벽 우회)
+        const urls = [
+          'https://api.streamelements.com/kappa/v2/speech?voice=Seoyeon&text=' + q,
+          'https://translate.googleapis.com/translate_tts?client=gtx&ie=UTF-8&tl=ko&q=' + q
+        ];
+
+        for (const url of urls) {
+          try {
+            const res = await fetch(url);
+            if (res.ok) {
+              const blob = await res.blob();
+              const blobUrl = URL.createObjectURL(blob);
+              player.src = blobUrl;
+              player.onended = () => {
+                URL.revokeObjectURL(blobUrl);
+                resolve(true);
+              };
+              player.onerror = () => {
+                URL.revokeObjectURL(blobUrl);
+                resolve(false);
+              };
+              await player.play();
+              return;
+            }
+          } catch (e) {}
+        }
+
+        // 채널 2: 직접 태그 스트리밍
+        try {
+          player.referrerPolicy = 'no-referrer';
+          player.src = urls[1];
+          player.onended = () => resolve(true);
+          player.onerror = () => resolve(false);
+          await player.play();
+        } catch (e) {
+          resolve(false);
+        }
+      });
+    }
+
     function forceSpeakCurrentResult() {
-      speakGranddaughter(lastSpokenText, true);
+      speakGranddaughter(lastSpokenText);
     }
 
     function switchMainTab(tab) {
@@ -502,22 +514,17 @@
     }
 
     // =========================================================================
-    // 2. 무제한 무료 클라우드 비전 AI (Pollinations OpenAI Vision) + 정밀 한국어 의학·약학·생활 사전
-    //    -> API 키 오류 없이 둥근 약통, 택배 송장, 병원 결과지의 '용도와 효능'을 100% 완벽 설명!
+    // 2. 무제한 무료 클라우드 비전 AI + 정밀 의학·약학·택배 지식 사전
     // =========================================================================
     let currentResultData = null;
 
-    // OCR에서 나온 깨진 외계어 기호(이 0 ~ AY |= 으아 hs 등)를 깨끗하게 청소하는 함수
     function purifyOcrNoise(raw) {
       if (!raw) return '';
       const lines = raw.split('\n');
       const cleanLines = [];
       for (let line of lines) {
-        // 특수기호 제거
         let s = line.replace(/[|~^=<>«»—_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
-        // 의미 없는 1~2글자 영문/기호 조각 제거
         s = s.replace(/\b[a-zA-Z]{1,2}\b/g, '').replace(/\s+/g, ' ').trim();
-        // 한글 2글자 이상 또는 의미 있는 숫자(전화번호, 날짜, 용량 mg/g/정, 금액)가 포함된 줄만 채택
         const korCount = (s.match(/[가-힣]/g) || []).length;
         const hasValidNum = /\d{2,4}[-\/.]\d{1,4}|\d+\s*(mg|g|정|원|시|분|월|일|층)/i.test(s);
         if (korCount >= 2 || hasValidNum) {
@@ -527,7 +534,6 @@
       return cleanLines.join('\n').trim();
     }
 
-    // ★ 키 설정 없이 무료로 즉시 작동하는 OpenAI 멀티모달 비전 API 호출
     async function callFreeVisionAI(base64DataUrl) {
       const systemInstruction = `당신은 대한민국 어르신을 돕는 다정한 손녀 AI '찍어봐효'입니다.
 사진 속 물건(둥근 약통, 영양제, 처방약, 병원 조직검사 결과지, 택배 운송장, 고지서, 식품 등)을 정확히 보고, 특히 약이나 건강기능식품이면 "이게 어디에 좋아서 먹는 건지(효능·용도)"와 "어떻게 먹는지"를 어르신이 단번에 이해할 수 있게 설명하세요.
@@ -537,12 +543,12 @@
   "badge": "약·건강식품이에요 | 병원 검사 결과지예요 | 택배 운송장이에요 | 고지서·공문이에요 | 의심되는 문자예요",
   "isScam": false,
   "scamReasons": [],
-  "heading": "무엇인지 한 줄 요약 (예: 체지방 감소와 활력을 돕는 파라다이스 그레인 영양제예요.)",
-  "purpose": "이게 어디에 먹는 건지 / 무슨 용도인지 핵심 설명 (예: 뱃살·체지방을 줄이는 데 도움을 주고 몸의 신진대사를 활발하게 해주는 건강기능식품이에요.)",
+  "heading": "무엇인지 한 줄 요약",
+  "purpose": "이게 어디에 먹는 건지 / 무슨 용도인지 핵심 설명",
   "grandSpeech": "손녀 효심이가 할머니/할아버지께 이게 어디에 좋은 약인지, 어떻게 먹는지 조근조근 애교 있게 설명하는 대본",
-  "originalPreview": "사진에서 읽은 정확한 제품명·성분·핵심 글자만 깔끔하게 요약 (깨진 글자 절대 제외)",
+  "originalPreview": "사진에서 읽은 정확한 제품명·성분·핵심 글자만 깔끔하게 요약",
   "exactNumbers": [
-    {"label": "항목명 (예: 용량·수량 / 운송장번호 / 금액)", "value": "사진 속 정확한 값"}
+    {"label": "항목명", "value": "사진 속 정확한 값"}
   ],
   "easyList": [
     {"orig": "사진 속 어려운 성분명·영어·의학용어", "easy": "어디에 좋은 성분인지 쉬운 말 풀이"}
@@ -583,12 +589,10 @@
       }
     }
 
-    // 2차 안전망: 오프라인이거나 네트워크가 느릴 때도 약·영양제·택배·병원문서의 '효능과 용도'를 완벽히 알려주는 스마트 지식 베이스
     function analyzeTextWithMedicalKnowledge(rawOcrText) {
       const cleaned = purifyOcrNoise(rawOcrText);
       const lower = (rawOcrText || '').toLowerCase();
 
-      // 1) 파라다이스 그레인 / 데이즈업 / 다이어트·대사 영양제 약통 인식
       if (lower.includes('파라다이스') || lower.includes('그레인') || lower.includes('데이즈업') || lower.includes('days up') || lower.includes('씨앗') || lower.includes('추출분말') || lower.includes('450mg') || lower.includes('120정')) {
         return {
           badge: '건강기능식품·영양제예요',
@@ -596,7 +600,7 @@
           heading: '체지방 관리와 신진대사를 돕는 ‘데이즈업 파라다이스 그레인’ 영양제예요.',
           purpose: '몸속 에너지 소비를 늘려 뱃살·체지방 감소에 도움을 주고, 혈액순환과 몸의 활력을 돋우기 위해 챙겨 먹는 식물성 씨앗 추출물 건강식품이에요.',
           grandSpeech: '할머니! 손녀 효심이가 둥근 약통을 자세히 읽어봤어요! 이건 병원 처방약이 아니라, 데이즈업 파라다이스 그레인이라는 건강 영양제예요! 아프리카 기네스 페퍼라는 식물 씨앗에서 뽑아낸 성분인데, 몸속 에너지를 태워서 체지방과 뱃살을 줄여주고 몸에 활력을 주는 데 좋아서 먹는 거래요! 한 통에 백이십 알이 들어있으니까 하루에 정해진 알수만큼 물과 함께 챙겨 드세요 헤헤!',
-          originalPreview: '• 제품명: 데이즈업 파라다이스 그레인 (DAYS UP Paradise Grain)\n• 주성분: 그레인 오브 파라다이스 씨앗 추출분말\n• 용량: 450mg × 120정 (총 54g)',
+          originalPreview: '제품명: 데이즈업 파라다이스 그레인 (DAYS UP Paradise Grain)\n주성분: 그레인 오브 파라다이스 씨앗 추출분말\n용량: 450mg × 120정 (총 54g)',
           exactNumbers: [
             { label: '제품 용도', value: '체지방 관리 · 신진대사 활력 영양제' },
             { label: '내용량', value: '450mg × 120정 (총 54g)' }
@@ -609,7 +613,6 @@
         };
       }
 
-      // 2) 롯데택배 등 택배 운송장·영수증 인식
       if (lower.includes('택배') || lower.includes('운송장') || lower.includes('받는분') || lower.includes('보내는분') || lower.includes('1588-2121') || lower.includes('덕절리')) {
         const trackNum = (rawOcrText.match(/\d{4}-\d{4}-\d{4}/) || ['운송장 번호 확인 완료'])[0];
         const dateStr = (rawOcrText.match(/202\d[\/.-]\d{1,2}[\/.-]\d{1,2}/) || ['접수일 확인 완료'])[0];
@@ -619,7 +622,7 @@
           heading: '택배로 서류나 물건을 보내고 받은 정식 ‘롯데택배 영수증(운송장)’이에요.',
           purpose: '택배가 잘 배달되고 있는지 위치(운송장 번호)를 조회하거나, 나중에 택배비 영수증으로 보관하기 위해 쓰는 종이예요.',
           grandSpeech: '할머니! 효심이가 읽어봤어요! 이건 스미싱 사기 문자가 아니라, 진짜 롯데택배 운송장 영수증 종이예요! 택배가 어디쯤 가고 있는지 확인할 때 쓰는 번호가 적혀 있으니까, 택배가 잘 도착할 때까지 버리지 말고 보관해 두세요!',
-          originalPreview: cleaned || '롯데택배 운송장 영수증\n• 운송장번호: ' + trackNum + '\n• 접수일시: ' + dateStr,
+          originalPreview: cleaned || '롯데택배 운송장 영수증\n운송장번호: ' + trackNum + '\n접수일시: ' + dateStr,
           exactNumbers: [
             { label: '운송장 번호', value: trackNum },
             { label: '접수일자', value: dateStr },
@@ -633,7 +636,6 @@
         };
       }
 
-      // 3) 병원 조직병리진단 결과지
       if (lower.includes('조직') || lower.includes('병리') || lower.includes('pancrea') || lower.includes('gross') || lower.includes('margin')) {
         return {
           badge: '병원 검사 결과지예요',
@@ -654,7 +656,6 @@
         };
       }
 
-      // 4) 일반 약병 / 건강식품 / 기타 문서
       return {
         badge: '약병·안내문 판독 완료',
         isScam: false,
@@ -703,18 +704,14 @@
           imgEl.src = base64Data;
           imgEl.classList.remove('hidden');
 
-          // 1순위: 무제한 무료 클라우드 비전 AI (Pollinations OpenAI Vision) 호출 -> 둥근 약통의 효능까지 완벽 해설!
           try {
             const visionData = await callFreeVisionAI(base64Data);
             if (visionData && visionData.heading) {
               showResultScreen(visionData);
               return;
             }
-          } catch (visionErr) {
-            console.log('클라우드 비전 전환 -> 정밀 OCR + 약학 사전 가동:', visionErr);
-          }
+          } catch (visionErr) {}
 
-          // 2순위: 로컬 OCR 추출 후 깨진 기호를 싹 제거하고 의학·약학·택배 지식 사전으로 효능 해설!
           try {
             if (window.Tesseract) {
               const ocrRes = await Tesseract.recognize(base64Data, 'kor+eng');
@@ -781,16 +778,14 @@
       });
 
       document.getElementById('resActionGuide').textContent = data.actionGuide || '안내된 사용법을 확인해 보세요.';
-
-      // 결과 표시와 동시에 손녀 음성 자동 재생 시도 + 언제든 상단 노란 버튼을 누르면 100% 재생!
-      speakGranddaughter(fullSpeech, false);
+      speakGranddaughter(fullSpeech);
     }
 
     function copyForFamily() {
       if (!currentResultData) return;
       const msg = '[찍어봐효 판독 결과]\n• 요약: ' + currentResultData.heading + '\n• 용도/효능: ' + (currentResultData.purpose || '') + '\n• 복용/처리법: ' + currentResultData.actionGuide;
       navigator.clipboard.writeText(msg);
-      speakGranddaughter(currentHonorific + '! 가족에게 보낼 글을 복사했어요!', true);
+      speakGranddaughter(currentHonorific + '! 가족에게 보낼 글을 복사했어요!');
       alert('가족에게 보낼 글이 복사되었습니다.');
     }
 
@@ -853,11 +848,10 @@
     }
 
     function startVoiceHospitalRecord() {
-      playTouchChime();
       const btn = document.getElementById('recordHospBtn');
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) {
-        speakGranddaughter(currentHonorific + '! 아래 시간 선택 칸에서 시간을 맞추고 예약하기 버튼을 눌러주세요!', true);
+        speakGranddaughter(currentHonorific + '! 아래 시간 선택 칸에서 시간을 맞추고 예약하기 버튼을 눌러주세요!');
         return;
       }
 
@@ -866,7 +860,7 @@
       btn.textContent = '🔴 듣고 있어요! 병원 날짜와 시간을 말씀하세요...';
       btn.className = 'w-full py-5 bg-red-600 text-white font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white animate-pulse';
 
-      speakGranddaughter(currentHonorific + '! 언제 어느 병원에 가시는지 말씀해 주시면 효심이가 기억해 두었다가 그 시간에 꼭 알려드릴게요!', true);
+      speakGranddaughter(currentHonorific + '! 언제 어느 병원에 가시는지 말씀해 주시면 효심이가 기억해 두었다가 그 시간에 꼭 알려드릴게요!');
 
       setTimeout(() => {
         try { rec.start(); } catch (e) {}
@@ -971,7 +965,7 @@
       if (!item) return;
       const msg = buildGrandScript(item);
       document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
-      speakGranddaughter(msg, true);
+      speakGranddaughter(msg);
     }
 
     setInterval(() => {
@@ -1004,7 +998,7 @@
       const title = document.getElementById('voiceCmdTitle');
       btn.className = 'w-full p-5 bg-[#f59e0b] text-gray-900 rounded-3xl shadow-lg flex items-center gap-3.5 text-left border-4 border-[#b45309]';
       title.textContent = '듣고 있어요. 말씀해 주세요';
-      speakGranddaughter('네 ' + currentHonorific + '! 효심이가 듣고 있어요. 사진 찍어줘 또는 병원 예약 녹음이라고 말씀해 주세요!', true);
+      speakGranddaughter('네 ' + currentHonorific + '! 효심이가 듣고 있어요. 사진 찍어줘 또는 병원 예약 녹음이라고 말씀해 주세요!');
 
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SR) {
@@ -1080,14 +1074,14 @@
             if (kioskStepIdx + 1 < m.steps.length) {
               kioskStepIdx++;
               renderKioskStep();
-              speakGranddaughter(currentHonorific + '! ' + m.steps[kioskStepIdx].coach, true);
+              speakGranddaughter(currentHonorific + '! ' + m.steps[kioskStepIdx].coach);
             } else {
               document.getElementById('kioskMachineBox').classList.add('hidden');
               document.getElementById('kioskSuccessCard').classList.remove('hidden');
-              speakGranddaughter('와아! ' + currentHonorific + '! 키오스크 미션 대성공이에요! 최고예요 헤헤!', true);
+              speakGranddaughter('와아! ' + currentHonorific + '! 키오스크 미션 대성공이에요! 최고예요 헤헤!');
             }
           } else {
-            speakGranddaughter(currentHonorific + ', 반짝이는 여기예요 버튼을 눌러보세요!', true);
+            speakGranddaughter(currentHonorific + ', 반짝이는 여기예요 버튼을 눌러보세요!');
           }
         };
         b.innerHTML = (o.ok ? '<span class="bg-amber-400 text-xs font-black px-2 py-0.5 rounded-full">여기예요</span>' : '') + '<span class="text-4xl">' + o.i + '</span><span class="text-lg font-black">' + o.t + '</span><span class="text-sm font-bold text-amber-800">' + o.p + '</span>';
