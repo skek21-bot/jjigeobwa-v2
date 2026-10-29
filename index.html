@@ -45,17 +45,8 @@
       </div>
     </div>
 
-    <!-- 🎀 손녀 목소리 귀여움 단계 조절 바 -->
-    <div class="max-w-md mx-auto mt-2 bg-pink-50 border border-pink-200 rounded-xl px-3 py-1.5 flex items-center justify-between">
-      <span class="text-xs font-black text-pink-800">👧 효심이 목소리 톤:</span>
-      <div class="flex gap-1">
-        <button id="toneBtnCute" onclick="setVoiceTone('cute')" class="px-2.5 py-1 rounded-lg text-xs font-black bg-pink-500 text-white shadow">🎀 앙증맞은 꼬마손녀</button>
-        <button id="toneBtnBright" onclick="setVoiceTone('bright')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-pink-800 border border-pink-200">🌸 다정한 소녀손녀</button>
-      </div>
-    </div>
-
     <!-- 3대 기능 탭 -->
-    <div class="max-w-md mx-auto grid grid-cols-3 gap-1.5 mt-2.5 bg-[#e8dfd0] p-1.5 rounded-2xl">
+    <div class="max-w-md mx-auto grid grid-cols-3 gap-1.5 mt-3 bg-[#e8dfd0] p-1.5 rounded-2xl">
       <button id="navDoc" onclick="switchMainTab('doc')" class="py-2.5 rounded-xl font-black text-base bg-[#233858] text-white shadow">📷 찍고 읽기</button>
       <button id="navGrand" onclick="switchMainTab('grand')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">👧 손녀 알림</button>
       <button id="navKiosk" onclick="switchMainTab('kiosk')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">☕ 키오스크</button>
@@ -63,13 +54,13 @@
   </header>
 
   <!-- 음성 상태 안내 배너 -->
-  <div id="voiceStatusBanner" class="hidden bg-pink-600 text-white px-4 py-2.5 text-center font-black text-base sticky top-[140px] z-20 shadow-md flex items-center justify-between max-w-md mx-auto">
-    <span id="voiceBannerText">👧🔊 꼬마 손녀 효심이가 종알종알 읽고 있어요!</span>
-    <button onclick="stopAllVoice()" class="bg-white text-pink-900 px-2.5 py-1 rounded-lg text-xs font-black shrink-0 ml-2">멈춤</button>
+  <div id="voiceStatusBanner" class="hidden bg-[#233858] text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md flex items-center justify-between max-w-md mx-auto">
+    <span id="voiceBannerText">👧🔊 똑순이 손녀 효심이가 야무지게 읽어드리고 있어요...</span>
+    <button onclick="stopAllVoice()" class="bg-amber-400 text-[#233858] px-2.5 py-1 rounded-lg text-xs font-black shrink-0 ml-2">멈춤</button>
   </div>
 
   <!-- =================================================================== -->
-  <!-- [탭 1] 둥근 약병 · 택배 송장 · 병원 결과지 무엇이든 찍으면 효능과 용도를 쉽게 설명 -->
+  <!-- [탭 1] 둥근 약병 · 택배 송장 · 병원 결과지 무엇이든 찍으면 효능과 용도를 야무지게 설명 -->
   <!-- =================================================================== -->
   <main id="tabContentDoc" class="max-w-md mx-auto px-4 pt-4 space-y-4">
 
@@ -77,12 +68,12 @@
       <div class="text-center py-1">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e3efe9] text-[#233858] text-4xl font-black mb-1 shadow-sm">👧</div>
         <h1 class="text-4xl font-black text-[#233858]">찍어봐효🧡</h1>
-        <p class="text-xl font-bold text-gray-700 mt-1">약병·서류·택배 무엇이든 찍으시면<br>귀여운 손녀가 어디에 쓰는 건지 알려드려요!</p>
+        <p class="text-xl font-bold text-gray-700 mt-1">약병·서류·택배 무엇이든 찍으시면<br>똑순이 손녀가 야무지게 알려드려요!</p>
       </div>
 
-      <!-- 소리 테스트 버튼 (앙증맞은 꼬마손녀 버전) -->
-      <button onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-pink-100 hover:bg-pink-200 text-pink-900 font-black text-lg rounded-2xl border-2 border-pink-300 shadow-sm flex items-center justify-center gap-2">
-        <span>👧🔊</span> <span>앙증맞은 효심이 목소리 들어보기 (터치!)</span>
+      <!-- 소리 테스트 버튼 (똑부러지고 야무진 손녀 버전) -->
+      <button onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-amber-100 hover:bg-amber-200 text-[#233858] font-black text-lg rounded-2xl border-2 border-amber-300 shadow-sm flex items-center justify-center gap-2">
+        <span>👧🔊</span> <span>똑순이 손녀 효심이 목소리 들어보기 (터치!)</span>
       </button>
 
       <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
@@ -125,8 +116,8 @@
     <!-- 로딩 화면 -->
     <section id="readingScreen" class="hidden bg-white rounded-3xl p-8 text-center space-y-4 border-2 border-[#dfd7c6] shadow-md my-4">
       <div class="inline-block w-16 h-16 border-4 border-gray-200 border-t-[#233858] rounded-full animate-spin"></div>
-      <h2 id="readingTitle" class="text-3xl font-black text-[#233858]">손녀가 두 눈 크게 뜨고 읽고 있어요!</h2>
-      <p id="readingSub" class="text-lg font-bold text-gray-600">이게 어디에 먹는 약인지, 무슨 서류인지<br>알기 쉽게 정리하고 있으니 조금만 기다려 주세요.</p>
+      <h2 id="readingTitle" class="text-3xl font-black text-[#233858]">효심이가 꼼꼼하게 확인하고 있어요</h2>
+      <p id="readingSub" class="text-lg font-bold text-gray-600">이게 어디에 먹는 약인지, 무슨 서류인지<br>똑부러지게 정리하고 있으니 잠시만 기다려 주세요.</p>
       <button onclick="resetToHome()" class="px-6 py-2.5 rounded-2xl border-2 border-[#233858] text-[#233858] font-black">그만두기</button>
     </section>
 
@@ -141,14 +132,14 @@
 
       <!-- 👧 손녀 효심이 목소리 듣기 왕버튼 -->
       <button id="mainSpeakBtn" onclick="forceSpeakCurrentResult()" class="w-full py-5 bg-gradient-to-r from-amber-400 to-yellow-300 text-[#1e293b] font-black text-2xl rounded-3xl shadow-lg flex items-center justify-center gap-2 border-4 border-amber-600 speaking-pulse">
-        <span>👧🔊</span> <span>여기를 눌러 손녀 목소리로 듣기</span>
+        <span>👧🔊</span> <span>여기를 눌러 효심이 목소리로 듣기</span>
       </button>
 
-      <!-- 손녀가 조근조근 말해주는 대화 상자 -->
-      <div class="bg-pink-50 border-3 border-pink-300 rounded-3xl p-5 space-y-2 shadow-sm">
-        <div class="text-base font-black text-pink-700 flex items-center justify-between">
-          <span>👧 꼬마 손녀 효심이의 재롱 설명:</span>
-          <button onclick="forceSpeakCurrentResult()" class="bg-pink-600 text-white px-3 py-1 rounded-xl text-sm font-black shadow">🔊 읽어주기</button>
+      <!-- 손녀가 야무지게 말해주는 대화 상자 -->
+      <div class="bg-amber-50 border-3 border-amber-300 rounded-3xl p-5 space-y-2 shadow-sm">
+        <div class="text-base font-black text-[#233858] flex items-center justify-between">
+          <span>👧 똑순이 손녀 효심이의 야무진 설명:</span>
+          <button onclick="forceSpeakCurrentResult()" class="bg-[#233858] text-white px-3 py-1 rounded-xl text-sm font-black shadow">🔊 읽어주기</button>
         </div>
         <p id="resGranddaughterTalk" class="text-xl font-black text-gray-900 leading-relaxed"></p>
       </div>
@@ -199,71 +190,56 @@
       </div>
 
       <div class="space-y-2 pt-1">
-        <button onclick="forceSpeakCurrentResult()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">👧🔊 손녀 목소리로 다시 듣기</button>
+        <button onclick="forceSpeakCurrentResult()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">👧🔊 효심이 목소리로 다시 듣기</button>
         <button onclick="copyForFamily()" class="w-full py-4 bg-white text-[#233858] border-2 border-[#233858] font-black text-xl rounded-2xl">📋 가족에게 보낼 글 복사</button>
       </div>
     </section>
   </main>
 
   <!-- =================================================================== -->
-  <!-- [탭 2] 👧 손녀 알림 (진짜 육성 녹음 알림 기능 + 병원 예약/약 시간 자동 알림) -->
+  <!-- [탭 2] 👧 손녀 알림 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 알림) -->
   <!-- =================================================================== -->
   <section id="tabContentGrand" class="hidden max-w-md mx-auto px-4 pt-4 space-y-5">
 
     <div class="bg-[#233858] text-white rounded-3xl p-4 flex items-center justify-between shadow-md">
       <div>
-        <div class="text-xs text-amber-300 font-bold">⏰ 실시간 손녀 시계 작동 중 (시간 되면 자동 호출)</div>
+        <div class="text-xs text-amber-300 font-bold">⏰ 실시간 효심이 시계 작동 중 (시간 되면 자동 안내)</div>
         <div id="liveClockDisplay" class="text-2xl font-black mt-0.5">현재 시각 확인 중...</div>
       </div>
       <span class="bg-green-500 text-white text-xs font-black px-3 py-1.5 rounded-full">자동알림 켜짐</span>
     </div>
 
-    <!-- ★ 신규 핵심 기능: 진짜 손녀/가족의 귀여운 육성 목소리를 직접 녹음해서 알람으로 쓰기! -->
-    <div class="bg-gradient-to-br from-rose-500 via-pink-500 to-amber-500 text-white rounded-3xl p-5 shadow-xl space-y-3.5">
+    <!-- 병원 다녀와서 말로 녹음하기 -->
+    <div class="bg-gradient-to-br from-[#233858] via-[#2b4263] to-[#1e3a5f] text-white rounded-3xl p-5 shadow-xl space-y-4 border-2 border-amber-400">
       <div class="flex items-center gap-3">
-        <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center text-3xl shadow shrink-0">🎤</div>
+        <div class="w-14 h-14 rounded-full bg-amber-300 flex items-center justify-center text-3xl shadow shrink-0">👧</div>
         <div>
-          <span class="inline-block bg-yellow-300 text-pink-950 text-xs font-black px-2 py-0.5 rounded-full">기계음 말고 진짜 귀여운 목소리로!</span>
-          <h2 class="text-2xl font-black">진짜 손녀 목소리 녹음하기</h2>
+          <span class="inline-block bg-amber-400 text-[#233858] text-xs font-black px-2 py-0.5 rounded-full">병원 다녀오셨나요? 말로 적어두세요!</span>
+          <h2 class="text-2xl font-black">병원 예약 녹음 & 효심이 알림</h2>
         </div>
       </div>
 
-      <p class="text-sm font-bold text-pink-50 leading-relaxed">
-        기계 목소리가 아쉬우실 땐 아래 버튼을 눌러 <strong>“할머니~ 약 드실 시간이에요 사랑해요!”</strong> 하고 귀여운 목소리로 직접 녹음해 보세요! 약 시간·병원 시간에 <strong>방금 녹음한 그 목소리</strong>가 그대로 울립니다!
+      <p class="text-base font-bold text-blue-100 leading-snug">
+        아래 <strong>[🎙️ 말로 병원 예약 녹음하기]</strong>를 누르고 <em>“오후 2시 서울내과, 건강보험증 챙기기”</em>처럼 말씀만 하시면 시간이 되었을 때 효심이가 똑부러지게 챙겨드려요!
       </p>
 
-      <div class="grid grid-cols-2 gap-2">
-        <button id="realVoiceRecBtn" onclick="toggleRealAudioRecording()" class="py-4 bg-yellow-300 text-pink-950 font-black text-lg rounded-2xl shadow-lg flex items-center justify-center gap-1.5 border-2 border-white">
-          <span>🔴</span> <span id="realVoiceRecLabel">진짜 목소리 녹음</span>
-        </button>
-        <button onclick="playSavedCustomVoice()" class="py-4 bg-white text-pink-900 font-black text-lg rounded-2xl shadow-lg flex items-center justify-center gap-1.5">
-          <span>▶️</span> <span>녹음된 목소리 듣기</span>
-        </button>
-      </div>
-      <div id="customVoiceBadge" class="hidden bg-white/90 text-pink-900 px-3 py-2 rounded-xl text-xs font-black text-center">
-        ✅ 진짜 육성 녹음 파일이 저장되었어요! 이제 알림 시간에 이 목소리가 함께 나옵니다!
-      </div>
-    </div>
-
-    <!-- 병원 다녀와서 말로 예약 일정 자동 적기 -->
-    <div class="bg-pink-100 border-2 border-pink-300 rounded-3xl p-4 space-y-3">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black text-pink-950">🏥 병원 다녀와서 말로 예약 적어두기</h3>
-      </div>
-      <button id="recordHospBtn" onclick="startVoiceHospitalRecord()" class="w-full py-4 bg-pink-600 text-white font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
-        🎙️ 눌러서 병원 날짜·시간 말하기
+      <button id="recordHospBtn" onclick="startVoiceHospitalRecord()" class="w-full py-5 bg-amber-400 text-[#233858] font-black text-2xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white">
+        🎙️ 말로 병원 예약 녹음하기
       </button>
-      <div id="recordedResultBox" class="hidden bg-white text-gray-900 rounded-2xl p-3">
-        <div class="text-xs font-black text-pink-600">✅ 방금 말씀하신 예약 내용:</div>
-        <p id="recordedTextPreview" class="text-base font-black text-gray-900"></p>
+
+      <div id="recordedResultBox" class="hidden bg-white text-gray-900 rounded-2xl p-4 space-y-2">
+        <div class="text-xs font-black text-[#233858]">✅ 방금 녹음된 예약 내용:</div>
+        <p id="recordedTextPreview" class="text-lg font-black text-gray-900"></p>
       </div>
     </div>
 
     <!-- 약 먹을 시간 / 병원 시간 맞춰두기 -->
     <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-3 shadow-sm">
       <h3 class="text-xl font-black text-[#233858]">💊 약 먹을 시간 · 병원 시간 맞춰두기</h3>
+      <p class="text-sm font-bold text-gray-600">시간을 맞춰두면 <strong>그 시간이 딱 되었을 때 기계음 알람 대신 똑부러진 손녀 효심이 목소리가 자동으로 울립니다!</strong></p>
+
       <div class="grid grid-cols-2 gap-2">
-        <button id="typeBtnMed" onclick="selectScheduleType('약 먹는 시간')" class="py-2.5 rounded-xl font-black text-base bg-pink-600 text-white">💊 약 먹는 시간 (매일)</button>
+        <button id="typeBtnMed" onclick="selectScheduleType('약 먹는 시간')" class="py-2.5 rounded-xl font-black text-base bg-[#233858] text-white">💊 약 먹는 시간 (매일)</button>
         <button id="typeBtnHosp" onclick="selectScheduleType('병원 가는 날')" class="py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700">🏥 병원 가는 날</button>
       </div>
 
@@ -274,26 +250,26 @@
 
       <div class="space-y-1">
         <label class="text-sm font-extrabold text-gray-700">알려줄 시간 선택</label>
-        <input id="inSchedClock" type="time" value="14:00" class="w-full p-3 text-2xl border-2 border-pink-400 bg-pink-50 rounded-xl font-black text-pink-900">
+        <input id="inSchedClock" type="time" value="14:00" class="w-full p-3 text-2xl border-2 border-[#233858] bg-amber-50 rounded-xl font-black text-[#233858]">
       </div>
 
       <input id="inSchedPlace" type="text" placeholder="무슨 약 / 어느 병원인가요? (예: 아침 혈압약, 서울내과)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
       <input id="inSchedItems" type="text" placeholder="꼭 챙길 것 (예: 식후 미지근한 물 한 컵 / 건강보험증)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
 
       <button onclick="addGrandSchedule()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">
-        ⏰ 이 시간에 손녀 목소리 예약하기
+        ⏰ 이 시간에 효심이 알림 예약하기
       </button>
     </div>
 
-    <div class="bg-pink-50 border-2 border-pink-300 rounded-3xl p-4 space-y-2">
-      <div class="text-xs font-black text-pink-700">👧 꼬마 손녀 효심이가 이렇게 재롱부리며 말해요:</div>
+    <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-4 space-y-2">
+      <div class="text-xs font-black text-[#233858]">👧 똑순이 손녀 효심이가 이렇게 챙겨드려요:</div>
       <p id="grandLiveSpeechBubble" class="text-lg font-extrabold text-gray-900 leading-relaxed">
-        “할머니이! 효심이 왔어요오! 지금 약 챙겨 드실 시간이에요! 밥은 맛있게 드셨어요? 미지근한 물 한 컵이랑 약 꼬박꼬박 드시고 우리 할머니 백살까지 건강하셔야 해요오! 사랑해요 쪽쪽!”
+        “할머니, 똑순이 손녀 효심이예요! 지금 아침 혈압약 챙겨 드실 시간이에요. 식사는 든든하게 하셨나요? 빈속에 드시지 마시고, 꼭 미지근한 물 한 컵과 함께 제시간에 챙겨 드세요. 늘 건강하셔야 해요!”
       </p>
     </div>
 
     <div class="space-y-2.5">
-      <h3 class="text-lg font-black text-[#233858] px-1">📋 예약된 손녀 알림 목록 ([👧🔊 듣기]를 누르면 바로 말해요)</h3>
+      <h3 class="text-lg font-black text-[#233858] px-1">📋 예약된 효심이 알림 목록 ([👧🔊 듣기]를 누르면 바로 말해요)</h3>
       <div id="grandScheduleList" class="space-y-2.5"></div>
     </div>
   </section>
@@ -320,14 +296,14 @@
       </div>
       <div id="kioskScreenBody" class="p-4 min-h-[250px]"></div>
       <div class="bg-[#eef6f2] border-t-2 border-emerald-700 p-4">
-        <div class="text-xs font-black text-emerald-800 mb-1">👧 옆에서 손녀가 알려 드려요</div>
-        <p id="kioskCoachText" class="text-xl font-black text-gray-900">‘아메리카노’를 눌러요.</p>
+        <div class="text-xs font-black text-emerald-800 mb-1">👧 옆에서 손녀 효심이가 알려 드려요</div>
+        <p id="kioskCoachText" class="text-xl font-black text-gray-900">‘아메리카노’를 눌러보세요.</p>
       </div>
     </div>
 
     <div id="kioskSuccessCard" class="hidden bg-white rounded-3xl p-6 border-4 border-[#115e46] shadow-xl space-y-3 text-center">
       <h3 class="text-3xl font-black text-gray-900">미션 성공! ⭐⭐⭐</h3>
-      <p class="text-lg font-black text-[#115e46]">헷갈린 곳 없이 참 잘하셨어요!</p>
+      <p class="text-lg font-black text-[#115e46]">헷갈린 곳 없이 단번에 성공하셨어요!</p>
       <button onclick="resetKioskMission()" class="w-full py-3.5 bg-[#115e46] text-white font-black text-lg rounded-2xl">다시 연습하기</button>
     </div>
   </section>
@@ -339,8 +315,8 @@
         <h3 class="text-xl font-black">문자나 약 이름을 붙여 넣어 주세요</h3>
         <button onclick="closePasteModal()" class="font-black underline">닫기</button>
       </div>
-      <textarea id="pasteTextarea" rows="5" class="w-full p-3 rounded-2xl border-2 border-[#233858] bg-white text-base font-bold" placeholder="궁금한 문자 내용이나 약병에 적힌 글자를 적어주시면 손녀가 어디에 쓰는 건지 쉽게 알려드려요."></textarea>
-      <button onclick="analyzePastedText()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">손녀에게 물어보기</button>
+      <textarea id="pasteTextarea" rows="5" class="w-full p-3 rounded-2xl border-2 border-[#233858] bg-white text-base font-bold" placeholder="궁금한 문자 내용이나 약병에 적힌 글자를 적어주시면 손녀 효심이가 어디에 쓰는 건지 야무지게 알려드려요."></textarea>
+      <button onclick="analyzePastedText()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">효심이에게 물어보기</button>
     </div>
   </div>
 
@@ -359,7 +335,7 @@
   <div class="fixed bottom-0 left-0 right-0 bg-[#233858] border-t-4 border-amber-400 px-3 py-2.5 z-40">
     <div class="max-w-md mx-auto flex items-center gap-2">
       <button onclick="forceSpeakCurrentResult()" class="flex-1 py-3 bg-[#fbe5b5] text-[#233858] font-black text-lg rounded-2xl shadow flex items-center justify-center gap-1.5">
-        <span>👧🔊</span> <span>손녀 목소리 듣기</span>
+        <span>👧🔊</span> <span>효심이 목소리 듣기</span>
       </button>
       <button onclick="stopAllVoice()" class="px-4 py-3 bg-rose-600 text-white font-black text-base rounded-2xl">🔇 멈춤</button>
     </div>
@@ -367,52 +343,24 @@
 
   <script>
     // =========================================================================
-    // 1. 🎀 앙증맞은 꼬마 손녀 톤 변환기 (Pitch 1.55 + 애교 억양 자동 변환 + 실제 육성 녹음 지원)
+    // 1. 똑부러지고 야무진 '똑순이 손녀 효심이' 음성(TTS) 엔진
+    //    - 어색한 '헤헤', '~요오', '쪽' 완전 제거!
+    //    - 귀에 쏙쏙 들어오는 명랑하고 또렷한 발성 (Pitch 1.12, Rate 0.96)
     // =========================================================================
     let currentHonorific = '할머니';
-    let voiceToneMode = 'cute'; // 'cute' (앙증맞은 꼬마손녀: pitch 1.55, rate 1.1) | 'bright' (다정한 소녀손녀: pitch 1.35, rate 1.0)
-    let lastSpokenText = '할머니이! 귀염둥이 막내 손녀 효심이 왔어요오! 궁금한 약병이나 서류를 찍으시면 제가 어디에 쓰는 건지 재롱잔치하듯 똑부러지게 읽어드릴게요오! 사랑해요 쪽쪽!';
+    let lastSpokenText = '할머니, 똑순이 손녀 효심이예요! 궁금한 약병이나 서류를 찍으시면, 이게 어디에 쓰는 건지 제가 옆에서 하나하나 야무지고 알기 쉽게 설명해 드릴게요!';
     let currentPurposeText = '';
     let cloudAudio = null;
 
-    function setVoiceTone(mode) {
-      voiceToneMode = mode;
-      const isCute = (mode === 'cute');
-      document.getElementById('toneBtnCute').className = isCute
-        ? 'px-2.5 py-1 rounded-lg text-xs font-black bg-pink-500 text-white shadow'
-        : 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-pink-800 border border-pink-200';
-      document.getElementById('toneBtnBright').className = !isCute
-        ? 'px-2.5 py-1 rounded-lg text-xs font-black bg-pink-500 text-white shadow'
-        : 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-pink-800 border border-pink-200';
-
-      if (isCute) {
-        speakGranddaughter(currentHonorific + '이! 귀염둥이 꼬마 손녀 효심이 목소리로 변신했어요오! 어때요, 훨씬 더 앙증맞고 귀엽죠오? 사랑해요 쪽쪽!');
-      } else {
-        speakGranddaughter(currentHonorific + '! 다정하고 상냥한 손녀 효심이 목소리예요! 귀에 쏙쏙 들어오게 읽어드릴게요!');
-      }
-    }
-
-    // ★ 기계적인 "헤헤", "~시죠?" 같은 딱딱한 표현을 아이 같은 애교 억양(모음 늘리기)으로 자동 변환!
-    function makeAegyoSpeech(raw) {
-      let s = String(raw || '')
+    // 어색한 기계 웃음소리 및 특수기호 완전 정리 + 자연스러운 호흡(쉼표) 부여
+    function cleanSmartGranddaughterSpeech(raw) {
+      return String(raw || '')
         .replace(/~/g, ', ')
         .replace(/[|=•·*#\-_<>\/\\]/g, ' ')
         .replace(/["'“”‘’\[\]()]/g, ' ')
-        .replace(/헤헤/g, '히히')
+        .replace(/헤헤|히히|쪽쪽|쪽/g, '')
         .replace(/\s+/g, ' ')
         .trim();
-
-      if (voiceToneMode === 'cute') {
-        s = s
-          .replace(/할머니!/g, '할머니이!')
-          .replace(/할아버지!/g, '할아버지이!')
-          .replace(/효심이예요!/g, '효심이 왔어요오!')
-          .replace(/일까요\?/g, '일까요오?')
-          .replace(/있어요\./g, '있어요오!')
-          .replace(/드세요\./g, '드세요오!')
-          .replace(/드릴게요\./g, '드릴게요오!');
-      }
-      return s;
     }
 
     function stopAllVoice() {
@@ -426,13 +374,13 @@
     }
 
     function speakGranddaughter(text) {
-      const clean = makeAegyoSpeech(text);
+      const clean = cleanSmartGranddaughterSpeech(text);
       if (!clean) return;
       lastSpokenText = clean;
 
       const banner = document.getElementById('voiceStatusBanner');
       const bannerTxt = document.getElementById('voiceBannerText');
-      bannerTxt.textContent = '👧🔊 꼬마손녀 효심이: “' + clean.slice(0, 25) + '...”';
+      bannerTxt.textContent = '👧🔊 똑순이 효심이: “' + clean.slice(0, 26) + '...”';
       banner.classList.remove('hidden');
 
       if ('speechSynthesis' in window) {
@@ -440,9 +388,9 @@
           window.speechSynthesis.cancel();
           const u = new SpeechSynthesisUtterance(clean);
           u.lang = 'ko-KR';
-          // ★ 핵심: 꼬마 손녀 모드일 때 Pitch를 1.55로 높이고 속도를 1.1로 경쾌하게 만들어 아나운서 느낌을 완전히 없앰!
-          u.pitch = (voiceToneMode === 'cute') ? 1.55 : 1.35;
-          u.rate = (voiceToneMode === 'cute') ? 1.08 : 0.98;
+          // ★ 억지스러운 변조 없이, 원래 성우 목소리가 가장 맑고 야무지게 들리는 황금 세팅!
+          u.pitch = 1.12;
+          u.rate = 0.96;
           u.onend = () => { banner.classList.add('hidden'); };
           u.onerror = () => { playSimpleCloudVoice(clean); };
           window.speechSynthesis.speak(u);
@@ -466,7 +414,7 @@
         }
         const q = encodeURIComponent(chunks[idx].trim());
         cloudAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob');
-        cloudAudio.playbackRate = (voiceToneMode === 'cute') ? 1.18 : 1.05;
+        cloudAudio.playbackRate = 1.02;
         cloudAudio.onended = () => { idx++; nextChunk(); };
         cloudAudio.onerror = () => { banner.classList.add('hidden'); };
         cloudAudio.play().catch(() => { banner.classList.add('hidden'); });
@@ -475,7 +423,7 @@
     }
 
     function testGranddaughterVoiceNow() {
-      speakGranddaughter(currentHonorific + '이! 귀염둥이 막내 손녀 효심이 왔어요오! 궁금한 약병이나 서류를 찍으시면 제가 어디에 쓰는 건지 재롱잔치하듯 똑부러지게 읽어드릴게요오! 우리 ' + currentHonorific + ' 제일 사랑해요 쪽쪽!');
+      speakGranddaughter(currentHonorific + ', 똑순이 손녀 효심이예요! 제 목소리 또렷하게 잘 들리시죠? 작은 글씨로 적힌 약병이나 어려운 병원 서류를 찍으시면, 제가 어디에 쓰는 건지 하나부터 열까지 야무지게 챙겨드릴게요!');
     }
 
     function forceSpeakCurrentResult() {
@@ -484,7 +432,7 @@
 
     function speakSpecificPart(part) {
       if (part === 'purpose' && currentPurposeText) {
-        speakGranddaughter(currentHonorific + '이! 이게 어디에 쓰는 건지 효심이가 딱 알려드릴게요오! ' + currentPurposeText);
+        speakGranddaughter(currentHonorific + ', 이게 어디에 쓰는 건지 핵심만 딱 짚어드릴게요! ' + currentPurposeText);
       } else {
         speakGranddaughter(lastSpokenText);
       }
@@ -495,71 +443,7 @@
       const isG = (title === '할머니');
       document.getElementById('callHalmeoni').className = isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
       document.getElementById('callHarabeoji').className = !isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
-      speakGranddaughter(title + '이! 귀염둥이 손녀 효심이 왔어요오! 이제부터 제가 ' + title + '라고 앙증맞게 불러드릴게요오! 사랑해요 쪽쪽!');
-    }
-
-    // =========================================================================
-    // 2. 🎤 진짜 육성(내 목소리 또는 아이 목소리) 직접 녹음기 (MediaRecorder)
-    // =========================================================================
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let isRecordingRealAudio = false;
-    let savedCustomVoiceBase64 = localStorage.getItem('HYO_CUSTOM_REAL_VOICE') || '';
-
-    if (savedCustomVoiceBase64) {
-      document.getElementById('customVoiceBadge').classList.remove('hidden');
-    }
-
-    async function toggleRealAudioRecording() {
-      const btn = document.getElementById('realVoiceRecBtn');
-      const label = document.getElementById('realVoiceRecLabel');
-
-      if (!isRecordingRealAudio) {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-          mediaRecorder = new MediaRecorder(stream);
-          audioChunks = [];
-          mediaRecorder.ondataavailable = (e) => {
-            if (e.data.size > 0) audioChunks.push(e.data);
-          };
-          mediaRecorder.onstop = () => {
-            const blob = new Blob(audioChunks, { type: 'audio/webm' });
-            const reader = new FileReader();
-            reader.onloadend = () => {
-              savedCustomVoiceBase64 = reader.result;
-              try { localStorage.setItem('HYO_CUSTOM_REAL_VOICE', savedCustomVoiceBase64); } catch (e) {}
-              document.getElementById('customVoiceBadge').classList.remove('hidden');
-              playSavedCustomVoice();
-            };
-            reader.readAsDataURL(blob);
-            stream.getTracks().forEach(t => t.stop());
-          };
-          mediaRecorder.start();
-          isRecordingRealAudio = true;
-          btn.className = 'py-4 bg-red-600 text-white font-black text-lg rounded-2xl shadow-lg flex items-center justify-center gap-1.5 border-2 border-white animate-pulse';
-          label.textContent = '⏹️ 녹음 끝내기 (클릭)';
-        } catch (err) {
-          alert('마이크 권한을 허용해 주시면 실제 귀여운 목소리를 직접 녹음해서 쓸 수 있어요!');
-        }
-      } else {
-        isRecordingRealAudio = false;
-        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-          mediaRecorder.stop();
-        }
-        btn.className = 'py-4 bg-yellow-300 text-pink-950 font-black text-lg rounded-2xl shadow-lg flex items-center justify-center gap-1.5 border-2 border-white';
-        label.textContent = '🔴 진짜 목소리 녹음';
-      }
-    }
-
-    function playSavedCustomVoice() {
-      if (!savedCustomVoiceBase64) {
-        alert('먼저 왼쪽의 [🔴 진짜 목소리 녹음] 버튼을 눌러 귀여운 목소리로 녹음해 보세요!');
-        return false;
-      }
-      stopAllVoice();
-      cloudAudio = new Audio(savedCustomVoiceBase64);
-      cloudAudio.play().catch(() => {});
-      return true;
+      speakGranddaughter(title + ', 똑순이 손녀 효심이예요! 이제부터 제가 ' + title + '께 무엇이든 알기 쉽고 야무지게 설명해 드릴게요!');
     }
 
     function switchMainTab(tab) {
@@ -580,7 +464,7 @@
     }
 
     // =========================================================================
-    // 3. 무제한 무료 클라우드 비전 AI + 정밀 의학·약학·택배 지식 사전
+    // 2. 무제한 무료 클라우드 비전 AI + 정밀 의학·약학·택배·보험 지식 사전
     // =========================================================================
     let currentResultData = null;
 
@@ -601,9 +485,9 @@
     }
 
     async function callFreeVisionAI(base64DataUrl) {
-      const systemInstruction = `당신은 대한민국 어르신을 돕는 7살 귀염둥이 손녀 AI '효심이'입니다.
+      const systemInstruction = `당신은 대한민국 어르신을 돕는 똑부러지고 예의 바르며 야무진 손녀 AI '효심이'입니다.
 사진 속 물건(둥근 약통, 영양제, 처방약, 병원 조직검사 결과지, 택배 운송장, 고지서, 보험 안내문 등)을 정확히 보고, 특히 약이나 건강기능식품이면 "이게 어디에 좋아서 먹는 건지(효능·용도)"와 "어떻게 먹는지"를 어르신이 단번에 이해할 수 있게 설명하세요.
-절대 깨진 기호나 물결표(~), "헤헤" 같은 어색한 글자를 쓰지 마세요.
+절대 깨진 기호나 물결표(~), "헤헤" 같은 어색한 추임새를 쓰지 마세요.
 반드시 아래 JSON 형식으로만 응답하세요:
 {
   "badge": "약·건강식품이에요 | 병원 검사 결과지예요 | 택배 운송장이에요 | 고지서·보험안내예요 | 의심되는 문자예요",
@@ -611,7 +495,7 @@
   "scamReasons": [],
   "heading": "무엇인지 한 줄 요약",
   "purpose": "이게 어디에 먹는 건지 / 무슨 용도인지 핵심 설명",
-  "grandSpeech": "귀여운 꼬마 손녀 효심이가 할머니/할아버지께 이게 어디에 좋은 약인지, 무슨 문서인지 애교 가득하고 또렷하게 설명하는 대본 (예: 할머니이! 효심이가 약통 읽어봤어요오! 이건 어디에 좋은 거냐면요...)",
+  "grandSpeech": "똑부러지고 다정한 손녀 효심이가 할머니/할아버지께 이게 어디에 좋은 약인지, 무슨 문서인지 귀에 쏙쏙 들어오게 야무지게 설명하는 대본 (예: 할머니, 손녀 효심이가 꼼꼼히 읽어봤어요. 이건 어디에 좋은 약이냐면요...)",
   "originalPreview": "사진에서 읽은 정확한 제품명·성분·핵심 글자만 깔끔하게 요약",
   "exactNumbers": [
     {"label": "항목명", "value": "사진 속 정확한 값"}
@@ -636,7 +520,7 @@
               {
                 role: 'user',
                 content: [
-                  { type: 'text', text: '이 사진이 무엇이고 어디에 먹는(쓰는) 것인지 어르신께 귀엽고 쉽게 설명해 주세요.' },
+                  { type: 'text', text: '이 사진이 무엇이고 어디에 먹는(쓰는) 것인지 어르신께 똑부러지고 알기 쉽게 설명해 주세요.' },
                   { type: 'image_url', image_url: { url: base64DataUrl } }
                 ]
               }
@@ -665,7 +549,7 @@
           isScam: false,
           heading: '체지방 관리와 신진대사를 돕는 ‘데이즈업 파라다이스 그레인’ 영양제예요.',
           purpose: '몸속 에너지 소비를 늘려 뱃살·체지방 감소에 도움을 주고, 혈액순환과 몸의 활력을 돋우기 위해 챙겨 먹는 식물성 씨앗 추출물 건강식품이에요.',
-          grandSpeech: '할머니이! 귀염둥이 효심이가 둥근 약통을 다 읽어봤어요오! 이건 병원 처방약이 아니라 데이즈업 파라다이스 그레인이라는 건강 영양제예요! 몸속 에너지를 태워서 뱃살이랑 체지방도 줄여주고 몸을 따뜻하고 활기차게 해주는 착한 영양제래요오! 한 통에 백이십 알이 들어있으니까 식사하시고 물 한 컵이랑 꼬박꼬박 챙겨 드세요오! 사랑해요 쪽쪽!',
+          grandSpeech: '할머니, 손녀 효심이가 이 약통을 꼼꼼히 확인해 봤어요. 이건 병원 처방약이 아니라, 데이즈업 파라다이스 그레인이라는 건강 영양제예요. 어디에 좋은 거냐면요, 생강과 식물 씨앗에서 뽑아낸 성분으로 몸속 에너지를 태워서 뱃살과 체지방을 줄여주고, 신진대사를 활발하게 해주는 데 도움을 주는 제품이에요. 한 통에 백이십 알이 들어있으니까, 식사하신 뒤에 미지근한 물 한 컵과 함께 하루 권장량만큼 챙겨 드시면 됩니다!',
           originalPreview: '제품명: 데이즈업 파라다이스 그레인 (DAYS UP Paradise Grain)\n주성분: 그레인 오브 파라다이스 씨앗 추출분말\n용량: 450mg × 120정 (총 54g)',
           exactNumbers: [
             { label: '제품 용도', value: '체지방 관리 · 신진대사 활력 영양제' },
@@ -675,7 +559,7 @@
             { orig: '그레인 오브 파라다이스 씨앗 추출분말', easy: '생강과에 속하는 식물 씨앗 성분으로, 몸을 따뜻하게 하고 체지방을 태우는 데 도움을 주는 원료예요.' },
             { orig: '450mg × 120정 (54g)', easy: '작은 알약 1개가 450밀리그램이고, 통 안에 모두 120알이 들어 있다는 뜻이에요.' }
           ],
-          actionGuide: '식사 후 충분한 물(미지근한 물 한 컵)과 함께 하루 권장량(보통 하루 1~2알)을 꾸준히 드세요.'
+          actionGuide: '식사 후 충분한 물(미지근한 물 한 컵)과 함께 하루 권장량(보통 하루 1~2알)을 꾸준히 드세요. 위가 약하시면 빈속에는 드시지 마세요.'
         };
       }
 
@@ -684,8 +568,8 @@
           badge: '보험 계약 안내문이에요',
           isScam: false,
           heading: '운전자 상해보험이 정상적으로 가입되었다는 안내 문자예요.',
-          purpose: '자동차 운전 중이나 일상에서 다쳤을 때 보장받기 위해 가입한 장기보험 계약 내용을 확인해 주는 정식 안내문이에요.',
-          grandSpeech: '할머니이! 효심이가 읽어봤어요오! 이건 참좋은운전자상해보험 계약이 잘 체결되었다고 알려주는 정식 안내 문자예요! 첫회 보험료는 이만 오천칠백삼십 원이고, 이천사십육년까지 든든하게 보장된다고 적혀 있어요오! 언제나 안전운전 하시고 건강하셔야 해요오!',
+          purpose: '자동차 운전 중이나 일상생활에서 다쳤을 때 보장받기 위해 가입한 장기보험 계약 내용을 확인해 주는 정식 안내문이에요.',
+          grandSpeech: '할머니, 효심이가 문자를 꼼꼼히 읽어봤어요. 이건 스미싱 문자가 아니라, 참좋은운전자상해보험 계약이 정상적으로 완료되었다고 알려주는 정식 안내 문자예요. 첫 달 보험료는 이만 오천칠백삼십 원이고, 이천사십육년 시월 이십구일까지 든든하게 보장된다고 적혀 있어요. 안심하시고 보관해 두시면 됩니다!',
           originalPreview: cleaned || '장기보험 계약 체결 안내 (참좋은운전자상해보험 / 초회보험료 25,730원)',
           exactNumbers: [
             { label: '상품명', value: '참좋은운전자상해보험' },
@@ -708,7 +592,7 @@
           isScam: false,
           heading: '택배로 서류나 물건을 보내고 받은 정식 ‘롯데택배 영수증(운송장)’이에요.',
           purpose: '택배가 잘 배달되고 있는지 위치(운송장 번호)를 조회하거나, 나중에 택배비 영수증으로 보관하기 위해 쓰는 종이예요.',
-          grandSpeech: '할머니이! 효심이가 읽어봤어요오! 이건 사기 문자가 아니라 진짜 롯데택배 영수증 종이예요! 택배가 어디쯤 가고 있는지 확인할 때 쓰는 번호가 적혀 있으니까, 택배가 잘 도착할 때까지 버리지 말고 챙겨두세요오!',
+          grandSpeech: '할머니, 효심이가 확인해 봤어요. 이건 위험한 문자가 아니라, 서류나 물건을 택배로 보내고 받으신 정식 롯데택배 영수증이에요. 택배가 어디쯤 가고 있는지 조회할 수 있는 운송장 번호가 적혀 있으니까, 물건이 잘 도착할 때까지 버리지 마시고 보관해 두세요!',
           originalPreview: cleaned || '롯데택배 운송장 영수증\n운송장번호: ' + trackNum + '\n접수일시: ' + dateStr,
           exactNumbers: [
             { label: '운송장 번호', value: trackNum },
@@ -719,7 +603,7 @@
             { orig: '운송장번호 (' + trackNum + ')', easy: '보내신 택배가 지금 어디쯤 가고 있는지 조회할 수 있는 고유 번호예요.' },
             { orig: '손해배상 한도액 안내', easy: '혹시 택배가 분실되었을 때 택배회사에서 보상해 주는 기준을 적어둔 안내문이에요.' }
           ],
-          actionGuide: '택배가 받는 분에게 무사히 도착할 때까지 이 영수증을 잘 보관해 두세요.'
+          actionGuide: '택배가 받는 분에게 무사히 도착할 때까지 이 영수증을 잘 보관해 두세요. 배송 문의는 1588-2121로 전화하시면 됩니다.'
         };
       }
 
@@ -729,7 +613,7 @@
           isScam: false,
           heading: '병원에서 조직을 정밀 검사한 ‘조직병리진단 결과지’예요.',
           purpose: '수술이나 검사로 떼어낸 몸속 조직(췌장 등)을 현미경으로 자세히 살펴보고, 크기와 절제 부위가 깨끗한지 의사 선생님이 기록한 공식 결과지예요.',
-          grandSpeech: '할머니이! 이건 약이 아니라 병원에서 정밀하게 검사한 조직병리진단 결과지예요오! 영어 의학 용어로 췌장 주변 조직의 크기와 수술로 잘라낸 끝부분이 아주 깨끗하다는 반가운 소견이 적혀 있어요! 진료 보실 때 의사 선생님께 꼭 보여드리고 설명을 들으세요오!',
+          grandSpeech: '할머니, 손녀 효심이가 이 병원 서류를 꼼꼼히 읽어봤어요. 이건 병원에서 조직을 정밀하게 검사한 조직병리진단 결과지예요. 어려운 영어 의학 용어로 적혀 있는데, 쉽게 말씀드리면 췌장 주변 조직의 크기를 정밀하게 측정했고 수술로 절제한 가장자리 끝부분에 나쁜 세포가 남아있지 않고 아주 깨끗하다는 소견이 적혀 있어요. 중요한 병원 서류니까 다음 진료 날 의사 선생님께 보여드리고 자세한 설명을 들으세요!',
           originalPreview: cleaned || '조직병리진단 결과 (Gross Description / Pancreas 정밀 병리 소견서)',
           exactNumbers: [
             { label: '문서 용도', value: '병원 정밀 조직검사 결과 확인용' },
@@ -748,7 +632,7 @@
         isScam: false,
         heading: '사진 속 글자를 읽고 용도와 사용법을 정리했어요.',
         purpose: cleaned ? ('사진에서 확인된 내용: ' + cleaned.slice(0, 90)) : '일상 건강 관리 또는 생활 안내를 위한 물품이에요.',
-        grandSpeech: '할머니이! 귀염둥이 손녀 효심이가 사진 속 글자를 깔끔하게 정리해서 읽어드릴게요오! ' + (cleaned ? cleaned.slice(0, 150) : '용기 겉면의 복용법과 유통기한을 꼭 확인하시고 물과 함께 챙겨 드세요오!'),
+        grandSpeech: '할머니, 똑순이 손녀 효심이가 사진 속 글자를 깔끔하게 정리해서 읽어드릴게요. ' + (cleaned ? cleaned.slice(0, 150) : '용기 겉면의 복용법과 유통기한을 꼭 확인하시고 미지근한 물과 함께 챙겨 드세요!'),
         originalPreview: cleaned || '사진 속 주요 한글·숫자 추출 완료',
         exactNumbers: [
           { label: '확인된 내용', value: cleaned ? cleaned.split('\n')[0].slice(0, 28) : '원본 사진 대조 완료' }
@@ -767,9 +651,9 @@
       document.getElementById('homeScreen').classList.add('hidden');
       document.getElementById('resultScreen').classList.add('hidden');
       document.getElementById('readingScreen').classList.remove('hidden');
-      document.getElementById('readingTitle').textContent = '손녀가 두 눈 크게 뜨고 읽고 있어요!';
+      document.getElementById('readingTitle').textContent = '효심이가 꼼꼼하게 확인하고 있어요';
 
-      speakGranddaughter(currentHonorific + '이! 효심이가 사진을 꼼꼼히 보고 이게 어디에 먹는 약인지, 무슨 서류인지 알아보고 있어요오! 조금만 기다려 주세요오!');
+      speakGranddaughter(currentHonorific + ', 효심이가 사진을 꼼꼼히 보고 이게 어디에 먹는 약인지, 무슨 서류인지 확인하고 있어요. 잠시만 기다려 주세요!');
 
       const reader = new FileReader();
       reader.onload = async (e) => {
@@ -830,8 +714,8 @@
       currentPurposeText = data.purpose || data.heading || '일상 건강 및 생활 안내용이에요.';
       document.getElementById('resPurposeBox').textContent = currentPurposeText;
 
-      const fullSpeech = (data.grandSpeech || (currentHonorific + '이! ' + data.heading + ' ' + currentPurposeText + ' ' + (data.actionGuide || '')));
-      lastSpokenText = makeAegyoSpeech(fullSpeech);
+      const fullSpeech = (data.grandSpeech || (currentHonorific + ', ' + data.heading + ' ' + currentPurposeText + ' ' + (data.actionGuide || '')));
+      lastSpokenText = cleanSmartGranddaughterSpeech(fullSpeech);
       document.getElementById('resGranddaughterTalk').textContent = '“' + lastSpokenText + '”';
       document.getElementById('resOriginalPreview').textContent = data.originalPreview || '핵심 내용 정리 완료';
 
@@ -874,7 +758,7 @@
       if (!currentResultData) return;
       const msg = '[찍어봐효 판독 결과]\n• 요약: ' + currentResultData.heading + '\n• 용도/효능: ' + (currentResultData.purpose || '') + '\n• 복용/처리법: ' + currentResultData.actionGuide;
       navigator.clipboard.writeText(msg);
-      speakGranddaughter(currentHonorific + '이! 가족에게 보낼 글을 복사했어요오!');
+      speakGranddaughter(currentHonorific + ', 가족에게 보낼 글을 깔끔하게 복사해 두었어요!');
       alert('가족에게 보낼 글이 복사되었습니다.');
     }
 
@@ -893,7 +777,7 @@
     }
 
     // =========================================================================
-    // 4. 👧 손녀 알림 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 자동 알림)
+    // 3. 👧 손녀 알림 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 자동 알림)
     // =========================================================================
     let selectedSchedType = '약 먹는 시간';
     const todayStr = new Date().toISOString().slice(0, 10);
@@ -911,8 +795,8 @@
     function selectScheduleType(t) {
       selectedSchedType = t;
       const isMed = (t === '약 먹는 시간');
-      document.getElementById('typeBtnMed').className = isMed ? 'py-2.5 rounded-xl font-black text-base bg-pink-600 text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
-      document.getElementById('typeBtnHosp').className = !isMed ? 'py-2.5 rounded-xl font-black text-base bg-pink-600 text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
+      document.getElementById('typeBtnMed').className = isMed ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
+      document.getElementById('typeBtnHosp').className = !isMed ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
       document.getElementById('datePickerRow').classList.toggle('hidden', isMed);
     }
 
@@ -927,33 +811,34 @@
       return ampm + ' ' + h + '시' + (m > 0 ? ' ' + m + '분' : '');
     }
 
+    // ★ 똑부러지고 야무진 손녀 효심이 대본
     function buildGrandScript(item) {
       const h = currentHonorific;
       const korTime = formatKoreanClock(item.clock);
       if (item.type === '병원 가는 날') {
-        return h + '이! 귀염둥이 손녀 효심이 왔어요오! 오늘은 ' + korTime + '에 ' + item.place + ' 가시는 날이에요! 가실 때 챙겨가실 ' + item.items + ', 지금 가방에 꼭꼭 넣으셨나요오? 옷 따뜻하게 입으시고 천천히 조심해서 다녀오세요오! 우리 ' + h + ' 제일 사랑해요 쪽쪽!';
+        return h + ', 똑순이 손녀 효심이예요! 오늘은 ' + korTime + '에 ' + item.place + ' 가시는 날이에요. 가실 때 꼭 챙기셔야 할 ' + item.items + ', 지금 가방 안에 잘 들어있는지 확인해 보셨나요? 잊으신 거 없는지 한 번만 더 점검하시고, 천천히 조심해서 다녀오세요!';
       }
-      return h + '이! 막내 손녀 효심이 왔어요오! 지금 ' + korTime + ', ' + item.place + ' 챙겨 드실 시간이에요! 밥은 맛있게 드셨어요? 약 그냥 드시지 마시고 꼭 ' + item.items + ' 잊지 마세요오! 약 꼬박꼬박 잘 드시고 백살까지 건강하셔야 해요오! 사랑해요 쪽쪽!';
+      return h + ', 똑순이 손녀 효심이예요! 지금 ' + korTime + ', ' + item.place + ' 챙겨 드실 시간이에요. 식사는 든든하게 하셨나요? 빈속에 드시지 마시고, 꼭 ' + item.items + ' 잊지 마세요. 약 제시간에 꼬박꼬박 잘 챙겨 드시고 늘 건강하셔야 해요!';
     }
 
     function startVoiceHospitalRecord() {
       const btn = document.getElementById('recordHospBtn');
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) {
-        speakGranddaughter(currentHonorific + '이! 아래 시간 선택 칸에서 시간을 맞추고 예약하기 버튼을 눌러주세요오!');
+        speakGranddaughter(currentHonorific + ', 아래 시간 선택 칸에서 시간을 맞추고 예약하기 버튼을 눌러주세요!');
         return;
       }
 
       const rec = new SR();
       rec.lang = 'ko-KR';
       btn.textContent = '🔴 듣고 있어요! 병원 날짜와 시간을 말씀하세요...';
-      btn.className = 'w-full py-4 bg-red-600 text-white font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2 animate-pulse';
+      btn.className = 'w-full py-5 bg-red-600 text-white font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white animate-pulse';
 
-      speakGranddaughter(currentHonorific + '이! 언제 어느 병원에 가시는지 말씀해 주시면 효심이가 기억해 두었다가 그 시간에 꼭 알려드릴게요오!');
+      speakGranddaughter(currentHonorific + ', 언제 어느 병원에 가시는지 말씀해 주시면, 효심이가 똑부러지게 적어두었다가 그 시간에 꼭 알려드릴게요!');
 
       setTimeout(() => {
         try { rec.start(); } catch (e) {}
-      }, 2800);
+      }, 3200);
 
       rec.onresult = (e) => {
         const spoken = e.results[0][0].transcript;
@@ -990,8 +875,8 @@
 
     function restoreRecordBtn() {
       const btn = document.getElementById('recordHospBtn');
-      btn.textContent = '🎙️ 눌러서 병원 날짜·시간 말하기';
-      btn.className = 'w-full py-4 bg-pink-600 text-white font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2';
+      btn.textContent = '🎙️ 말로 병원 예약 녹음하기';
+      btn.className = 'w-full py-5 bg-amber-400 text-[#233858] font-black text-2xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white';
     }
 
     function addGrandSchedule() {
@@ -1029,18 +914,18 @@
       box.innerHTML = '';
       grandSchedules.forEach((item, idx) => {
         const d = document.createElement('div');
-        d.className = 'bg-white rounded-2xl p-4 border-2 border-pink-200 flex items-center justify-between gap-2 shadow-sm';
+        d.className = 'bg-white rounded-2xl p-4 border-2 border-[#dfd7c6] flex items-center justify-between gap-2 shadow-sm';
         d.innerHTML = `
           <div class="space-y-0.5">
             <div class="flex items-center gap-1.5">
-              <span class="px-2 py-0.5 rounded-full text-xs font-black ${item.type === '병원 가는 날' ? 'bg-pink-100 text-pink-900' : 'bg-amber-100 text-amber-900'}">${item.type}</span>
-              <span class="text-sm font-black text-pink-700">${item.date} · ${formatKoreanClock(item.clock)}</span>
+              <span class="px-2 py-0.5 rounded-full text-xs font-black ${item.type === '병원 가는 날' ? 'bg-blue-100 text-[#233858]' : 'bg-amber-100 text-amber-900'}">${item.type}</span>
+              <span class="text-sm font-black text-[#233858]">${item.date} · ${formatKoreanClock(item.clock)}</span>
             </div>
             <h4 class="text-lg font-black text-gray-900">${item.place}</h4>
             <p class="text-xs font-bold text-gray-600">챙길 것: ${item.items}</p>
           </div>
           <div class="flex items-center gap-1 shrink-0">
-            <button onclick="playGrandItem(${idx})" class="bg-pink-500 text-white px-3.5 py-3 rounded-xl font-black text-sm shadow">👧🔊 듣기</button>
+            <button onclick="playGrandItem(${idx})" class="bg-[#233858] text-white px-3.5 py-3 rounded-xl font-black text-sm shadow">👧🔊 듣기</button>
             <button onclick="deleteSchedule(${idx})" class="px-2 py-2.5 text-gray-400 font-bold text-sm">✕</button>
           </div>
         `;
@@ -1054,16 +939,7 @@
       if (!item) return;
       const msg = buildGrandScript(item);
       document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
-
-      // 만약 사용자가 직접 녹음해 둔 진짜 귀여운 목소리가 있다면 먼저 들려주고 이어서 상세 일정 읽기!
-      if (savedCustomVoiceBase64) {
-        stopAllVoice();
-        cloudAudio = new Audio(savedCustomVoiceBase64);
-        cloudAudio.onended = () => { speakGranddaughter(msg); };
-        cloudAudio.play().catch(() => { speakGranddaughter(msg); });
-      } else {
-        speakGranddaughter(msg);
-      }
+      speakGranddaughter(msg);
     }
 
     setInterval(() => {
@@ -1096,7 +972,7 @@
       const title = document.getElementById('voiceCmdTitle');
       btn.className = 'w-full p-5 bg-[#f59e0b] text-gray-900 rounded-3xl shadow-lg flex items-center gap-3.5 text-left border-4 border-[#b45309]';
       title.textContent = '듣고 있어요. 말씀해 주세요';
-      speakGranddaughter('네 ' + currentHonorific + '이! 효심이가 듣고 있어요오! 사진 찍어줘 또는 병원 예약 녹음이라고 말씀해 주세요오!');
+      speakGranddaughter('네 ' + currentHonorific + ', 효심이가 듣고 있어요! 사진 찍어줘 또는 병원 예약 녹음이라고 말씀해 주세요.');
 
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SR) {
@@ -1129,16 +1005,16 @@
         name: '모닝커피',
         mission: '미션: 따뜻한 아메리카노 1잔을 포장으로 주문해 보세요.',
         steps: [
-          { heading: '메뉴 선택', coach: '아메리카노를 눌러요.', opts: [{ t: '아메리카노', p: '3,000원', i: '☕', ok: true }, { t: '카페라떼', p: '3,800원', i: '🥛', ok: false }] },
-          { heading: '포장 선택', coach: '포장하기를 눌러요.', opts: [{ t: '포장하기', p: '일회용컵', i: '🛍️', ok: true }, { t: '매장 식사', p: '머그컵', i: '🪑', ok: false }] }
+          { heading: '메뉴 선택', coach: '아메리카노 버튼을 눌러보세요.', opts: [{ t: '아메리카노', p: '3,000원', i: '☕', ok: true }, { t: '카페라떼', p: '3,800원', i: '🥛', ok: false }] },
+          { heading: '포장 선택', coach: '가지고 가실 거니까 포장하기를 눌러보세요.', opts: [{ t: '포장하기', p: '일회용컵', i: '🛍️', ok: true }, { t: '매장 식사', p: '머그컵', i: '🪑', ok: false }] }
         ]
       },
       bunsik: {
         name: '행복분식',
         mission: '미션: 떡볶이(순한 맛)를 먹고 가는 것으로 주문해 보세요.',
         steps: [
-          { heading: '메뉴 선택', coach: '떡볶이를 눌러요.', opts: [{ t: '떡볶이', p: '4,500원', i: '🌶️', ok: true }, { t: '김밥', p: '3,000원', i: '🍙', ok: false }] },
-          { heading: '식사 장소', coach: '먹고 가기를 눌러요.', opts: [{ t: '먹고 가기', p: '매장 식사', i: '🍽️', ok: true }, { t: '포장하기', p: '용기 포장', i: '🛍️', ok: false }] }
+          { heading: '메뉴 선택', coach: '떡볶이 버튼을 눌러보세요.', opts: [{ t: '떡볶이', p: '4,500원', i: '🌶️', ok: true }, { t: '김밥', p: '3,000원', i: '🍙', ok: false }] },
+          { heading: '식사 장소', coach: '가게에서 드실 거니까 먹고 가기를 눌러보세요.', opts: [{ t: '먹고 가기', p: '매장 식사', i: '🍽️', ok: true }, { t: '포장하기', p: '용기 포장', i: '🛍️', ok: false }] }
         ]
       }
     };
@@ -1172,14 +1048,14 @@
             if (kioskStepIdx + 1 < m.steps.length) {
               kioskStepIdx++;
               renderKioskStep();
-              speakGranddaughter(currentHonorific + '이! ' + m.steps[kioskStepIdx].coach);
+              speakGranddaughter(currentHonorific + ', 잘하셨어요! 다음은 ' + m.steps[kioskStepIdx].coach);
             } else {
               document.getElementById('kioskMachineBox').classList.add('hidden');
               document.getElementById('kioskSuccessCard').classList.remove('hidden');
-              speakGranddaughter('우와아! ' + currentHonorific + '이! 키오스크 미션 대성공이에요오! 최고예요 쪽쪽!');
+              speakGranddaughter(currentHonorific + ', 키오스크 주문 미션 대성공이에요! 헷갈리지 않고 정말 똑부러지게 잘하셨어요!');
             }
           } else {
-            speakGranddaughter(currentHonorific + '이, 반짝이는 여기예요 버튼을 눌러보세요오!');
+            speakGranddaughter(currentHonorific + ', 노란색으로 반짝이는 여기예요 버튼을 눌러보세요!');
           }
         };
         b.innerHTML = (o.ok ? '<span class="bg-amber-400 text-xs font-black px-2 py-0.5 rounded-full">여기예요</span>' : '') + '<span class="text-4xl">' + o.i + '</span><span class="text-lg font-black">' + o.t + '</span><span class="text-sm font-bold text-amber-800">' + o.p + '</span>';
