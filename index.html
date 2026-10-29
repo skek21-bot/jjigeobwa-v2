@@ -45,11 +45,18 @@
       </div>
     </div>
 
-    <!-- 3대 기능 탭 -->
+    <!-- 3대 기능 탭 (두 번째 탭을 누구나 알기 쉽게 '⏰ 약·병원 예약'으로 명시!) -->
     <div class="max-w-md mx-auto grid grid-cols-3 gap-1.5 mt-3 bg-[#e8dfd0] p-1.5 rounded-2xl">
-      <button id="navDoc" onclick="switchMainTab('doc')" class="py-2.5 rounded-xl font-black text-base bg-[#233858] text-white shadow">📷 찍고 읽기</button>
-      <button id="navGrand" onclick="switchMainTab('grand')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">👧 손녀 알림</button>
-      <button id="navKiosk" onclick="switchMainTab('kiosk')" class="py-2.5 rounded-xl font-extrabold text-base text-[#233858]">☕ 키오스크</button>
+      <button id="navDoc" onclick="switchMainTab('doc')" class="py-2.5 rounded-xl font-black text-sm bg-[#233858] text-white shadow">
+        📷 찍고 읽기
+      </button>
+      <button id="navGrand" onclick="switchMainTab('grand')" class="py-2.5 rounded-xl font-extrabold text-sm text-[#233858] relative">
+        ⏰ 약·병원 예약
+        <span id="schedCountBadge" class="ml-0.5 px-1.5 py-0.2 bg-rose-600 text-white text-xs rounded-full font-black">2</span>
+      </button>
+      <button id="navKiosk" onclick="switchMainTab('kiosk')" class="py-2.5 rounded-xl font-extrabold text-sm text-[#233858]">
+        ☕ 키오스크
+      </button>
     </div>
   </header>
 
@@ -60,7 +67,7 @@
   </div>
 
   <!-- =================================================================== -->
-  <!-- [탭 1] 둥근 약병 · 택배 송장 · 병원 결과지 무엇이든 찍으면 효능과 용도를 야무지게 설명 -->
+  <!-- [탭 1] 첫 화면(홈): 사진 찍기 + 한눈에 보이는 약·병원 목소리 예약 현황판 -->
   <!-- =================================================================== -->
   <main id="tabContentDoc" class="max-w-md mx-auto px-4 pt-4 space-y-4">
 
@@ -68,10 +75,10 @@
       <div class="text-center py-1">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e3efe9] text-[#233858] text-4xl font-black mb-1 shadow-sm">👧</div>
         <h1 class="text-4xl font-black text-[#233858]">찍어봐효🧡</h1>
-        <p class="text-xl font-bold text-gray-700 mt-1">약병·서류·택배 무엇이든 찍으시면<br>똑순이 손녀가 야무지게 알려드려요!</p>
+        <p class="text-xl font-bold text-gray-700 mt-1">약병·서류 무엇이든 찍으시면 읽어드리고<br>약 시간·병원 가는 날도 목소리로 챙겨드려요!</p>
       </div>
 
-      <!-- 소리 테스트 버튼 (똑부러지고 야무진 손녀 버전) -->
+      <!-- 소리 테스트 버튼 -->
       <button onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-amber-100 hover:bg-amber-200 text-[#233858] font-black text-lg rounded-2xl border-2 border-amber-300 shadow-sm flex items-center justify-center gap-2">
         <span>👧🔊</span> <span>똑순이 손녀 효심이 목소리 들어보기 (터치!)</span>
       </button>
@@ -80,7 +87,7 @@
       <input type="file" id="galleryFileInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
 
       <!-- 사진 찍기 왕버튼 -->
-      <button onclick="document.getElementById('cameraFileInput').click()" class="w-full py-8 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
+      <button onclick="document.getElementById('cameraFileInput').click()" class="w-full py-7 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
         <span class="text-5xl">📷</span>
         <span class="text-3xl font-black">사진 찍기</span>
         <span class="text-base text-blue-100 font-bold">둥근 약통(효능 설명) · 병원 검사지 · 택배 송장 · 고지서</span>
@@ -88,14 +95,42 @@
 
       <!-- 사진 선택 & 문자 붙여넣기 -->
       <div class="grid grid-cols-2 gap-3">
-        <button onclick="document.getElementById('galleryFileInput').click()" class="py-6 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
+        <button onclick="document.getElementById('galleryFileInput').click()" class="py-5 mint-card rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#bfe3d6]">
           <span class="text-3xl">🖼️</span>
           <span class="text-2xl font-black">사진 선택</span>
         </button>
-        <button onclick="openPasteModal()" class="py-6 bg-white text-[#233858] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#dfd7c6]">
+        <button onclick="openPasteModal()" class="py-5 bg-white text-[#233858] rounded-3xl shadow-sm flex flex-col items-center justify-center gap-1.5 border-2 border-[#dfd7c6]">
           <span class="text-3xl">💬</span>
           <span class="text-2xl font-black">문자 붙여넣기</span>
         </button>
+      </div>
+
+      <!-- ★ 새로 추가된 핵심 카드: 첫 화면에서 바로 보이고 바로 누르는 [약 먹는 시간 · 병원 가는 날 효심이 음성 예약] 섹션! -->
+      <div class="bg-white rounded-3xl p-5 border-4 border-rose-400 shadow-lg space-y-3.5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">⏰</span>
+            <h2 class="text-xl font-black text-rose-900">약 시간 · 병원 가는 날 예약</h2>
+          </div>
+          <span class="bg-rose-100 text-rose-800 text-xs font-black px-2.5 py-1 rounded-full">효심이 음성알림</span>
+        </div>
+
+        <p class="text-base font-bold text-gray-700 leading-snug">
+          시간이 되면 시끄러운 기계음 대신 손녀 효심이가 <strong>“<span class="honorificText">할머니</span>, 약 드실 시간이에요! 병원 가실 시간이에요!”</strong> 하고 목소리로 알려드려요.
+        </p>
+
+        <!-- 현재 예약된 약/병원 목록을 첫 화면에서 바로 보여주고 [소리 들어보기] 제공 -->
+        <div id="homeSchedulePreviewList" class="space-y-2"></div>
+
+        <!-- 첫 화면에서 바로 예약하거나 말로 녹음하는 2대 버튼 -->
+        <div class="grid grid-cols-1 gap-2 pt-1">
+          <button onclick="switchMainTab('grand'); startVoiceHospitalRecord();" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
+            <span>🎙️</span> <span>말로 병원·약 시간 녹음 예약하기</span>
+          </button>
+          <button onclick="switchMainTab('grand')" class="w-full py-3.5 bg-rose-50 hover:bg-rose-100 text-rose-900 border-2 border-rose-300 font-black text-lg rounded-2xl flex items-center justify-center gap-2">
+            <span>💊🏥</span> <span>약 먹는 시간 · 병원 날짜 직접 맞추기 ›</span>
+          </button>
+        </div>
       </div>
 
       <!-- 말로 시키기 버튼 -->
@@ -153,6 +188,20 @@
         <p id="resPurposeBox" class="text-2xl font-black text-gray-900 leading-snug"></p>
       </div>
 
+      <!-- ★ 결과 화면에서 바로 약 먹는 시간 / 병원 날짜 예약으로 넘기는 원클릭 연동 박스! -->
+      <div class="bg-rose-50 border-3 border-rose-400 rounded-3xl p-5 space-y-3 shadow-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">⏰</span>
+          <h3 class="text-xl font-black text-rose-900">이 약 먹는 시간 · 병원 날짜 예약할까요?</h3>
+        </div>
+        <p class="text-base font-bold text-gray-700">
+          잊어버리지 않도록 시간을 예약해 두시면, 정해진 시간에 효심이가 목소리로 살갑게 챙겨드려요!
+        </p>
+        <button onclick="openScheduleFromScannedResult()" class="w-full py-4 bg-rose-600 text-white font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
+          <span>👧⏰</span> <span>네! 효심이 목소리 알림으로 예약하기</span>
+        </button>
+      </div>
+
       <!-- 의심 문자 빨간 박스 -->
       <div id="scamWarningBox" class="hidden bg-[#fff1f0] border-2 border-red-600 rounded-3xl p-5 space-y-2.5 text-gray-900 shadow">
         <h3 class="text-2xl font-black text-red-800">⚠️ 위험해 보여요</h3>
@@ -197,7 +246,7 @@
   </main>
 
   <!-- =================================================================== -->
-  <!-- [탭 2] 👧 손녀 알림 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 알림) -->
+  <!-- [탭 2] ⏰ 약·병원 예약 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 알림) -->
   <!-- =================================================================== -->
   <section id="tabContentGrand" class="hidden max-w-md mx-auto px-4 pt-4 space-y-5">
 
@@ -209,22 +258,34 @@
       <span class="bg-green-500 text-white text-xs font-black px-3 py-1.5 rounded-full">자동알림 켜짐</span>
     </div>
 
+    <!-- 원클릭 예시 음성 바로 들어보기 버튼 2종 -->
+    <div class="grid grid-cols-2 gap-2.5">
+      <button onclick="playGrandItem(0)" class="p-4 bg-amber-100 hover:bg-amber-200 text-[#233858] rounded-2xl border-2 border-amber-400 font-black text-base shadow-sm flex flex-col items-center gap-1">
+        <span class="text-2xl">💊🔊</span>
+        <span>약 시간 효심이 소리 듣기</span>
+      </button>
+      <button onclick="playGrandItem(1)" class="p-4 bg-rose-100 hover:bg-rose-200 text-rose-950 rounded-2xl border-2 border-rose-300 font-black text-base shadow-sm flex flex-col items-center gap-1">
+        <span class="text-2xl">🏥🔊</span>
+        <span>병원 날 효심이 소리 듣기</span>
+      </button>
+    </div>
+
     <!-- 병원 다녀와서 말로 녹음하기 -->
     <div class="bg-gradient-to-br from-[#233858] via-[#2b4263] to-[#1e3a5f] text-white rounded-3xl p-5 shadow-xl space-y-4 border-2 border-amber-400">
       <div class="flex items-center gap-3">
         <div class="w-14 h-14 rounded-full bg-amber-300 flex items-center justify-center text-3xl shadow shrink-0">👧</div>
         <div>
-          <span class="inline-block bg-amber-400 text-[#233858] text-xs font-black px-2 py-0.5 rounded-full">병원 다녀오셨나요? 말로 적어두세요!</span>
-          <h2 class="text-2xl font-black">병원 예약 녹음 & 효심이 알림</h2>
+          <span class="inline-block bg-amber-400 text-[#233858] text-xs font-black px-2 py-0.5 rounded-full">글씨 쓰기 힘드실 때 말로 예약하세요!</span>
+          <h2 class="text-2xl font-black">말로 약·병원 예약 녹음하기</h2>
         </div>
       </div>
 
       <p class="text-base font-bold text-blue-100 leading-snug">
-        아래 <strong>[🎙️ 말로 병원 예약 녹음하기]</strong>를 누르고 <em>“오후 2시 서울내과, 건강보험증 챙기기”</em>처럼 말씀만 하시면 시간이 되었을 때 효심이가 똑부러지게 챙겨드려요!
+        아래 노란 버튼을 누르고 <em>“오후 2시 서울내과, 건강보험증 챙기기”</em> 또는 <em>“저녁 7시 혈압약 먹기”</em>처럼 말씀만 하시면 효심이가 기억해 두었다가 시간에 맞춰 알려드려요!
       </p>
 
       <button id="recordHospBtn" onclick="startVoiceHospitalRecord()" class="w-full py-5 bg-amber-400 text-[#233858] font-black text-2xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white">
-        🎙️ 말로 병원 예약 녹음하기
+        🎙️ 눌러서 약·병원 시간 말하기
       </button>
 
       <div id="recordedResultBox" class="hidden bg-white text-gray-900 rounded-2xl p-4 space-y-2">
@@ -233,14 +294,14 @@
       </div>
     </div>
 
-    <!-- 약 먹을 시간 / 병원 시간 맞춰두기 -->
-    <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-3 shadow-sm">
-      <h3 class="text-xl font-black text-[#233858]">💊 약 먹을 시간 · 병원 시간 맞춰두기</h3>
+    <!-- 약 먹을 시간 / 병원 시간 직접 맞춰두기 (보호자·어르신 공용) -->
+    <div id="manualScheduleFormBox" class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-3 shadow-sm">
+      <h3 class="text-xl font-black text-[#233858]">💊 약 먹을 시간 · 🏥 병원 가는 날 직접 예약</h3>
       <p class="text-sm font-bold text-gray-600">시간을 맞춰두면 <strong>그 시간이 딱 되었을 때 기계음 알람 대신 똑부러진 손녀 효심이 목소리가 자동으로 울립니다!</strong></p>
 
       <div class="grid grid-cols-2 gap-2">
-        <button id="typeBtnMed" onclick="selectScheduleType('약 먹는 시간')" class="py-2.5 rounded-xl font-black text-base bg-[#233858] text-white">💊 약 먹는 시간 (매일)</button>
-        <button id="typeBtnHosp" onclick="selectScheduleType('병원 가는 날')" class="py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700">🏥 병원 가는 날</button>
+        <button id="typeBtnMed" onclick="selectScheduleType('약 먹는 시간')" class="py-3 rounded-xl font-black text-base bg-[#233858] text-white shadow">💊 약 먹는 시간 (매일)</button>
+        <button id="typeBtnHosp" onclick="selectScheduleType('병원 가는 날')" class="py-3 rounded-xl font-bold text-base bg-gray-100 text-gray-700">🏥 병원 가는 날</button>
       </div>
 
       <div id="datePickerRow" class="hidden space-y-1">
@@ -249,20 +310,20 @@
       </div>
 
       <div class="space-y-1">
-        <label class="text-sm font-extrabold text-gray-700">알려줄 시간 선택</label>
+        <label class="text-sm font-extrabold text-gray-700">효심이가 알려줄 시간 선택</label>
         <input id="inSchedClock" type="time" value="14:00" class="w-full p-3 text-2xl border-2 border-[#233858] bg-amber-50 rounded-xl font-black text-[#233858]">
       </div>
 
       <input id="inSchedPlace" type="text" placeholder="무슨 약 / 어느 병원인가요? (예: 아침 혈압약, 서울내과)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
       <input id="inSchedItems" type="text" placeholder="꼭 챙길 것 (예: 식후 미지근한 물 한 컵 / 건강보험증)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
 
-      <button onclick="addGrandSchedule()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">
-        ⏰ 이 시간에 효심이 알림 예약하기
+      <button onclick="addGrandSchedule()" class="w-full py-4 bg-rose-600 text-white font-black text-xl rounded-2xl shadow">
+        ⏰ 이 시간에 효심이 목소리 예약 저장하기
       </button>
     </div>
 
     <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-4 space-y-2">
-      <div class="text-xs font-black text-[#233858]">👧 똑순이 손녀 효심이가 이렇게 챙겨드려요:</div>
+      <div class="text-xs font-black text-[#233858]">👧 예약된 시간이 되면 효심이가 이렇게 말해요:</div>
       <p id="grandLiveSpeechBubble" class="text-lg font-extrabold text-gray-900 leading-relaxed">
         “할머니, 똑순이 손녀 효심이예요! 지금 아침 혈압약 챙겨 드실 시간이에요. 식사는 든든하게 하셨나요? 빈속에 드시지 마시고, 꼭 미지근한 물 한 컵과 함께 제시간에 챙겨 드세요. 늘 건강하셔야 해요!”
       </p>
@@ -324,745 +385,4 @@
   <div id="guideModal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
     <div class="bg-[#fbf7ee] rounded-3xl max-w-md w-full p-5 space-y-3 border-4 border-[#233858]">
       <h3 class="text-2xl font-black">수상한 문자, 이렇게 찍어요</h3>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">갤럭시 캡처:</strong><p class="font-black text-base">전원 버튼 + 소리 줄임(-) 버튼을 동시에 짧게 눌러요.</p></div>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">아이폰 캡처:</strong><p class="font-black text-base">옆 버튼 + 소리 키움(+) 버튼을 동시에 눌렀다 떼세요.</p></div>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">다른 폰으로 찍기:</strong><p class="font-black text-base">가족 폰이나 카메라로 문자 화면을 찍어서 올리면 돼요.</p></div>
-      <button onclick="closeGuideModal()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">확인했어요</button>
-    </div>
-  </div>
-
-  <!-- 하단 고정 음성 바 -->
-  <div class="fixed bottom-0 left-0 right-0 bg-[#233858] border-t-4 border-amber-400 px-3 py-2.5 z-40">
-    <div class="max-w-md mx-auto flex items-center gap-2">
-      <button onclick="forceSpeakCurrentResult()" class="flex-1 py-3 bg-[#fbe5b5] text-[#233858] font-black text-lg rounded-2xl shadow flex items-center justify-center gap-1.5">
-        <span>👧🔊</span> <span>효심이 목소리 듣기</span>
-      </button>
-      <button onclick="stopAllVoice()" class="px-4 py-3 bg-rose-600 text-white font-black text-base rounded-2xl">🔇 멈춤</button>
-    </div>
-  </div>
-
-  <script>
-    // =========================================================================
-    // 1. 똑부러지고 야무진 '똑순이 손녀 효심이' 음성(TTS) 엔진
-    //    - 어색한 '헤헤', '~요오', '쪽' 완전 제거!
-    //    - 귀에 쏙쏙 들어오는 명랑하고 또렷한 발성 (Pitch 1.12, Rate 0.96)
-    // =========================================================================
-    let currentHonorific = '할머니';
-    let lastSpokenText = '할머니, 똑순이 손녀 효심이예요! 궁금한 약병이나 서류를 찍으시면, 이게 어디에 쓰는 건지 제가 옆에서 하나하나 야무지고 알기 쉽게 설명해 드릴게요!';
-    let currentPurposeText = '';
-    let cloudAudio = null;
-
-    // 어색한 기계 웃음소리 및 특수기호 완전 정리 + 자연스러운 호흡(쉼표) 부여
-    function cleanSmartGranddaughterSpeech(raw) {
-      return String(raw || '')
-        .replace(/~/g, ', ')
-        .replace(/[|=•·*#\-_<>\/\\]/g, ' ')
-        .replace(/["'“”‘’\[\]()]/g, ' ')
-        .replace(/헤헤|히히|쪽쪽|쪽/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-    }
-
-    function stopAllVoice() {
-      if ('speechSynthesis' in window) {
-        try { window.speechSynthesis.cancel(); } catch (e) {}
-      }
-      if (cloudAudio) {
-        try { cloudAudio.pause(); cloudAudio = null; } catch (e) {}
-      }
-      document.getElementById('voiceStatusBanner').classList.add('hidden');
-    }
-
-    function speakGranddaughter(text) {
-      const clean = cleanSmartGranddaughterSpeech(text);
-      if (!clean) return;
-      lastSpokenText = clean;
-
-      const banner = document.getElementById('voiceStatusBanner');
-      const bannerTxt = document.getElementById('voiceBannerText');
-      bannerTxt.textContent = '👧🔊 똑순이 효심이: “' + clean.slice(0, 26) + '...”';
-      banner.classList.remove('hidden');
-
-      if ('speechSynthesis' in window) {
-        try {
-          window.speechSynthesis.cancel();
-          const u = new SpeechSynthesisUtterance(clean);
-          u.lang = 'ko-KR';
-          // ★ 억지스러운 변조 없이, 원래 성우 목소리가 가장 맑고 야무지게 들리는 황금 세팅!
-          u.pitch = 1.12;
-          u.rate = 0.96;
-          u.onend = () => { banner.classList.add('hidden'); };
-          u.onerror = () => { playSimpleCloudVoice(clean); };
-          window.speechSynthesis.speak(u);
-          return;
-        } catch (e) {
-          playSimpleCloudVoice(clean);
-        }
-      } else {
-        playSimpleCloudVoice(clean);
-      }
-    }
-
-    function playSimpleCloudVoice(text) {
-      const chunks = text.match(/.{1,110}(\s|$|\.|!|,)/g) || [text.slice(0, 110)];
-      let idx = 0;
-      const banner = document.getElementById('voiceStatusBanner');
-      function nextChunk() {
-        if (idx >= chunks.length) {
-          banner.classList.add('hidden');
-          return;
-        }
-        const q = encodeURIComponent(chunks[idx].trim());
-        cloudAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob');
-        cloudAudio.playbackRate = 1.02;
-        cloudAudio.onended = () => { idx++; nextChunk(); };
-        cloudAudio.onerror = () => { banner.classList.add('hidden'); };
-        cloudAudio.play().catch(() => { banner.classList.add('hidden'); });
-      }
-      nextChunk();
-    }
-
-    function testGranddaughterVoiceNow() {
-      speakGranddaughter(currentHonorific + ', 똑순이 손녀 효심이예요! 제 목소리 또렷하게 잘 들리시죠? 작은 글씨로 적힌 약병이나 어려운 병원 서류를 찍으시면, 제가 어디에 쓰는 건지 하나부터 열까지 야무지게 챙겨드릴게요!');
-    }
-
-    function forceSpeakCurrentResult() {
-      speakGranddaughter(lastSpokenText);
-    }
-
-    function speakSpecificPart(part) {
-      if (part === 'purpose' && currentPurposeText) {
-        speakGranddaughter(currentHonorific + ', 이게 어디에 쓰는 건지 핵심만 딱 짚어드릴게요! ' + currentPurposeText);
-      } else {
-        speakGranddaughter(lastSpokenText);
-      }
-    }
-
-    function setHonorific(title) {
-      currentHonorific = title;
-      const isG = (title === '할머니');
-      document.getElementById('callHalmeoni').className = isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
-      document.getElementById('callHarabeoji').className = !isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
-      speakGranddaughter(title + ', 똑순이 손녀 효심이예요! 이제부터 제가 ' + title + '께 무엇이든 알기 쉽고 야무지게 설명해 드릴게요!');
-    }
-
-    function switchMainTab(tab) {
-      document.getElementById('tabContentDoc').classList.toggle('hidden', tab !== 'doc');
-      document.getElementById('tabContentGrand').classList.toggle('hidden', tab !== 'grand');
-      document.getElementById('tabContentKiosk').classList.toggle('hidden', tab !== 'kiosk');
-      document.getElementById('navDoc').className = (tab === 'doc') ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
-      document.getElementById('navGrand').className = (tab === 'grand') ? 'py-2.5 rounded-xl font-black text-base bg-pink-600 text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
-      document.getElementById('navKiosk').className = (tab === 'kiosk') ? 'py-2.5 rounded-xl font-black text-base bg-[#115e46] text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-base text-[#233858]';
-      if (tab === 'kiosk') renderKioskStep();
-    }
-
-    function resetToHome() {
-      stopAllVoice();
-      document.getElementById('readingScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.add('hidden');
-      document.getElementById('homeScreen').classList.remove('hidden');
-    }
-
-    // =========================================================================
-    // 2. 무제한 무료 클라우드 비전 AI + 정밀 의학·약학·택배·보험 지식 사전
-    // =========================================================================
-    let currentResultData = null;
-
-    function purifyOcrNoise(raw) {
-      if (!raw) return '';
-      const lines = raw.split('\n');
-      const cleanLines = [];
-      for (let line of lines) {
-        let s = line.replace(/[|~^=<>«»—_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
-        s = s.replace(/\b[a-zA-Z]{1,2}\b/g, '').replace(/\s+/g, ' ').trim();
-        const korCount = (s.match(/[가-힣]/g) || []).length;
-        const hasValidNum = /\d{2,4}[-\/.]\d{1,4}|\d+\s*(mg|g|정|원|시|분|월|일|층)/i.test(s);
-        if (korCount >= 2 || hasValidNum) {
-          cleanLines.push(s);
-        }
-      }
-      return cleanLines.join('\n').trim();
-    }
-
-    async function callFreeVisionAI(base64DataUrl) {
-      const systemInstruction = `당신은 대한민국 어르신을 돕는 똑부러지고 예의 바르며 야무진 손녀 AI '효심이'입니다.
-사진 속 물건(둥근 약통, 영양제, 처방약, 병원 조직검사 결과지, 택배 운송장, 고지서, 보험 안내문 등)을 정확히 보고, 특히 약이나 건강기능식품이면 "이게 어디에 좋아서 먹는 건지(효능·용도)"와 "어떻게 먹는지"를 어르신이 단번에 이해할 수 있게 설명하세요.
-절대 깨진 기호나 물결표(~), "헤헤" 같은 어색한 추임새를 쓰지 마세요.
-반드시 아래 JSON 형식으로만 응답하세요:
-{
-  "badge": "약·건강식품이에요 | 병원 검사 결과지예요 | 택배 운송장이에요 | 고지서·보험안내예요 | 의심되는 문자예요",
-  "isScam": false,
-  "scamReasons": [],
-  "heading": "무엇인지 한 줄 요약",
-  "purpose": "이게 어디에 먹는 건지 / 무슨 용도인지 핵심 설명",
-  "grandSpeech": "똑부러지고 다정한 손녀 효심이가 할머니/할아버지께 이게 어디에 좋은 약인지, 무슨 문서인지 귀에 쏙쏙 들어오게 야무지게 설명하는 대본 (예: 할머니, 손녀 효심이가 꼼꼼히 읽어봤어요. 이건 어디에 좋은 약이냐면요...)",
-  "originalPreview": "사진에서 읽은 정확한 제품명·성분·핵심 글자만 깔끔하게 요약",
-  "exactNumbers": [
-    {"label": "항목명", "value": "사진 속 정확한 값"}
-  ],
-  "easyList": [
-    {"orig": "사진 속 어려운 성분명·영어·의학용어", "easy": "어디에 좋은 성분인지 쉬운 말 풀이"}
-  ],
-  "actionGuide": "하루에 몇 알을 어떻게 드시면 되는지, 또는 어떻게 처리하면 되는지 안내"
-}`;
-
-      const ctrl = new AbortController();
-      const tid = setTimeout(() => ctrl.abort(), 11000);
-      try {
-        const res = await fetch('https://text.pollinations.ai/openai', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'openai',
-            response_format: { type: 'json_object' },
-            messages: [
-              { role: 'system', content: systemInstruction },
-              {
-                role: 'user',
-                content: [
-                  { type: 'text', text: '이 사진이 무엇이고 어디에 먹는(쓰는) 것인지 어르신께 똑부러지고 알기 쉽게 설명해 주세요.' },
-                  { type: 'image_url', image_url: { url: base64DataUrl } }
-                ]
-              }
-            ]
-          }),
-          signal: ctrl.signal
-        });
-        clearTimeout(tid);
-        if (!res.ok) throw new Error('Vision API HTTP ' + res.status);
-        const data = await res.json();
-        const rawContent = data.choices[0].message.content;
-        const jsonMatch = rawContent.match(/\{[\s\S]*\}/);
-        return JSON.parse(jsonMatch ? jsonMatch[0] : rawContent);
-      } finally {
-        clearTimeout(tid);
-      }
-    }
-
-    function analyzeTextWithMedicalKnowledge(rawOcrText) {
-      const cleaned = purifyOcrNoise(rawOcrText);
-      const lower = (rawOcrText || '').toLowerCase();
-
-      if (lower.includes('파라다이스') || lower.includes('그레인') || lower.includes('데이즈업') || lower.includes('days up') || lower.includes('씨앗') || lower.includes('추출분말') || lower.includes('450mg') || lower.includes('120정')) {
-        return {
-          badge: '건강기능식품·영양제예요',
-          isScam: false,
-          heading: '체지방 관리와 신진대사를 돕는 ‘데이즈업 파라다이스 그레인’ 영양제예요.',
-          purpose: '몸속 에너지 소비를 늘려 뱃살·체지방 감소에 도움을 주고, 혈액순환과 몸의 활력을 돋우기 위해 챙겨 먹는 식물성 씨앗 추출물 건강식품이에요.',
-          grandSpeech: '할머니, 손녀 효심이가 이 약통을 꼼꼼히 확인해 봤어요. 이건 병원 처방약이 아니라, 데이즈업 파라다이스 그레인이라는 건강 영양제예요. 어디에 좋은 거냐면요, 생강과 식물 씨앗에서 뽑아낸 성분으로 몸속 에너지를 태워서 뱃살과 체지방을 줄여주고, 신진대사를 활발하게 해주는 데 도움을 주는 제품이에요. 한 통에 백이십 알이 들어있으니까, 식사하신 뒤에 미지근한 물 한 컵과 함께 하루 권장량만큼 챙겨 드시면 됩니다!',
-          originalPreview: '제품명: 데이즈업 파라다이스 그레인 (DAYS UP Paradise Grain)\n주성분: 그레인 오브 파라다이스 씨앗 추출분말\n용량: 450mg × 120정 (총 54g)',
-          exactNumbers: [
-            { label: '제품 용도', value: '체지방 관리 · 신진대사 활력 영양제' },
-            { label: '내용량', value: '450mg × 120정 (총 54g)' }
-          ],
-          easyList: [
-            { orig: '그레인 오브 파라다이스 씨앗 추출분말', easy: '생강과에 속하는 식물 씨앗 성분으로, 몸을 따뜻하게 하고 체지방을 태우는 데 도움을 주는 원료예요.' },
-            { orig: '450mg × 120정 (54g)', easy: '작은 알약 1개가 450밀리그램이고, 통 안에 모두 120알이 들어 있다는 뜻이에요.' }
-          ],
-          actionGuide: '식사 후 충분한 물(미지근한 물 한 컵)과 함께 하루 권장량(보통 하루 1~2알)을 꾸준히 드세요. 위가 약하시면 빈속에는 드시지 마세요.'
-        };
-      }
-
-      if (lower.includes('보험') || lower.includes('운전자') || lower.includes('상해') || lower.includes('증권번호') || lower.includes('25,730')) {
-        return {
-          badge: '보험 계약 안내문이에요',
-          isScam: false,
-          heading: '운전자 상해보험이 정상적으로 가입되었다는 안내 문자예요.',
-          purpose: '자동차 운전 중이나 일상생활에서 다쳤을 때 보장받기 위해 가입한 장기보험 계약 내용을 확인해 주는 정식 안내문이에요.',
-          grandSpeech: '할머니, 효심이가 문자를 꼼꼼히 읽어봤어요. 이건 스미싱 문자가 아니라, 참좋은운전자상해보험 계약이 정상적으로 완료되었다고 알려주는 정식 안내 문자예요. 첫 달 보험료는 이만 오천칠백삼십 원이고, 이천사십육년 시월 이십구일까지 든든하게 보장된다고 적혀 있어요. 안심하시고 보관해 두시면 됩니다!',
-          originalPreview: cleaned || '장기보험 계약 체결 안내 (참좋은운전자상해보험 / 초회보험료 25,730원)',
-          exactNumbers: [
-            { label: '상품명', value: '참좋은운전자상해보험' },
-            { label: '초회보험료', value: '25,730원' },
-            { label: '보험기간', value: '2026.10.29 ~ 2046.10.29' }
-          ],
-          easyList: [
-            { orig: '장기보험 계약 체결 / 연만기', easy: '오랫동안(2046년까지) 든든하게 보장받는 보험 가입이 정상적으로 완료되었다는 뜻이에요.' },
-            { orig: '초회보험료 (25,730원)', easy: '보험에 가입하면서 첫 번째 달에 내는 보험료 금액이에요.' }
-          ],
-          actionGuide: '정상적으로 가입된 보험 안내 문자이니 안심하시고 보관해 두시면 됩니다.'
-        };
-      }
-
-      if (lower.includes('택배') || lower.includes('운송장') || lower.includes('받는분') || lower.includes('보내는분') || lower.includes('1588-2121') || lower.includes('덕절리')) {
-        const trackNum = (rawOcrText.match(/\d{4}-\d{4}-\d{4}/) || ['운송장 번호 확인 완료'])[0];
-        const dateStr = (rawOcrText.match(/202\d[\/.-]\d{1,2}[\/.-]\d{1,2}/) || ['접수일 확인 완료'])[0];
-        return {
-          badge: '택배 운송장이에요',
-          isScam: false,
-          heading: '택배로 서류나 물건을 보내고 받은 정식 ‘롯데택배 영수증(운송장)’이에요.',
-          purpose: '택배가 잘 배달되고 있는지 위치(운송장 번호)를 조회하거나, 나중에 택배비 영수증으로 보관하기 위해 쓰는 종이예요.',
-          grandSpeech: '할머니, 효심이가 확인해 봤어요. 이건 위험한 문자가 아니라, 서류나 물건을 택배로 보내고 받으신 정식 롯데택배 영수증이에요. 택배가 어디쯤 가고 있는지 조회할 수 있는 운송장 번호가 적혀 있으니까, 물건이 잘 도착할 때까지 버리지 마시고 보관해 두세요!',
-          originalPreview: cleaned || '롯데택배 운송장 영수증\n운송장번호: ' + trackNum + '\n접수일시: ' + dateStr,
-          exactNumbers: [
-            { label: '운송장 번호', value: trackNum },
-            { label: '접수일자', value: dateStr },
-            { label: '롯데택배 고객센터', value: '1588-2121' }
-          ],
-          easyList: [
-            { orig: '운송장번호 (' + trackNum + ')', easy: '보내신 택배가 지금 어디쯤 가고 있는지 조회할 수 있는 고유 번호예요.' },
-            { orig: '손해배상 한도액 안내', easy: '혹시 택배가 분실되었을 때 택배회사에서 보상해 주는 기준을 적어둔 안내문이에요.' }
-          ],
-          actionGuide: '택배가 받는 분에게 무사히 도착할 때까지 이 영수증을 잘 보관해 두세요. 배송 문의는 1588-2121로 전화하시면 됩니다.'
-        };
-      }
-
-      if (lower.includes('조직') || lower.includes('병리') || lower.includes('pancrea') || lower.includes('gross') || lower.includes('margin')) {
-        return {
-          badge: '병원 검사 결과지예요',
-          isScam: false,
-          heading: '병원에서 조직을 정밀 검사한 ‘조직병리진단 결과지’예요.',
-          purpose: '수술이나 검사로 떼어낸 몸속 조직(췌장 등)을 현미경으로 자세히 살펴보고, 크기와 절제 부위가 깨끗한지 의사 선생님이 기록한 공식 결과지예요.',
-          grandSpeech: '할머니, 손녀 효심이가 이 병원 서류를 꼼꼼히 읽어봤어요. 이건 병원에서 조직을 정밀하게 검사한 조직병리진단 결과지예요. 어려운 영어 의학 용어로 적혀 있는데, 쉽게 말씀드리면 췌장 주변 조직의 크기를 정밀하게 측정했고 수술로 절제한 가장자리 끝부분에 나쁜 세포가 남아있지 않고 아주 깨끗하다는 소견이 적혀 있어요. 중요한 병원 서류니까 다음 진료 날 의사 선생님께 보여드리고 자세한 설명을 들으세요!',
-          originalPreview: cleaned || '조직병리진단 결과 (Gross Description / Pancreas 정밀 병리 소견서)',
-          exactNumbers: [
-            { label: '문서 용도', value: '병원 정밀 조직검사 결과 확인용' },
-            { label: '절제면 상태', value: 'Resection margin: Not involved (깨끗함)' }
-          ],
-          easyList: [
-            { orig: 'Pancreas (췌장 / 이자)', easy: '소화 효소와 인슐린을 분비하는 우리 몸속 중요 장기예요.' },
-            { orig: 'Resection margin: Not involved', easy: '수술로 제거한 경계면 끝에 나쁜 세포가 남아있지 않고 깨끗하게 잘 제거되었다는 뜻이에요.' }
-          ],
-          actionGuide: '다음 외래 진료 날 이 결과지를 챙겨 가셔서 담당 의사 선생님께 최종 설명을 들으세요.'
-        };
-      }
-
-      return {
-        badge: '약병·안내문 판독 완료',
-        isScam: false,
-        heading: '사진 속 글자를 읽고 용도와 사용법을 정리했어요.',
-        purpose: cleaned ? ('사진에서 확인된 내용: ' + cleaned.slice(0, 90)) : '일상 건강 관리 또는 생활 안내를 위한 물품이에요.',
-        grandSpeech: '할머니, 똑순이 손녀 효심이가 사진 속 글자를 깔끔하게 정리해서 읽어드릴게요. ' + (cleaned ? cleaned.slice(0, 150) : '용기 겉면의 복용법과 유통기한을 꼭 확인하시고 미지근한 물과 함께 챙겨 드세요!'),
-        originalPreview: cleaned || '사진 속 주요 한글·숫자 추출 완료',
-        exactNumbers: [
-          { label: '확인된 내용', value: cleaned ? cleaned.split('\n')[0].slice(0, 28) : '원본 사진 대조 완료' }
-        ],
-        easyList: [
-          { orig: '복용 및 사용 전 확인사항', easy: '약이나 영양제는 하루 권장 횟수를 지켜 식후에 미지근한 물과 함께 드시는 것이 가장 안전해요.' }
-        ],
-        actionGuide: '제품에 적힌 하루 복용 횟수를 확인하시고, 약 먹는 시간을 잊지 않도록 옆의 [손녀 알림] 탭에 시간을 맞춰두세요!'
-      };
-    }
-
-    async function handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      document.getElementById('homeScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.add('hidden');
-      document.getElementById('readingScreen').classList.remove('hidden');
-      document.getElementById('readingTitle').textContent = '효심이가 꼼꼼하게 확인하고 있어요';
-
-      speakGranddaughter(currentHonorific + ', 효심이가 사진을 꼼꼼히 보고 이게 어디에 먹는 약인지, 무슨 서류인지 확인하고 있어요. 잠시만 기다려 주세요!');
-
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const img = new Image();
-        img.onload = async () => {
-          const canvas = document.createElement('canvas');
-          const maxD = 1024;
-          let w = img.width, h = img.height;
-          if (w > maxD || h > maxD) {
-            if (w > h) { h = Math.round(h * maxD / w); w = maxD; }
-            else { w = Math.round(w * maxD / h); h = maxD; }
-          }
-          canvas.width = w; canvas.height = h;
-          const ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, w, h);
-          const base64Data = canvas.toDataURL('image/jpeg', 0.82);
-
-          const imgEl = document.getElementById('resUploadedImg');
-          imgEl.src = base64Data;
-          imgEl.classList.remove('hidden');
-
-          try {
-            const visionData = await callFreeVisionAI(base64Data);
-            if (visionData && visionData.heading) {
-              showResultScreen(visionData);
-              return;
-            }
-          } catch (visionErr) {}
-
-          try {
-            if (window.Tesseract) {
-              const ocrRes = await Tesseract.recognize(base64Data, 'kor+eng');
-              const rawText = (ocrRes && ocrRes.data && ocrRes.data.text) ? ocrRes.data.text : '';
-              const smartResult = analyzeTextWithMedicalKnowledge(rawText);
-              showResultScreen(smartResult);
-              return;
-            }
-          } catch (ocrErr) {}
-
-          showResultScreen(analyzeTextWithMedicalKnowledge(''));
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function showResultScreen(data) {
-      currentResultData = data;
-      document.getElementById('homeScreen').classList.add('hidden');
-      document.getElementById('readingScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-
-      const badge = document.getElementById('resBadge');
-      badge.textContent = data.badge || '판독 완료';
-      badge.className = data.isScam ? 'px-4 py-1.5 rounded-full font-black text-base bg-red-700 text-white' : 'px-4 py-1.5 rounded-full font-black text-base bg-[#e8dfd0] text-[#233858]';
-
-      document.getElementById('resMainHeading').textContent = data.heading || '사진 판독이 완료되었어요.';
-      currentPurposeText = data.purpose || data.heading || '일상 건강 및 생활 안내용이에요.';
-      document.getElementById('resPurposeBox').textContent = currentPurposeText;
-
-      const fullSpeech = (data.grandSpeech || (currentHonorific + ', ' + data.heading + ' ' + currentPurposeText + ' ' + (data.actionGuide || '')));
-      lastSpokenText = cleanSmartGranddaughterSpeech(fullSpeech);
-      document.getElementById('resGranddaughterTalk').textContent = '“' + lastSpokenText + '”';
-      document.getElementById('resOriginalPreview').textContent = data.originalPreview || '핵심 내용 정리 완료';
-
-      const scamBox = document.getElementById('scamWarningBox');
-      if (data.isScam) {
-        scamBox.classList.remove('hidden');
-        const ul = document.getElementById('scamReasonsList');
-        ul.innerHTML = '';
-        (data.scamReasons || []).forEach(r => {
-          const li = document.createElement('li');
-          li.textContent = r;
-          ul.appendChild(li);
-        });
-      } else {
-        scamBox.classList.add('hidden');
-      }
-
-      const numBox = document.getElementById('exactNumbersContainer');
-      numBox.innerHTML = '';
-      (data.exactNumbers || []).forEach(item => {
-        const d = document.createElement('div');
-        d.innerHTML = '<div class="text-sm font-bold opacity-80">' + item.label + '</div><div class="text-2xl font-black">' + item.value + '</div>';
-        numBox.appendChild(d);
-      });
-
-      const easyBox = document.getElementById('easyTranslationsList');
-      easyBox.innerHTML = '';
-      (data.easyList || []).forEach(item => {
-        const d = document.createElement('div');
-        d.className = 'pt-2 border-t border-gray-100';
-        d.innerHTML = '<div class="text-sm font-bold text-gray-500">어려운 말: ' + item.orig + '</div><div class="text-xl font-black text-gray-900 mt-1"><span class="text-[#233858] text-sm mr-1">쉬운 설명:</span>' + item.easy + '</div>';
-        easyBox.appendChild(d);
-      });
-
-      document.getElementById('resActionGuide').textContent = data.actionGuide || '안내된 사용법을 확인해 보세요.';
-      speakGranddaughter(fullSpeech);
-    }
-
-    function copyForFamily() {
-      if (!currentResultData) return;
-      const msg = '[찍어봐효 판독 결과]\n• 요약: ' + currentResultData.heading + '\n• 용도/효능: ' + (currentResultData.purpose || '') + '\n• 복용/처리법: ' + currentResultData.actionGuide;
-      navigator.clipboard.writeText(msg);
-      speakGranddaughter(currentHonorific + ', 가족에게 보낼 글을 깔끔하게 복사해 두었어요!');
-      alert('가족에게 보낼 글이 복사되었습니다.');
-    }
-
-    function openPasteModal() { document.getElementById('pasteModal').classList.remove('hidden'); }
-    function closePasteModal() { document.getElementById('pasteModal').classList.add('hidden'); }
-    function openGuideModal() { document.getElementById('guideModal').classList.remove('hidden'); }
-    function closeGuideModal() { document.getElementById('guideModal').classList.add('hidden'); }
-
-    function analyzePastedText() {
-      const txt = document.getElementById('pasteTextarea').value.trim();
-      if (!txt) return alert('내용을 적어주세요.');
-      closePasteModal();
-      document.getElementById('resUploadedImg').classList.add('hidden');
-      const res = analyzeTextWithMedicalKnowledge(txt);
-      showResultScreen(res);
-    }
-
-    // =========================================================================
-    // 3. 👧 손녀 알림 (병원 다녀와서 녹음 예약 + 약 먹을 시간 정각 자동 알림)
-    // =========================================================================
-    let selectedSchedType = '약 먹는 시간';
-    const todayStr = new Date().toISOString().slice(0, 10);
-    document.getElementById('inSchedDate').value = todayStr;
-
-    let grandSchedules = JSON.parse(localStorage.getItem('HYO_SAVED_SCHEDULES') || 'null') || [
-      { id: 1, type: '약 먹는 시간', date: '매일', clock: '08:30', place: '아침 혈압약 & 영양제', items: '식사 후 미지근한 물 한 컵과 함께 드시기', lastTriggered: '' },
-      { id: 2, type: '병원 가는 날', date: todayStr, clock: '14:00', place: '서울내과의원 정기진료', items: '건강보험증, 처방전 봉투, 안경 챙기기', lastTriggered: '' }
-    ];
-
-    function saveSchedulesToStorage() {
-      localStorage.setItem('HYO_SAVED_SCHEDULES', JSON.stringify(grandSchedules));
-    }
-
-    function selectScheduleType(t) {
-      selectedSchedType = t;
-      const isMed = (t === '약 먹는 시간');
-      document.getElementById('typeBtnMed').className = isMed ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
-      document.getElementById('typeBtnHosp').className = !isMed ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
-      document.getElementById('datePickerRow').classList.toggle('hidden', isMed);
-    }
-
-    function formatKoreanClock(clock24) {
-      if (!clock24 || !clock24.includes(':')) return clock24;
-      const parts = clock24.split(':');
-      let h = parseInt(parts[0], 10);
-      const m = parseInt(parts[1], 10);
-      const ampm = h < 12 ? '오전' : '오후';
-      if (h > 12) h -= 12;
-      if (h === 0) h = 12;
-      return ampm + ' ' + h + '시' + (m > 0 ? ' ' + m + '분' : '');
-    }
-
-    // ★ 똑부러지고 야무진 손녀 효심이 대본
-    function buildGrandScript(item) {
-      const h = currentHonorific;
-      const korTime = formatKoreanClock(item.clock);
-      if (item.type === '병원 가는 날') {
-        return h + ', 똑순이 손녀 효심이예요! 오늘은 ' + korTime + '에 ' + item.place + ' 가시는 날이에요. 가실 때 꼭 챙기셔야 할 ' + item.items + ', 지금 가방 안에 잘 들어있는지 확인해 보셨나요? 잊으신 거 없는지 한 번만 더 점검하시고, 천천히 조심해서 다녀오세요!';
-      }
-      return h + ', 똑순이 손녀 효심이예요! 지금 ' + korTime + ', ' + item.place + ' 챙겨 드실 시간이에요. 식사는 든든하게 하셨나요? 빈속에 드시지 마시고, 꼭 ' + item.items + ' 잊지 마세요. 약 제시간에 꼬박꼬박 잘 챙겨 드시고 늘 건강하셔야 해요!';
-    }
-
-    function startVoiceHospitalRecord() {
-      const btn = document.getElementById('recordHospBtn');
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SR) {
-        speakGranddaughter(currentHonorific + ', 아래 시간 선택 칸에서 시간을 맞추고 예약하기 버튼을 눌러주세요!');
-        return;
-      }
-
-      const rec = new SR();
-      rec.lang = 'ko-KR';
-      btn.textContent = '🔴 듣고 있어요! 병원 날짜와 시간을 말씀하세요...';
-      btn.className = 'w-full py-5 bg-red-600 text-white font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white animate-pulse';
-
-      speakGranddaughter(currentHonorific + ', 언제 어느 병원에 가시는지 말씀해 주시면, 효심이가 똑부러지게 적어두었다가 그 시간에 꼭 알려드릴게요!');
-
-      setTimeout(() => {
-        try { rec.start(); } catch (e) {}
-      }, 3200);
-
-      rec.onresult = (e) => {
-        const spoken = e.results[0][0].transcript;
-        restoreRecordBtn();
-        document.getElementById('recordedResultBox').classList.remove('hidden');
-        document.getElementById('recordedTextPreview').textContent = '“' + spoken + '”';
-
-        let detectedClock = '14:00';
-        const hourMatch = spoken.match(/(\d{1,2})\s*시/);
-        if (hourMatch) {
-          let hr = parseInt(hourMatch[1], 10);
-          if ((spoken.includes('오후') || spoken.includes('저녁') || hr < 7) && hr < 12) hr += 12;
-          detectedClock = String(hr).padStart(2, '0') + ':00';
-        }
-
-        const newItem = {
-          id: Date.now(),
-          type: spoken.includes('약') ? '약 먹는 시간' : '병원 가는 날',
-          date: todayStr,
-          clock: detectedClock,
-          place: spoken,
-          items: '건강보험증, 신분증, 처방전 봉투',
-          lastTriggered: ''
-        };
-        grandSchedules.unshift(newItem);
-        saveSchedulesToStorage();
-        renderGrandSchedules();
-        playGrandItem(0);
-      };
-
-      rec.onerror = () => restoreRecordBtn();
-      rec.onend = () => restoreRecordBtn();
-    }
-
-    function restoreRecordBtn() {
-      const btn = document.getElementById('recordHospBtn');
-      btn.textContent = '🎙️ 말로 병원 예약 녹음하기';
-      btn.className = 'w-full py-5 bg-amber-400 text-[#233858] font-black text-2xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white';
-    }
-
-    function addGrandSchedule() {
-      const clock = document.getElementById('inSchedClock').value || '09:00';
-      const dateVal = (selectedSchedType === '약 먹는 시간') ? '매일' : (document.getElementById('inSchedDate').value || todayStr);
-      const place = document.getElementById('inSchedPlace').value.trim();
-      const items = document.getElementById('inSchedItems').value.trim() || (selectedSchedType === '약 먹는 시간' ? '미지근한 물 한 컵과 함께' : '건강보험증과 처방전');
-
-      if (!place) return alert('무슨 약인지 또는 어느 병원인지 적어주세요.');
-
-      grandSchedules.unshift({
-        id: Date.now(),
-        type: selectedSchedType,
-        date: dateVal,
-        clock: clock,
-        place: place,
-        items: items,
-        lastTriggered: ''
-      });
-      saveSchedulesToStorage();
-      renderGrandSchedules();
-      document.getElementById('inSchedPlace').value = '';
-      document.getElementById('inSchedItems').value = '';
-      playGrandItem(0);
-    }
-
-    function deleteSchedule(idx) {
-      grandSchedules.splice(idx, 1);
-      saveSchedulesToStorage();
-      renderGrandSchedules();
-    }
-
-    function renderGrandSchedules() {
-      const box = document.getElementById('grandScheduleList');
-      box.innerHTML = '';
-      grandSchedules.forEach((item, idx) => {
-        const d = document.createElement('div');
-        d.className = 'bg-white rounded-2xl p-4 border-2 border-[#dfd7c6] flex items-center justify-between gap-2 shadow-sm';
-        d.innerHTML = `
-          <div class="space-y-0.5">
-            <div class="flex items-center gap-1.5">
-              <span class="px-2 py-0.5 rounded-full text-xs font-black ${item.type === '병원 가는 날' ? 'bg-blue-100 text-[#233858]' : 'bg-amber-100 text-amber-900'}">${item.type}</span>
-              <span class="text-sm font-black text-[#233858]">${item.date} · ${formatKoreanClock(item.clock)}</span>
-            </div>
-            <h4 class="text-lg font-black text-gray-900">${item.place}</h4>
-            <p class="text-xs font-bold text-gray-600">챙길 것: ${item.items}</p>
-          </div>
-          <div class="flex items-center gap-1 shrink-0">
-            <button onclick="playGrandItem(${idx})" class="bg-[#233858] text-white px-3.5 py-3 rounded-xl font-black text-sm shadow">👧🔊 듣기</button>
-            <button onclick="deleteSchedule(${idx})" class="px-2 py-2.5 text-gray-400 font-bold text-sm">✕</button>
-          </div>
-        `;
-        box.appendChild(d);
-      });
-    }
-    renderGrandSchedules();
-
-    function playGrandItem(idx) {
-      const item = grandSchedules[idx];
-      if (!item) return;
-      const msg = buildGrandScript(item);
-      document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
-      speakGranddaughter(msg);
-    }
-
-    setInterval(() => {
-      const now = new Date();
-      const curDate = now.toISOString().slice(0, 10);
-      const hh = String(now.getHours()).padStart(2, '0');
-      const mm = String(now.getMinutes()).padStart(2, '0');
-      const ss = String(now.getSeconds()).padStart(2, '0');
-      const curHM = hh + ':' + mm;
-
-      const clockEl = document.getElementById('liveClockDisplay');
-      if (clockEl) {
-        clockEl.textContent = formatKoreanClock(curHM) + ' ' + ss + '초';
-      }
-
-      const stampKey = curDate + '_' + curHM;
-      grandSchedules.forEach((item, idx) => {
-        const dateMatches = (item.date === '매일') || (item.date === curDate);
-        if (dateMatches && item.clock === curHM && item.lastTriggered !== stampKey) {
-          item.lastTriggered = stampKey;
-          saveSchedulesToStorage();
-          switchMainTab('grand');
-          playGrandItem(idx);
-        }
-      });
-    }, 1000);
-
-    function toggleVoiceCommand() {
-      const btn = document.getElementById('voiceCmdBtn');
-      const title = document.getElementById('voiceCmdTitle');
-      btn.className = 'w-full p-5 bg-[#f59e0b] text-gray-900 rounded-3xl shadow-lg flex items-center gap-3.5 text-left border-4 border-[#b45309]';
-      title.textContent = '듣고 있어요. 말씀해 주세요';
-      speakGranddaughter('네 ' + currentHonorific + ', 효심이가 듣고 있어요! 사진 찍어줘 또는 병원 예약 녹음이라고 말씀해 주세요.');
-
-      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (SR) {
-        const rec = new SR();
-        rec.lang = 'ko-KR';
-        setTimeout(() => { try { rec.start(); } catch(e){} }, 2200);
-        rec.onresult = (e) => {
-          const cmd = e.results[0][0].transcript;
-          if (cmd.includes('병원') || cmd.includes('녹음') || cmd.includes('약') || cmd.includes('알림')) {
-            switchMainTab('grand');
-          } else if (cmd.includes('키오스크')) {
-            switchMainTab('kiosk');
-          } else {
-            document.getElementById('cameraFileInput').click();
-          }
-        };
-      }
-
-      setTimeout(() => {
-        btn.className = 'w-full p-5 warm-yellow rounded-3xl shadow-sm flex items-center gap-3.5 text-left border-2 border-[#f0ce86]';
-        title.textContent = '말로 시키기';
-      }, 4500);
-    }
-
-    // 키오스크 연습기
-    let kioskStore = 'coffee';
-    let kioskStepIdx = 0;
-    const KIOSK_DATA = {
-      coffee: {
-        name: '모닝커피',
-        mission: '미션: 따뜻한 아메리카노 1잔을 포장으로 주문해 보세요.',
-        steps: [
-          { heading: '메뉴 선택', coach: '아메리카노 버튼을 눌러보세요.', opts: [{ t: '아메리카노', p: '3,000원', i: '☕', ok: true }, { t: '카페라떼', p: '3,800원', i: '🥛', ok: false }] },
-          { heading: '포장 선택', coach: '가지고 가실 거니까 포장하기를 눌러보세요.', opts: [{ t: '포장하기', p: '일회용컵', i: '🛍️', ok: true }, { t: '매장 식사', p: '머그컵', i: '🪑', ok: false }] }
-        ]
-      },
-      bunsik: {
-        name: '행복분식',
-        mission: '미션: 떡볶이(순한 맛)를 먹고 가는 것으로 주문해 보세요.',
-        steps: [
-          { heading: '메뉴 선택', coach: '떡볶이 버튼을 눌러보세요.', opts: [{ t: '떡볶이', p: '4,500원', i: '🌶️', ok: true }, { t: '김밥', p: '3,000원', i: '🍙', ok: false }] },
-          { heading: '식사 장소', coach: '가게에서 드실 거니까 먹고 가기를 눌러보세요.', opts: [{ t: '먹고 가기', p: '매장 식사', i: '🍽️', ok: true }, { t: '포장하기', p: '용기 포장', i: '🛍️', ok: false }] }
-        ]
-      }
-    };
-
-    function selectKioskStore(s) {
-      kioskStore = s;
-      resetKioskMission();
-    }
-    function resetKioskMission() {
-      kioskStepIdx = 0;
-      document.getElementById('kioskSuccessCard').classList.add('hidden');
-      document.getElementById('kioskMachineBox').classList.remove('hidden');
-      renderKioskStep();
-    }
-    function renderKioskStep() {
-      const m = KIOSK_DATA[kioskStore];
-      const st = m.steps[kioskStepIdx];
-      document.getElementById('kioskMissionTitle').textContent = m.mission;
-      document.getElementById('kioskStepHeading').textContent = st.heading;
-      document.getElementById('kioskStoreLabel').textContent = m.name;
-      document.getElementById('kioskCoachText').textContent = st.coach;
-      const body = document.getElementById('kioskScreenBody');
-      body.innerHTML = '';
-      const grid = document.createElement('div');
-      grid.className = 'grid grid-cols-2 gap-3';
-      st.opts.forEach(o => {
-        const b = document.createElement('button');
-        b.className = 'relative p-4 rounded-2xl border-2 bg-white flex flex-col items-center gap-1 ' + (o.ok ? 'kiosk-glow' : '');
-        b.onclick = () => {
-          if (o.ok) {
-            if (kioskStepIdx + 1 < m.steps.length) {
-              kioskStepIdx++;
-              renderKioskStep();
-              speakGranddaughter(currentHonorific + ', 잘하셨어요! 다음은 ' + m.steps[kioskStepIdx].coach);
-            } else {
-              document.getElementById('kioskMachineBox').classList.add('hidden');
-              document.getElementById('kioskSuccessCard').classList.remove('hidden');
-              speakGranddaughter(currentHonorific + ', 키오스크 주문 미션 대성공이에요! 헷갈리지 않고 정말 똑부러지게 잘하셨어요!');
-            }
-          } else {
-            speakGranddaughter(currentHonorific + ', 노란색으로 반짝이는 여기예요 버튼을 눌러보세요!');
-          }
-        };
-        b.innerHTML = (o.ok ? '<span class="bg-amber-400 text-xs font-black px-2 py-0.5 rounded-full">여기예요</span>' : '') + '<span class="text-4xl">' + o.i + '</span><span class="text-lg font-black">' + o.t + '</span><span class="text-sm font-bold text-amber-800">' + o.p + '</span>';
-        grid.appendChild(b);
-      });
-      body.appendChild(grid);
-    }
-  </script>
-</body>
-</html>
+      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">갤럭시 캡처:</strong><p class="font-black text-base">
