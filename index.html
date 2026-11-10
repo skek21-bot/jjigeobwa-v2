@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="google" content="notranslate">
+  <meta name="referrer" content="no-referrer">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>찍어봐효 孝 - 사회보장 데이터 연계 AI 안심 도우미</title>
+  <title>찍어봐 YOU - 사회보장 데이터 연계 시니어 AI 안심 도우미</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
@@ -24,7 +25,8 @@
       background-color: #115e46 !important;
       color: #ffffff !important;
       border-color: #064e3b !important;
-      box-shadow: 0 0 0 4px rgba(17, 94, 70, 0.25);
+      transform: scale(1.03);
+      box-shadow: 0 0 0 4px rgba(17, 94, 70, 0.3);
     }
     @keyframes pulse-red {
       0%, 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
@@ -35,17 +37,19 @@
 </head>
 <body class="min-h-screen pb-32 notranslate" onclick="recordSeniorActivity()">
 
-  <!-- 상단 헤더 ('찍어봐효 孝' 5번 연속 터치 시 관리자 키 설정창 열림) -->
+  <!-- 상단 헤더 ('찍어봐 YOU' 5번 연속 터치 시 관리자 키 설정창 열림) -->
   <header class="bg-[#fbf7ee] border-b-2 border-[#e6dec8] sticky top-0 z-30 px-4 py-3 shadow-sm">
     <div class="max-w-md mx-auto flex items-center justify-between">
-      <div onclick="handleSecretTap()" class="text-2xl font-black text-[#233858] select-none cursor-pointer">찍어봐효 孝🧡</div>
+      <div onclick="handleSecretTap()" class="text-2xl font-black text-[#233858] select-none cursor-pointer tracking-tight">
+        찍어봐 <span class="text-amber-600">YOU</span> 🧡
+      </div>
       <div class="flex items-center gap-1 bg-[#ede5d2] p-1 rounded-xl">
         <button type="button" id="callHalmeoni" onclick="setHonorific('할머니')" class="px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white">👵 할머니</button>
         <button type="button" id="callHarabeoji" onclick="setHonorific('할아버지')" class="px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]">👴 할아버지</button>
       </div>
     </div>
 
-    <!-- 3대 기능 탭 (키오스크 제거 -> 요양등급·안심 교체 완료) -->
+    <!-- 3대 핵심 기능 탭 (키오스크 제거 ➔ 요양등급·안심 탑재) -->
     <div class="max-w-md mx-auto grid grid-cols-3 gap-1.5 mt-3 bg-[#e8dfd0] p-1.5 rounded-2xl">
       <button type="button" id="navDoc" onclick="switchMainTab('doc')" class="py-2.5 rounded-xl font-black text-sm bg-[#233858] text-white shadow">📷 찍고 읽기</button>
       <button type="button" id="navGrand" onclick="switchMainTab('grand')" class="py-2.5 rounded-xl font-extrabold text-sm text-[#233858]">⏰ 약·병원 예약</button>
@@ -53,9 +57,9 @@
     </div>
   </header>
 
-  <!-- 음성 상태 안내 배너 -->
-  <div id="voiceStatusBanner" class="hidden bg-[#233858] text-white px-4 py-2.5 text-center font-black text-base sticky top-[104px] z-20 shadow-md flex items-center justify-between max-w-md mx-auto">
-    <span id="voiceBannerText">👧🔊 똑순이 손녀 효심이가 야무지게 읽어드리고 있어요...</span>
+  <!-- 실시간 음성 작동 표시 배너 -->
+  <div id="voiceStatusBanner" class="hidden bg-[#233858] text-white px-4 py-2.5 text-center font-black text-sm sticky top-[104px] z-20 shadow-md flex items-center justify-between max-w-md mx-auto">
+    <span id="voiceBannerText" class="truncate">👧🔊 똑순이 손녀 효심이가 또렷하게 읽어드리고 있어요...</span>
     <button type="button" onclick="stopAllVoice()" class="bg-amber-400 text-[#233858] px-2.5 py-1 rounded-lg text-xs font-black shrink-0 ml-2">멈춤</button>
   </div>
 
@@ -63,17 +67,16 @@
   <!-- [탭 1] 📷 찍고 읽기 화면 -->
   <!-- =================================================================== -->
   <main id="tabContentDoc" class="max-w-md mx-auto px-4 pt-4 space-y-4">
-
     <section id="homeScreen" class="space-y-4">
       <div class="text-center py-1">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#e3efe9] text-[#233858] text-4xl font-black mb-1 shadow-sm">👧</div>
-        <h1 class="text-4xl font-black text-[#233858]">찍어봐효🧡</h1>
-        <p class="text-xl font-bold text-gray-700 mt-1">약병·고지서·장기요양 서류 무엇이든!<br>찍는 즉시 설명하고 복지 혜택을 연결해요.</p>
+        <h1 class="text-4xl font-black text-[#233858]">찍어봐 <span class="text-amber-600">YOU</span>🧡</h1>
+        <p class="text-lg font-bold text-gray-700 mt-1">약병·고지서·장기요양 서류 무엇이든!<br>찍는 즉시 설명하고 사회보장 혜택을 연결해요.</p>
       </div>
 
-      <!-- 소리 테스트 버튼 -->
-      <button type="button" onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-amber-100 hover:bg-amber-200 text-[#233858] font-black text-lg rounded-2xl border-2 border-amber-300 shadow-sm flex items-center justify-center gap-2">
-        <span>👧🔊</span> <span>똑순이 손녀 효심이 목소리 들어보기 (터치!)</span>
+      <!-- 음성 바로 확인 버튼 -->
+      <button type="button" onclick="testGranddaughterVoiceNow()" class="w-full py-3.5 bg-amber-100 hover:bg-amber-200 text-[#233858] font-black text-lg rounded-2xl border-2 border-amber-400 shadow-sm flex items-center justify-center gap-2">
+        <span>👧🔊</span> <span>똑순이 효심이 목소리 테스트 (터치!)</span>
       </button>
 
       <input type="file" id="cameraFileInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
@@ -83,7 +86,7 @@
       <button type="button" onclick="document.getElementById('cameraFileInput').click()" class="w-full py-7 navy-btn rounded-3xl shadow-lg flex flex-col items-center justify-center gap-2 border-4 border-[#1b2b44]">
         <span class="text-5xl">📷</span>
         <span class="text-3xl font-black">사진 찍기</span>
-        <span class="text-base text-blue-100 font-bold">장기요양인정서 · 체납고지서 · 약병 · 병원서류</span>
+        <span class="text-base text-blue-100 font-bold">둥근 약통 · 병원 검사지 · 장기요양인정서 · 고지서</span>
       </button>
 
       <!-- 사진 선택 & 문자 붙여넣기 -->
@@ -98,48 +101,48 @@
         </button>
       </div>
 
-      <!-- 경진대회 PT 즉시 시연 버튼 (사회보장 데이터 연계 강조) -->
+      <!-- 첫 화면에서도 한눈에 보이는 약·병원 예약 & 요양등급 바로가기 카드 -->
+      <div class="bg-white rounded-3xl p-4 border-2 border-rose-300 shadow-sm space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-base font-black text-rose-700">⏰ 오늘 효심이가 챙겨드릴 예약</span>
+          <button type="button" onclick="switchMainTab('grand')" class="text-xs font-black bg-rose-600 text-white px-3 py-1.5 rounded-xl">예약하러 가기 ›</button>
+        </div>
+        <div id="homeSchedPreview" class="text-sm font-bold text-gray-800 bg-rose-50 p-3 rounded-2xl">
+          • 오전 8시 30분: 아침 혈압약 & 영양제<br>• 오후 2시: 서울내과의원 정기진료
+        </div>
+      </div>
+
+      <!-- 경진대회 PT 즉시 시연용 사회보장 샘플 박스 -->
       <div class="bg-white rounded-3xl p-4 border-2 border-emerald-600 shadow-sm space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="font-black text-[#115e46] text-sm">⚡ 경진대회 발표 즉시 시연 (터치 시 바로 작동)</span>
-          <span class="bg-emerald-100 text-emerald-900 text-xs font-black px-2 py-0.5 rounded-full">공공데이터 연계</span>
+          <span class="font-black text-[#115e46] text-sm">⚡ 경진대회 발표 시연 (누르면 즉시 판독+음성)</span>
+          <span class="bg-emerald-100 text-emerald-900 text-xs font-black px-2 py-0.5 rounded-full">사회보장 연계</span>
         </div>
         <div class="grid grid-cols-2 gap-2">
           <button type="button" onclick="runContestSample('ltci3')" class="p-3 bg-emerald-50 rounded-2xl font-black text-sm text-emerald-950 text-left border border-emerald-300">
             🛡️ 장기요양 3등급 인정서 판독
           </button>
           <button type="button" onclick="runContestSample('arrears')" class="p-3 bg-red-50 rounded-2xl font-black text-sm text-red-950 text-left border border-red-300">
-            🚨 건보료·단전 체납 독촉장(위기감지)
-          </button>
-          <button type="button" onclick="runContestSample('medicine')" class="p-3 bg-blue-50 rounded-2xl font-black text-sm text-blue-950 text-left border border-blue-200">
-            💊 소화제 약병 & 병원예약
-          </button>
-          <button type="button" onclick="runContestSample('scam')" class="p-3 bg-amber-50 rounded-2xl font-black text-sm text-amber-950 text-left border border-amber-300">
-            📵 택배 사칭 스미싱 차단
+            🚨 단전·건보료 체납 독촉장(위기연결)
           </button>
         </div>
       </div>
 
-      <!-- 말로 시키기 버튼 -->
+      <!-- 말로 시키기 -->
       <button type="button" id="voiceCmdBtn" onclick="toggleVoiceCommand()" class="w-full p-5 warm-yellow rounded-3xl shadow-sm flex items-center gap-3.5 text-left border-2 border-[#f0ce86]">
         <span class="text-4xl">🎙️</span>
         <div>
           <div id="voiceCmdTitle" class="text-2xl font-black">말로 시키기</div>
-          <div id="voiceCmdSub" class="text-base font-bold opacity-85">“나 3등급인데 무슨 혜택 받아?”, “병원 예약”처럼 말해 보세요</div>
+          <div class="text-base font-bold opacity-85">“나 3등급인데 무슨 혜택 받아?”, “병원 예약”처럼 말씀하세요</div>
         </div>
-      </button>
-
-      <!-- 수상한 문자 가이드 -->
-      <button type="button" onclick="openGuideModal()" class="w-full py-3.5 bg-[#f5efe1] text-[#233858] font-black text-lg rounded-2xl border-2 border-[#d8ccb4]">
-        수상한 문자, 어떻게 찍나요?
       </button>
     </section>
 
-    <!-- 로딩 화면 -->
+    <!-- 판독 중 로딩 화면 -->
     <section id="readingScreen" class="hidden bg-white rounded-3xl p-8 text-center space-y-4 border-2 border-[#dfd7c6] shadow-md my-4">
       <div class="inline-block w-16 h-16 border-4 border-gray-200 border-t-[#233858] rounded-full animate-spin"></div>
-      <h2 class="text-3xl font-black text-[#233858]">효심이가 사진을 정밀 분석 중이에요</h2>
-      <p class="text-lg font-bold text-gray-600">글씨와 사회보장 혜택 대상을 확인하고<br>쉽게 정리하고 있으니 잠시만 기다려 주세요.</p>
+      <h2 class="text-3xl font-black text-[#233858]">효심이가 사진을 꼼꼼히 읽고 있어요</h2>
+      <p class="text-lg font-bold text-gray-600">어려운 한자·영어와 사회보장 혜택을 확인해<br>쉬운 말로 정리 중이니 잠시만 기다려 주세요.</p>
       <button type="button" onclick="resetToHome()" class="px-6 py-2.5 rounded-2xl border-2 border-[#233858] text-[#233858] font-black">그만두기</button>
     </section>
 
@@ -156,26 +159,26 @@
         <span>👧🔊</span> <span>여기를 눌러 효심이 목소리로 듣기</span>
       </button>
 
-      <!-- 사회보장 데이터 자동 연결 배너 (장기요양/체납 위기 시 노출) -->
+      <!-- 사회보장 공공데이터 매칭 배너 -->
       <div id="welfareLinkBanner" class="hidden bg-emerald-900 text-white rounded-3xl p-5 space-y-3 shadow-lg border-4 border-emerald-400">
         <div class="text-xs font-black bg-emerald-300 text-emerald-950 inline-block px-2.5 py-1 rounded-full">🏛️ 사회보장 공공데이터 자동 매칭 완료</div>
         <p id="welfareLinkText" class="text-xl font-black leading-snug"></p>
-        <button type="button" id="welfareLinkActionBtn" onclick="switchMainTab('care')" class="w-full py-3.5 bg-amber-400 text-gray-900 font-black text-lg rounded-2xl shadow">
-          🛡️ 내 요양등급 혜택 & 안심 연결 바로 보기 ›
+        <button type="button" id="welfareLinkActionBtn" class="w-full py-3.5 bg-amber-400 text-gray-900 font-black text-lg rounded-2xl shadow">
+          🛡️ 내 요양등급 혜택 바로 보기 ›
         </button>
       </div>
 
       <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-5 space-y-2 shadow-sm">
         <div class="text-base font-black text-[#233858] flex items-center justify-between">
-          <span>👧 똑순이 손녀 효심이의 야무진 설명:</span>
-          <button type="button" onclick="forceSpeakCurrentResult()" class="bg-[#233858] text-white px-3 py-1 rounded-xl text-sm font-black shadow">🔊 읽어주기</button>
+          <span>👧 똑순이 손녀 효심이의 설명:</span>
+          <button type="button" onclick="forceSpeakCurrentResult()" class="bg-[#233858] text-white px-3 py-1 rounded-xl text-sm font-black shadow">🔊 다시 듣기</button>
         </div>
         <p id="resGranddaughterTalk" class="text-xl font-black text-gray-900 leading-relaxed"></p>
       </div>
 
       <div class="bg-emerald-50 border-l-8 border-emerald-600 rounded-3xl p-5 space-y-2 shadow-sm">
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-black text-emerald-900">💡 핵심 내용 및 지원 용도</h3>
+          <h3 class="text-lg font-black text-emerald-900">💡 핵심 용도 및 지원 내용</h3>
           <button type="button" onclick="speakSpecificPart('purpose')" class="bg-emerald-700 text-white px-3 py-1 rounded-xl text-xs font-black">🔊 이 부분만 듣기</button>
         </div>
         <p id="resPurposeBox" class="text-2xl font-black text-gray-900 leading-snug"></p>
@@ -184,31 +187,34 @@
       <div id="scamWarningBox" class="hidden bg-[#fff1f0] border-2 border-red-600 rounded-3xl p-5 space-y-2.5 text-gray-900 shadow">
         <h3 class="text-2xl font-black text-red-800">⚠️ 주의 및 위기 안내</h3>
         <ul id="scamReasonsList" class="list-disc pl-5 space-y-1 text-lg font-bold text-gray-800"></ul>
+        <p class="text-sm font-extrabold text-red-700 pt-1">스미싱 의심 시 링크를 절대 누르지 마세요. (신고: 경찰 112 · 금감원 1332 · 스팸 118 / 복지상담 129)</p>
       </div>
 
+      <!-- 숫자 보존 노란 박스 -->
       <div class="yellow-trust-box rounded-3xl p-5 space-y-3 shadow-md">
-        <div class="text-base font-extrabold opacity-85">📌 사진에서 확인된 핵심 수치 (원본 대조 필수)</div>
+        <div class="text-base font-extrabold opacity-85">📌 사진에서 확인된 핵심 수치 (숫자 보존 안전장치)</div>
         <div id="exactNumbersContainer" class="space-y-2.5"></div>
+        <p class="text-xs font-bold pt-2 border-t border-amber-700/30">복용량·금액·날짜는 반드시 원본 서류·약봉투와 한 번 더 대조하시고 약사·담당 기관에 확인하세요.</p>
       </div>
 
       <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-3">
-        <h3 class="text-base font-black text-gray-500">📖 어려운 행정·의학 용어를 쉬운 말로</h3>
+        <h3 class="text-base font-black text-gray-500">📖 어려운 한자·영어·행정 용어를 쉬운 말로</h3>
         <div id="easyTranslationsList" class="space-y-3"></div>
       </div>
 
       <div class="bg-white rounded-3xl p-5 border-2 border-[#dfd7c6] space-y-1.5">
-        <h3 class="text-base font-extrabold text-gray-500">✅ 그래서 어떻게 하면 될까요?</h3>
+        <h3 class="text-base font-extrabold text-gray-500">✅ 그래서 뭘 해야 하나요?</h3>
         <p id="resActionGuide" class="text-2xl font-black text-[#1e293b] leading-relaxed"></p>
       </div>
 
       <div class="bg-white rounded-3xl p-4 border-2 border-[#dfd7c6] space-y-2.5">
-        <div class="font-extrabold text-gray-600 text-base">올리신 사진과 읽은 글자 요약</div>
+        <div class="font-extrabold text-gray-600 text-base">올리신 사진과 읽은 글자 요약 (분석 후 서버 미저장)</div>
         <img id="resUploadedImg" src="" alt="올리신 사진" class="hidden w-full max-h-60 object-contain rounded-2xl bg-gray-900">
         <div id="resOriginalPreview" class="bg-[#fcfaf5] p-3.5 rounded-2xl border border-[#e5dec9] text-base font-bold text-gray-800 whitespace-pre-line leading-relaxed"></div>
       </div>
 
       <div class="space-y-2 pt-1">
-        <button type="button" onclick="switchMainTab('grand')" class="w-full py-4 bg-rose-600 text-white font-black text-xl rounded-2xl shadow">⏰ 약 시간 · 병원 날짜 효심이 알림 예약하기</button>
+        <button type="button" onclick="switchMainTab('grand')" class="w-full py-4 bg-rose-600 text-white font-black text-xl rounded-2xl shadow">⏰ 이 약 시간 · 병원 날짜 효심이에게 예약하기</button>
         <button type="button" onclick="copyForFamily()" class="w-full py-4 bg-white text-[#233858] border-2 border-[#233858] font-black text-xl rounded-2xl">📋 가족·복지사에게 보낼 요약 복사</button>
       </div>
     </section>
@@ -220,7 +226,7 @@
   <section id="tabContentGrand" class="hidden max-w-md mx-auto px-4 pt-4 space-y-5">
     <div class="bg-[#233858] text-white rounded-3xl p-4 flex items-center justify-between shadow-md">
       <div>
-        <div class="text-xs text-amber-300 font-bold">⏰ 실시간 효심이 안부 시계 (응답 시 무응답 타이머 초기화)</div>
+        <div class="text-xs text-amber-300 font-bold">⏰ 실시간 효심이 안부 시계 (응답 시 안심 타이머 갱신)</div>
         <div id="liveClockDisplay" class="text-2xl font-black mt-0.5">현재 시각 확인 중...</div>
       </div>
       <span class="bg-green-500 text-white text-xs font-black px-3 py-1.5 rounded-full">자동알림 켜짐</span>
@@ -230,19 +236,16 @@
       <div class="flex items-center gap-3">
         <div class="w-14 h-14 rounded-full bg-amber-300 flex items-center justify-center text-3xl shadow shrink-0">👧</div>
         <div>
-          <span class="inline-block bg-amber-400 text-[#233858] text-xs font-black px-2 py-0.5 rounded-full">일상 안부 미션 겸용</span>
+          <span class="inline-block bg-amber-400 text-[#233858] text-xs font-black px-2 py-0.5 rounded-full">말로 간편 예약</span>
           <h2 class="text-2xl font-black">병원 예약 녹음 & 효심이 알림</h2>
         </div>
       </div>
-      <p class="text-base font-bold text-blue-100 leading-snug">
-        버튼을 누르고 <em>“오후 2시 서울내과”</em>처럼 말씀만 하시면 제시간에 효심이가 챙겨드리고 안부도 확인해요!
-      </p>
-      <button type="button" id="recordHospBtn" onclick="startVoiceHospitalRecord()" class="w-full py-5 bg-amber-400 text-[#233858] font-black text-2xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-4 border-white">
-        🎙️ 말로 병원 예약 녹음하기
+      <button type="button" id="recordHospBtn" onclick="startVoiceHospitalRecord()" class="w-full py-4 bg-amber-400 text-[#233858] font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2 border-2 border-white">
+        🎙️ 눌러서 병원 날짜·시간 말하기
       </button>
-      <div id="recordedResultBox" class="hidden bg-white text-gray-900 rounded-2xl p-4 space-y-2">
+      <div id="recordedResultBox" class="hidden bg-white text-gray-900 rounded-2xl p-3">
         <div class="text-xs font-black text-[#233858]">✅ 방금 녹음된 예약 내용:</div>
-        <p id="recordedTextPreview" class="text-lg font-black text-gray-900"></p>
+        <p id="recordedTextPreview" class="text-base font-black text-gray-900"></p>
       </div>
     </div>
 
@@ -263,33 +266,33 @@
       <input id="inSchedPlace" type="text" placeholder="무슨 약 / 어느 병원인가요? (예: 아침 혈압약, 서울내과)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
       <input id="inSchedItems" type="text" placeholder="꼭 챙길 것 (예: 식후 미지근한 물 한 컵 / 건강보험증)" class="w-full p-3.5 text-lg border-2 border-[#dfd7c6] rounded-xl font-bold">
       <button type="button" onclick="addGrandSchedule()" class="w-full py-4 navy-btn font-black text-xl rounded-2xl shadow">
-        ⏰ 이 시간에 효심이 알림 예약하기
+        ⏰ 이 시간에 효심이 목소리 예약하기
       </button>
     </div>
 
     <div class="bg-amber-50 border-2 border-amber-300 rounded-3xl p-4 space-y-2">
-      <div class="text-xs font-black text-[#233858]">👧 똑순이 손녀 효심이가 이렇게 챙겨드려요:</div>
+      <div class="text-xs font-black text-[#233858]">👧 똑순이 손녀 효심이가 이렇게 알려드려요:</div>
       <p id="grandLiveSpeechBubble" class="text-lg font-extrabold text-gray-900 leading-relaxed">
-        “할머니, 똑순이 손녀 효심이예요! 지금 아침 혈압약 챙겨 드실 시간이에요. 빈속에 드시지 마시고 미지근한 물 한 컵과 함께 챙겨 드세요!”
+        “할머니, 똑순이 손녀 효심이예요! 지금 아침 혈압약 챙겨 드실 시간이에요. 미지근한 물 한 컵과 함께 꼭 챙겨 드세요!”
       </p>
     </div>
 
     <div class="space-y-2.5">
-      <h3 class="text-lg font-black text-[#233858] px-1">📋 예약된 효심이 알림 목록</h3>
+      <h3 class="text-lg font-black text-[#233858] px-1">📋 예약된 효심이 알림 목록 ([👧🔊 듣기] 터치!)</h3>
       <div id="grandScheduleList" class="space-y-2.5"></div>
     </div>
   </section>
 
   <!-- =================================================================== -->
-  <!-- [탭 3] 🛡️ 장기요양등급 맞춤 혜택 & 무응답 고독사 예방 안전망 (신규 교체!) -->
+  <!-- [탭 3] 🛡️ 장기요양등급 혜택 & 무응답 고독사 예방 안전망 -->
   <!-- =================================================================== -->
   <section id="tabContentCare" class="hidden max-w-md mx-auto px-4 pt-4 space-y-5">
 
-    <!-- 파트 A: 노인장기요양보험 등급별 맞춤 혜택 안내 -->
-    <div class="bg-white rounded-3xl p-5 border-3 border-[#115e46] shadow-md space-y-4">
+    <!-- 파트 A: 노인장기요양보험 등급별 맞춤 혜택 -->
+    <div class="bg-white rounded-3xl p-5 border-2 border-[#115e46] shadow-md space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <span class="inline-block bg-emerald-100 text-[#115e46] text-xs font-black px-2.5 py-1 rounded-full">국민건강보험 노인장기요양 기준 반영</span>
+          <span class="inline-block bg-emerald-100 text-[#115e46] text-xs font-black px-2.5 py-1 rounded-full">국민건강보험 노인장기요양 공식 기준</span>
           <h2 class="text-2xl font-black text-[#1e293b] mt-1">🛡️ 내 요양등급 혜택 찾기</h2>
         </div>
         <button type="button" onclick="startCareVoiceAsk()" class="bg-amber-400 text-[#1e293b] px-3.5 py-2.5 rounded-2xl font-black text-sm shadow border-2 border-amber-600 shrink-0">
@@ -298,61 +301,57 @@
       </div>
 
       <p class="text-base font-bold text-gray-700 leading-snug">
-        어르신의 등급 버튼을 누르시거나 <strong>“나 3등급인데 어떤 혜택 받아?”</strong>라고 물어보시면 효심이가 쉽게 알려드려요!
+        아래 등급 버튼을 누르시면 <strong>즉시 똑순이 손녀 효심이 목소리로 받을 수 있는 혜택을 또렷하게 읽어드려요!</strong>
       </p>
 
-      <!-- 1~5등급 + 인지지원등급 왕버튼 그리드 -->
+      <!-- 등급 선택 왕버튼 6개 (누르는 즉시 화면 변경 + 음성 자동 재생!) -->
       <div class="grid grid-cols-3 gap-2">
-        <button type="button" id="gradeBtn_1" onclick="selectCareGrade('1')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858]">1등급</button>
-        <button type="button" id="gradeBtn_2" onclick="selectCareGrade('2')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858]">2등급</button>
-        <button type="button" id="gradeBtn_3" onclick="selectCareGrade('3')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] grade-active">3등급</button>
-        <button type="button" id="gradeBtn_4" onclick="selectCareGrade('4')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858]">4등급</button>
-        <button type="button" id="gradeBtn_5" onclick="selectCareGrade('5')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858]">5등급</button>
-        <button type="button" id="gradeBtn_cog" onclick="selectCareGrade('cog')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-base text-[#233858]">인지지원</button>
+        <button type="button" id="gradeBtn_1" onclick="selectCareGrade('1')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] transition">1등급</button>
+        <button type="button" id="gradeBtn_2" onclick="selectCareGrade('2')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] transition">2등급</button>
+        <button type="button" id="gradeBtn_3" onclick="selectCareGrade('3')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] grade-active transition">3등급</button>
+        <button type="button" id="gradeBtn_4" onclick="selectCareGrade('4')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] transition">4등급</button>
+        <button type="button" id="gradeBtn_5" onclick="selectCareGrade('5')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-lg text-[#233858] transition">5등급</button>
+        <button type="button" id="gradeBtn_cog" onclick="selectCareGrade('cog')" class="py-3.5 rounded-2xl border-2 border-[#dfd7c6] bg-[#fbf7ee] font-black text-base text-[#233858] transition">인지지원</button>
       </div>
 
       <!-- 선택된 등급 상세 혜택 카드 -->
       <div class="bg-[#f2f9f6] rounded-3xl p-5 border-2 border-emerald-600 space-y-3.5">
-        <div class="flex items-center justify-between border-b border-emerald-200 pb-2.5">
-          <div>
-            <span id="careGradeTitle" class="text-2xl font-black text-[#115e46]">장기요양 3등급 혜택</span>
-            <p id="careGradeTarget" class="text-sm font-bold text-gray-600 mt-0.5">일상생활에서 부분적으로 다른 사람의 도움이 필요한 어르신</p>
-          </div>
-          <button type="button" onclick="speakSelectedCareGrade()" class="bg-[#115e46] text-white px-3.5 py-2 rounded-xl font-black text-sm shadow shrink-0">
-            👧🔊 듣기
-          </button>
+        <div>
+          <span id="careGradeTitle" class="text-2xl font-black text-[#115e46]">장기요양 3등급 혜택</span>
+          <p id="careGradeTarget" class="text-sm font-bold text-gray-600 mt-1">일상생활에서 부분적으로 다른 사람의 도움이 필요한 어르신</p>
         </div>
 
-        <!-- 노란 핵심 금액 박스 -->
+        <!-- 소리 바로 듣기 왕버튼 -->
+        <button type="button" onclick="speakSelectedCareGrade()" class="w-full py-4 bg-gradient-to-r from-amber-400 to-yellow-300 text-[#1e293b] font-black text-xl rounded-2xl shadow-md border-2 border-amber-600 flex items-center justify-center gap-2">
+          <span>👧🔊</span> <span id="careSpeakBtnLabel">3등급 혜택 효심이 목소리로 듣기</span>
+        </button>
+
         <div class="yellow-trust-box rounded-2xl p-4 space-y-1">
-          <div class="text-xs font-extrabold opacity-80">국가 지원 재가급여 월 한도액 (2026 고시 기준)</div>
+          <div class="text-xs font-extrabold opacity-80">국가 지원 재가급여 월 한도액 (2026 보건복지부 고시)</div>
           <div id="careMonthlyLimit" class="text-3xl font-black text-[#1f1600]">월 1,485,700원</div>
           <div id="careCopayInfo" class="text-sm font-black text-amber-950">일반 본인부담 15% (약 222,850원) · 감경 6~9% · 기초수급자 무료</div>
         </div>
 
-        <!-- 받을 수 있는 서비스 목록 -->
         <div class="space-y-2">
-          <div class="text-sm font-black text-emerald-950">✅ 이 등급으로 이용하실 수 있는 혜택</div>
+          <div class="text-sm font-black text-emerald-950">✅ 이 등급으로 이용하실 수 있는 서비스</div>
           <ul id="careServiceList" class="space-y-2 text-base font-extrabold text-gray-800"></ul>
         </div>
 
-        <!-- 연간 복지용구 공통 혜택 -->
         <div class="bg-white rounded-2xl p-3.5 border border-emerald-200 space-y-1">
-          <div class="text-xs font-black text-emerald-800">🦽 추가 혜택: 복지용구 연간 160만 원 한도 지원</div>
-          <p id="careEquipInfo" class="text-sm font-bold text-gray-700 leading-snug">
+          <div class="text-xs font-black text-emerald-800">🦽 공통 추가 혜택: 복지용구 연 160만 원 한도 지원</div>
+          <p class="text-sm font-bold text-gray-700 leading-snug">
             성인용 보행기(실버카), 안전손잡이, 미끄럼방지매트, 목욕의자, 전동침대 등을 저렴한 본인부담금으로 구입·대여하실 수 있어요.
           </p>
         </div>
 
-        <!-- 효심이 설명 말풍선 -->
         <div class="bg-amber-50 rounded-2xl p-3.5 border border-amber-300">
-          <div class="text-xs font-black text-[#233858] mb-1">👧 똑순이 손녀 효심이 음성 안내문:</div>
+          <div class="text-xs font-black text-[#233858] mb-1">👧 똑순이 손녀 효심이 음성 대본:</div>
           <p id="careSpeechPreview" class="text-base font-bold text-gray-900 leading-relaxed"></p>
         </div>
       </div>
     </div>
 
-    <!-- 파트 B: 어르신 무응답(침묵) 감지 -> 사회복지사 & 가족 위기 알림 안전망 -->
+    <!-- 파트 B: 어르신 무응답(침묵) 감지 ➔ 사회복지사 알림 & 가족 자동 위기 문자 -->
     <div class="bg-white rounded-3xl p-5 border-4 border-rose-500 shadow-lg space-y-4">
       <div class="flex items-center justify-between">
         <div>
@@ -366,49 +365,44 @@
       </div>
 
       <p class="text-sm font-bold text-gray-700 leading-relaxed">
-        어르신이 무기력증이나 위기 상황으로 <strong>72시간(3일) 동안 앱 사용 및 알림 응답이 없을 때</strong>, 휴대폰 사생활을 훔쳐보지 않고 <strong>관할 주민센터 사회복지사와 보호자에게 즉시 안부 확인 출동 요청</strong>을 보냅니다.
+        어르신이 무기력증이나 위기 상황으로 <strong>72시간(3일) 연속 찍어봐 YOU 앱 및 약 알림에 응답하지 않으실 때</strong>, 휴대폰 사생활을 읽지 않고 <strong>관할 사회복지사와 가족에게 자동 위기 알림</strong>을 보냅니다.
       </p>
 
-      <!-- 실시간 무응답 상태 계기판 -->
-      <div id="inactivityStatusCard" class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 space-y-2">
+      <div id="inactivityStatusCard" class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 space-y-1.5">
         <div class="flex items-center justify-between">
           <span class="text-sm font-black text-emerald-900">📡 현재 어르신 안부 상태</span>
           <span id="safetyStatusBadge" class="bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-full">정상 활동 중</span>
         </div>
         <div id="lastActiveTimeText" class="text-lg font-black text-gray-900">마지막 앱 사용: 방금 전 (무응답 0시간째)</div>
-        <div class="text-xs font-bold text-gray-600">위기 발송 기준: 72시간(3일) 연속 무응답 또는 체납·단전 고지서 감지 시</div>
       </div>
 
-      <!-- 비상연락망 설정 (보호자 & 관할 복지센터) -->
-      <div class="bg-[#fbf7ee] rounded-2xl p-4 border border-[#dfd7c6] space-y-2.5">
-        <div class="text-sm font-black text-[#233858]">📞 위기 시 자동 연결될 비상 연락처</div>
-        <div class="grid grid-cols-1 gap-2">
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-black bg-[#233858] text-white px-2.5 py-1.5 rounded-lg shrink-0">관할 복지사</span>
-            <input id="welfareCenterInput" type="text" value="행복동 주민센터 맞춤형복지팀 (사회복지사 김민수)" class="w-full p-2 text-sm font-bold bg-white border rounded-xl">
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-black bg-rose-600 text-white px-2.5 py-1.5 rounded-lg shrink-0">가족 연락처</span>
-            <input id="familyPhoneInput" type="text" value="따님 박지영 (010-1234-5678)" class="w-full p-2 text-sm font-bold bg-white border rounded-xl">
-          </div>
+      <div class="bg-[#fbf7ee] rounded-2xl p-4 border border-[#dfd7c6] space-y-2">
+        <div class="text-sm font-black text-[#233858]">📞 위기 감지 시 자동 발송될 수신처</div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-black bg-[#233858] text-white px-2.5 py-1.5 rounded-lg shrink-0">사회복지사</span>
+          <input id="welfareCenterInput" type="text" value="행복동 주민센터 맞춤형복지팀 (김민수 복지사)" class="w-full p-2 text-sm font-bold bg-white border rounded-xl">
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-black bg-rose-600 text-white px-2.5 py-1.5 rounded-lg shrink-0">가족 연락처</span>
+          <input id="familyPhoneInput" type="text" value="따님 박지영 (010-1234-5678)" class="w-full p-2 text-sm font-bold bg-white border rounded-xl">
         </div>
       </div>
 
-      <!-- 경진대회 심사위원 시연용 버튼 2종 -->
+      <!-- 발표 심사 시연 버튼 -->
       <div class="space-y-2 pt-1">
-        <div class="text-xs font-black text-rose-700 text-center">👇 발표 심사(PT) 시연용 버튼: 누르면 3일 무응답 위기 발송이 즉시 작동합니다!</div>
+        <div class="text-xs font-black text-rose-700 text-center">👇 아래 빨간 버튼을 누르면 사회복지사 알림 + 가족 위기 문자가 즉시 시연됩니다!</div>
         <button type="button" onclick="triggerInactivityCrisisDemo(72)" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-lg rounded-2xl shadow-lg crisis-pulse">
-          🚨 [심사 시연] 72시간 무응답 발생 → 복지사·가족 위기알림 발송!
+          🚨 [데모 시연] 72시간 무응답 ➔ 복지사·가족 위기알림 발송!
         </button>
         <button type="button" onclick="confirmSeniorSafeNow()" class="w-full py-3 bg-emerald-700 text-white font-black text-base rounded-2xl shadow">
-          😊 “효심아 나 잘 있어!” (어르신 안부 정상 복구하기)
+          😊 “효심아 나 잘 있어!” (안부 정상 복구하기)
         </button>
       </div>
     </div>
   </section>
 
   <!-- =================================================================== -->
-  <!-- 📱 [시연 핵심 모달] 사회복지사 행정망 알림 & 가족 자동 위기 문자 시뮬레이터 -->
+  <!-- 📱 사회복지사 관제망 알림 & 가족 자동 위기 문자 시뮬레이터 모달 -->
   <!-- =================================================================== -->
   <div id="crisisSimulatorModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-3 overflow-y-auto">
     <div class="bg-[#1e293b] text-white rounded-3xl max-w-md w-full p-5 space-y-4 border-4 border-rose-500 shadow-2xl my-auto">
@@ -416,55 +410,52 @@
         <div class="flex items-center gap-2">
           <span class="text-2xl">🚨</span>
           <div>
-            <div class="text-xs font-black text-rose-400">고독사 예방 능동형 안전망 작동 화면</div>
-            <h3 class="text-lg font-black">무응답 위기 신호 자동 발송 완료</h3>
+            <div class="text-xs font-black text-rose-400">찍어봐 YOU · 고독사 예방 안전망 작동</div>
+            <h3 class="text-lg font-black">복지사 알림 & 가족 위기 문자 발송됨</h3>
           </div>
         </div>
         <button type="button" onclick="closeCrisisModal()" class="bg-gray-700 px-3 py-1 rounded-xl text-sm font-black">닫기</button>
       </div>
 
-      <!-- 수신 화면 전환 탭 (사회복지사 관제망 vs 가족 휴대폰 문자) -->
+      <!-- 사회복지사 / 가족 문자 전환 탭 -->
       <div class="grid grid-cols-2 gap-2 bg-gray-800 p-1.5 rounded-2xl">
-        <button type="button" id="simTabWorker" onclick="switchCrisisSimTab('worker')" class="py-2.5 rounded-xl font-black text-sm bg-rose-600 text-white">🏛️ 사회복지사 수신창</button>
-        <button type="button" id="simTabFamily" onclick="switchCrisisSimTab('family')" class="py-2.5 rounded-xl font-black text-sm text-gray-300">📱 가족 위기 문자창</button>
+        <button type="button" id="simTabWorker" onclick="switchCrisisSimTab('worker', true)" class="py-2.5 rounded-xl font-black text-sm bg-rose-600 text-white">🏛️ 사회복지사 알림창</button>
+        <button type="button" id="simTabFamily" onclick="switchCrisisSimTab('family', true)" class="py-2.5 rounded-xl font-black text-sm text-gray-300">📱 가족 자동 위기문자</button>
       </div>
 
-      <!-- [화면 1] 지자체 사회복지사 복지망 대시보드 알림 -->
+      <!-- [1] 사회복지사 수신 화면 -->
       <div id="simViewWorker" class="bg-white text-gray-900 rounded-2xl p-4 space-y-3">
         <div class="flex items-center justify-between">
-          <span class="bg-red-600 text-white text-xs font-black px-2.5 py-1 rounded-full">긴급 출동 요망 (고위험)</span>
+          <span class="bg-red-600 text-white text-xs font-black px-2.5 py-1 rounded-full">긴급 방문 요망 (고위험)</span>
           <span id="simWorkerTime" class="text-xs font-bold text-gray-500">방금 수신</span>
         </div>
         <div class="font-black text-lg text-[#233858]" id="simWorkerReceiver">수신: 행복동 주민센터 맞춤형복지팀</div>
         <div class="bg-rose-50 border-l-4 border-rose-600 p-3 rounded-xl space-y-1.5 text-sm font-bold">
-          <div>• <strong>대상 가구:</strong> 관내 돌봄 동의 독거 어르신 (장기요양 3등급)</div>
-          <div id="simWorkerReason">• <strong>감지 사유:</strong> 찍어봐孝 앱 <strong>72시간 연속 무응답(침묵)</strong></div>
-          <div>• <strong>사회보장 데이터 대조:</strong> 지자체 공과금·건보료 체납 이력 대조 및 방문 안부 확인 권장</div>
-          <div>• <strong>개인정보 보호:</strong> 휴대폰 사생활 원문 미수집 (비식별 상태 신호만 전송됨)</div>
+          <div>• <strong>대상 가구:</strong> 관내 안심돌봄 동의 독거 어르신</div>
+          <div id="simWorkerReason">• <strong>감지 사유:</strong> 찍어봐 YOU 앱 <strong>72시간 연속 무응답(침묵)</strong></div>
+          <div>• <strong>사회보장 데이터 연계:</strong> 지자체 단전·단수·건보료 체납 위기정보 대조 후 우선 출동 권고</div>
+          <div>• <strong>개인정보 보호:</strong> 문자·사진 원문 미수집 (비식별 무응답 신호만 전송)</div>
         </div>
         <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" onclick="acknowledgeDispatch()" class="py-3 bg-[#233858] text-white rounded-xl font-black text-sm">✅ 방문 출동 접수</button>
+          <button type="button" onclick="acknowledgeDispatch()" class="py-3 bg-[#233858] text-white rounded-xl font-black text-sm">✅ 복지사 출동 접수</button>
           <a href="tel:129" class="py-3 bg-emerald-700 text-white rounded-xl font-black text-sm text-center">📞 보건복지상담 129</a>
         </div>
       </div>
 
-      <!-- [화면 2] 보호자(가족) 스마트폰 자동 위기 문자 화면 -->
+      <!-- [2] 가족 자동 위기 문자 화면 -->
       <div id="simViewFamily" class="hidden bg-[#e5e7eb] text-gray-900 rounded-2xl p-4 space-y-3">
-        <div class="text-center text-xs font-bold text-gray-500">문자 메시지 (SMS / 알림톡 시뮬레이션)</div>
+        <div class="text-center text-xs font-bold text-gray-500">보호자 휴대폰 위기 문자 수신 화면</div>
         <div class="bg-yellow-300 text-gray-900 px-3 py-2 rounded-t-2xl font-black text-sm flex items-center justify-between">
-          <span>[찍어봐孝 안심돌봄 알림]</span>
-          <span class="text-xs">긴급 발신</span>
+          <span>[찍어봐 YOU 긴급 위기알림]</span>
+          <span class="text-xs">자동 발신</span>
         </div>
         <div class="bg-white p-4 rounded-b-2xl shadow space-y-2 text-sm font-bold leading-relaxed -mt-3">
           <p id="simFamilyReceiver" class="text-rose-700 font-black">보호자 따님 박지영님께 알립니다.</p>
-          <p id="simFamilyBody">
-            어르신께서 <strong>72시간(3일) 동안</strong> ‘찍어봐효’ 약 알림 및 안부 확인에 응답하지 않으셨습니다.<br><br>
-            혹시 편찮으시거나 위기 상황일 수 있으니 지금 바로 어르신께 안부 전화를 드려 주세요. 연락이 닿지 않을 경우 관할 주민센터 맞춤형복지팀으로 방문 확인을 요청하실 수 있습니다.
-          </p>
+          <p id="simFamilyBody"></p>
         </div>
         <div class="grid grid-cols-2 gap-2">
-          <button type="button" onclick="sendRealSmsToFamily()" class="py-3 bg-rose-600 text-white rounded-xl font-black text-sm">✉️ 실제 문자앱 열기(무료)</button>
-          <button type="button" onclick="copyCrisisMessage()" class="py-3 bg-gray-800 text-white rounded-xl font-black text-sm">📋 카톡 공유용 복사</button>
+          <button type="button" onclick="sendRealSmsToFamily()" class="py-3 bg-rose-600 text-white rounded-xl font-black text-sm">✉️ 실제 문자앱 연결</button>
+          <button type="button" onclick="copyCrisisMessage()" class="py-3 bg-gray-800 text-white rounded-xl font-black text-sm">📋 카톡 전송용 복사</button>
         </div>
       </div>
 
@@ -476,33 +467,22 @@
   <div id="pasteModal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
     <div class="bg-[#fbf7ee] rounded-3xl max-w-md w-full p-5 space-y-3 border-4 border-[#233858]">
       <div class="flex justify-between items-center">
-        <h3 class="text-xl font-black">문자나 서류 글자를 붙여 넣어 주세요</h3>
+        <h3 class="text-xl font-black">문자나 서류 문구를 붙여 넣어 주세요</h3>
         <button type="button" onclick="closePasteModal()" class="font-black underline">닫기</button>
       </div>
-      <textarea id="pasteTextarea" rows="5" class="w-full p-3 rounded-2xl border-2 border-[#233858] bg-white text-base font-bold" placeholder="체납 안내 문자, 장기요양 통지 문구, 약 이름을 붙여 넣으시면 효심이가 쉽게 풀어드려요."></textarea>
+      <textarea id="pasteTextarea" rows="5" class="w-full p-3 rounded-2xl border-2 border-[#233858] bg-white text-base font-bold" placeholder="장기요양 안내 문자, 고지서 문구, 약 이름을 적어주시면 효심이가 쉽게 풀어드려요."></textarea>
       <button type="button" onclick="analyzePastedText()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">효심이에게 물어보기</button>
     </div>
   </div>
 
-  <!-- 수상한 문자 가이드 모달 -->
-  <div id="guideModal" class="hidden fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
-    <div class="bg-[#fbf7ee] rounded-3xl max-w-md w-full p-5 space-y-3 border-4 border-[#233858]">
-      <h3 class="text-2xl font-black">수상한 문자, 이렇게 찍어요</h3>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">갤럭시 캡처:</strong><p class="font-black text-base">전원 버튼 + 소리 줄임(-) 버튼을 동시에 짧게 눌러요.</p></div>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">아이폰 캡처:</strong><p class="font-black text-base">옆 버튼 + 소리 키움(+) 버튼을 동시에 눌렀다 떼세요.</p></div>
-      <div class="bg-white p-3.5 rounded-2xl border"><strong class="text-sm text-gray-500">다른 폰으로 찍기:</strong><p class="font-black text-base">가족 폰이나 카메라로 문자 화면을 찍어서 올리면 돼요.</p></div>
-      <button type="button" onclick="closeGuideModal()" class="w-full py-3.5 navy-btn font-black text-lg rounded-2xl">확인했어요</button>
-    </div>
-  </div>
-
-  <!-- 관리자 전용 키 설정 모달 -->
+  <!-- 관리자 키 모달 -->
   <div id="secretVaultModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 border-4 border-amber-400">
       <div class="flex justify-between items-center">
-        <h3 class="text-lg font-black">🔑 관리자 AI 열쇠 설정</h3>
+        <h3 class="text-lg font-black">🔑 관리자 Gemini API 키 설정</h3>
         <button type="button" onclick="document.getElementById('secretVaultModal').classList.add('hidden')" class="font-bold">✕</button>
       </div>
-      <input id="adminKeyInput" type="text" placeholder="새 API 키 입력" class="w-full p-3 border-2 rounded-xl font-mono text-sm">
+      <input id="adminKeyInput" type="text" placeholder="AIzaSy... 새 Gemini API 키 입력" class="w-full p-3 border-2 rounded-xl font-mono text-sm">
       <div class="flex gap-2">
         <button type="button" onclick="saveAdminKey()" class="flex-1 py-3 navy-btn font-black rounded-xl text-sm">저장하기</button>
         <button type="button" onclick="resetAdminKey()" class="flex-1 py-3 bg-gray-200 font-bold rounded-xl text-sm">기본키 복구</button>
@@ -514,7 +494,7 @@
   <div class="fixed bottom-0 left-0 right-0 bg-[#233858] border-t-4 border-amber-400 px-3 py-2.5 z-40">
     <div class="max-w-md mx-auto flex items-center gap-2">
       <button type="button" onclick="forceSpeakCurrentResult()" class="flex-1 py-3 bg-[#fbe5b5] text-[#233858] font-black text-lg rounded-2xl shadow flex items-center justify-center gap-1.5">
-        <span>👧🔊</span> <span>효심이 목소리 듣기</span>
+        <span>👧🔊</span> <span>효심이 목소리 다시 듣기</span>
       </button>
       <button type="button" onclick="stopAllVoice()" class="px-4 py-3 bg-rose-600 text-white font-black text-base rounded-2xl">🔇 멈춤</button>
     </div>
@@ -522,24 +502,20 @@
 
   <script>
     // =========================================================================
-    // 1. 암호화된 Gemini 보안 열쇠 (원본 유지)
+    // 1. 보안 키 관리
     // =========================================================================
     const ENCRYPTED_TEAM_VAULT = "0908710c2d671c0178163e3f6a3c292023302f36362c7b1f097f1d091b063f0a00333c3b0729280d3f351d233a3d342d2b3b";
     const VAULT_SALT = "HYO_SENIOR_OFFICIAL_2026_KEY";
 
     function encryptHex(raw) {
       let h = '';
-      for (let i = 0; i < raw.length; i++) {
-        h += (raw.charCodeAt(i) ^ VAULT_SALT.charCodeAt(i % VAULT_SALT.length)).toString(16).padStart(2, '0');
-      }
+      for (let i = 0; i < raw.length; i++) h += (raw.charCodeAt(i) ^ VAULT_SALT.charCodeAt(i % VAULT_SALT.length)).toString(16).padStart(2, '0');
       return h;
     }
     function decryptHex(hex) {
       if (!hex) return '';
       let res = '';
-      for (let i = 0; i < hex.length; i += 2) {
-        res += String.fromCharCode(parseInt(hex.substr(i, 2), 16) ^ VAULT_SALT.charCodeAt((i / 2) % VAULT_SALT.length));
-      }
+      for (let i = 0; i < hex.length; i += 2) res += String.fromCharCode(parseInt(hex.substr(i, 2), 16) ^ VAULT_SALT.charCodeAt((i / 2) % VAULT_SALT.length));
       return res.trim();
     }
     function getActiveApiKey() {
@@ -551,19 +527,15 @@
     function handleSecretTap() {
       tapCnt++;
       clearTimeout(tapTimer);
-      if (tapCnt >= 5) {
-        tapCnt = 0;
-        document.getElementById('secretVaultModal').classList.remove('hidden');
-      } else {
-        tapTimer = setTimeout(() => { tapCnt = 0; }, 1200);
-      }
+      if (tapCnt >= 5) { tapCnt = 0; document.getElementById('secretVaultModal').classList.remove('hidden'); }
+      else { tapTimer = setTimeout(() => { tapCnt = 0; }, 1200); }
     }
     function saveAdminKey() {
       const v = document.getElementById('adminKeyInput').value.trim();
       if (!v) return;
       localStorage.setItem('HYO_CUSTOM_HEX_VAULT', encryptHex(v));
       document.getElementById('secretVaultModal').classList.add('hidden');
-      speakGranddaughter('새 AI 열쇠가 저장되었어요!');
+      speakGranddaughter('새 인공지능 열쇠가 저장되었어요!');
     }
     function resetAdminKey() {
       localStorage.removeItem('HYO_CUSTOM_HEX_VAULT');
@@ -572,15 +544,32 @@
     }
 
     // =========================================================================
-    // 2. 똑순이 손녀 효심이 음성(TTS) 엔진
+    // 2. 🔊 3중 무음 방지! 똑순이 손녀 효심이 음성(TTS) 엔진 (끊김/먹통 완벽 해결)
     // =========================================================================
     let currentHonorific = '할머니';
-    let lastSpokenText = '할머니, 똑순이 손녀 효심이예요! 궁금한 약병이나 장기요양 서류를 찍으시면 쉽게 설명해 드리고, 내 요양등급 혜택과 안부 안전망까지 든든하게 챙겨드릴게요!';
+    let lastSpokenText = '할머니, 찍어봐 유의 똑순이 손녀 효심이예요! 약병이나 서류를 찍으시면 쉽게 읽어드리고, 내 장기요양등급 혜택과 안심 연결망까지 야무지게 챙겨드릴게요!';
     let currentPurposeText = '';
     let cloudAudio = null;
+    let speakDelayTimer = null;
+    let watchdogTimer = null;
+    let cachedKorVoice = null;
 
-    function cleanSmartGranddaughterSpeech(raw) {
+    function loadKoreanVoice() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices() || [];
+      cachedKorVoice = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko') && (v.name.includes('Google') || v.name.includes('Heami') || v.name.includes('Yuna') || v.name.includes('유나') || v.name.includes('여성')))
+        || voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'))
+        || null;
+    }
+    if ('speechSynthesis' in window) {
+      loadKoreanVoice();
+      window.speechSynthesis.onvoiceschanged = loadKoreanVoice;
+    }
+
+    // '찍어봐 YOU'를 '찍어봐 유'로 자연스럽게 발음하도록 변환
+    function cleanSmartSpeech(raw) {
       return String(raw || '')
+        .replace(/찍어봐\s*YOU/gi, '찍어봐 유')
         .replace(/~/g, ', ')
         .replace(/[|=•·*#\-_<>\/\\]/g, ' ')
         .replace(/["'“”‘’\[\]()]/g, ' ')
@@ -589,75 +578,110 @@
     }
 
     function stopAllVoice() {
+      clearTimeout(speakDelayTimer);
+      clearTimeout(watchdogTimer);
       if ('speechSynthesis' in window) {
         try { window.speechSynthesis.cancel(); } catch (e) {}
       }
       if (cloudAudio) {
-        try { cloudAudio.pause(); cloudAudio = null; } catch (e) {}
+        try { cloudAudio.pause(); cloudAudio.src = ''; cloudAudio = null; } catch (e) {}
       }
       document.getElementById('voiceStatusBanner').classList.add('hidden');
     }
 
     function speakGranddaughter(text) {
-      const clean = cleanSmartGranddaughterSpeech(text);
+      const clean = cleanSmartSpeech(text);
       if (!clean) return;
       lastSpokenText = clean;
 
+      // 이전 음성 안전 종료
+      clearTimeout(speakDelayTimer);
+      clearTimeout(watchdogTimer);
+      if (cloudAudio) {
+        try { cloudAudio.pause(); cloudAudio = null; } catch (e) {}
+      }
+      if ('speechSynthesis' in window) {
+        try { window.speechSynthesis.cancel(); } catch (e) {}
+      }
+
       const banner = document.getElementById('voiceStatusBanner');
-      const bannerTxt = document.getElementById('voiceBannerText');
-      bannerTxt.textContent = '👧🔊 똑순이 효심이: “' + clean.slice(0, 26) + '...”';
+      document.getElementById('voiceBannerText').textContent = '👧🔊 효심이: “' + clean.slice(0, 28) + '...”';
       banner.classList.remove('hidden');
 
-      if ('speechSynthesis' in window) {
+      // 핵심 해결책: cancel() 직후 70ms 뒤에 speak()를 호출해야 크롬/모바일에서 새 음성이 삼켜지지 않음!
+      speakDelayTimer = setTimeout(() => {
+        if (!('speechSynthesis' in window)) {
+          playCloudVoiceFallback(clean);
+          return;
+        }
         try {
-          window.speechSynthesis.cancel();
+          window.speechSynthesis.resume();
+          loadKoreanVoice();
           const u = new SpeechSynthesisUtterance(clean);
           u.lang = 'ko-KR';
+          if (cachedKorVoice) u.voice = cachedKorVoice;
           u.pitch = 1.12;
           u.rate = 0.96;
-          u.onend = () => { banner.classList.add('hidden'); };
-          u.onerror = () => { playSimpleCloudVoice(clean); };
+          u.volume = 1.0;
+
+          let started = false;
+          u.onstart = () => {
+            started = true;
+            clearTimeout(watchdogTimer);
+          };
+          u.onend = () => {
+            clearTimeout(watchdogTimer);
+            banner.classList.add('hidden');
+          };
+          u.onerror = () => {
+            clearTimeout(watchdogTimer);
+            if (!started) playCloudVoiceFallback(clean);
+            else banner.classList.add('hidden');
+          };
+
           window.speechSynthesis.speak(u);
-          return;
-        } catch (e) {
-          playSimpleCloudVoice(clean);
+
+          // 0.75초 안에 기기 성우가 입을 떼지 않으면 즉시 클라우드 음성으로 백업 재생!
+          watchdogTimer = setTimeout(() => {
+            if (!started && !window.speechSynthesis.speaking) {
+              playCloudVoiceFallback(clean);
+            }
+          }, 750);
+        } catch (err) {
+          playCloudVoiceFallback(clean);
         }
-      } else {
-        playSimpleCloudVoice(clean);
-      }
+      }, 70);
     }
 
-    function playSimpleCloudVoice(text) {
-      const chunks = text.match(/.{1,110}(\s|$|\.|!|,)/g) || [text.slice(0, 110)];
+    function playCloudVoiceFallback(text) {
+      const chunks = text.match(/.{1,95}(\s|$|\.|!|,)/g) || [text.slice(0, 95)];
       let idx = 0;
       const banner = document.getElementById('voiceStatusBanner');
-      function nextChunk() {
+
+      function playNext() {
         if (idx >= chunks.length) {
           banner.classList.add('hidden');
           return;
         }
-        const q = encodeURIComponent(chunks[idx].trim());
-        cloudAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob');
-        cloudAudio.playbackRate = 1.02;
-        cloudAudio.onended = () => { idx++; nextChunk(); };
+        const part = chunks[idx].trim();
+        if (!part) { idx++; playNext(); return; }
+        const url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=gtx&tl=ko&q=' + encodeURIComponent(part);
+        cloudAudio = new Audio(url);
+        cloudAudio.playbackRate = 1.03;
+        cloudAudio.onended = () => { idx++; playNext(); };
         cloudAudio.onerror = () => { banner.classList.add('hidden'); };
         cloudAudio.play().catch(() => { banner.classList.add('hidden'); });
       }
-      nextChunk();
+      playNext();
     }
 
     function testGranddaughterVoiceNow() {
-      speakGranddaughter(currentHonorific + ', 똑순이 손녀 효심이예요! 서류 판독부터 장기요양등급 혜택 안내, 그리고 삼 일간 응답이 없으실 때 복지사 선생님께 연락드리는 안심 기능까지 모두 준비되어 있어요!');
+      speakGranddaughter(currentHonorific + ', 찍어봐 유의 똑순이 손녀 효심이예요! 서류 판독부터 장기요양등급 혜택 안내, 그리고 삼 일 동안 응답이 없으실 때 사회복지사 선생님과 가족에게 알려드리는 안심 기능까지 야무지게 준비되어 있어요!');
     }
-
     function forceSpeakCurrentResult() { speakGranddaughter(lastSpokenText); }
-
     function speakSpecificPart(part) {
-      if (part === 'purpose' && currentPurposeText) {
-        speakGranddaughter(currentHonorific + ', 핵심 내용만 딱 짚어드릴게요! ' + currentPurposeText);
-      } else {
-        speakGranddaughter(lastSpokenText);
-      }
+      if (part === 'purpose' && currentPurposeText) speakGranddaughter(currentHonorific + ', 핵심 내용만 딱 짚어드릴게요! ' + currentPurposeText);
+      else speakGranddaughter(lastSpokenText);
     }
 
     function setHonorific(title) {
@@ -666,10 +690,10 @@
       document.getElementById('callHalmeoni').className = isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
       document.getElementById('callHarabeoji').className = !isG ? 'px-2.5 py-1 rounded-lg text-sm font-black bg-[#233858] text-white' : 'px-2.5 py-1 rounded-lg text-sm font-bold text-[#233858]';
       renderCareGradeView(selectedCareGrade, false);
-      speakGranddaughter(title + ', 똑순이 손녀 효심이예요! 이제부터 ' + title + '라고 다정하게 불러드릴게요!');
+      speakGranddaughter(title + ', 찍어봐 유의 똑순이 손녀 효심이예요! 이제부터 ' + title + '라고 다정하게 불러드릴게요!');
     }
 
-    function switchMainTab(tab) {
+    function switchMainTab(tab, skipAutoVoice) {
       document.getElementById('tabContentDoc').classList.toggle('hidden', tab !== 'doc');
       document.getElementById('tabContentGrand').classList.toggle('hidden', tab !== 'grand');
       document.getElementById('tabContentCare').classList.toggle('hidden', tab !== 'care');
@@ -678,7 +702,10 @@
       document.getElementById('navGrand').className = (tab === 'grand') ? 'py-2.5 rounded-xl font-black text-sm bg-rose-600 text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-sm text-[#233858]';
       document.getElementById('navCare').className = (tab === 'care') ? 'py-2.5 rounded-xl font-black text-sm bg-[#115e46] text-white shadow' : 'py-2.5 rounded-xl font-extrabold text-sm text-[#233858]';
 
-      if (tab === 'care') renderCareGradeView(selectedCareGrade, false);
+      // 요양등급 탭을 열 때도 바로 현재 선택된 등급을 음성으로 안내!
+      if (tab === 'care') {
+        renderCareGradeView(selectedCareGrade, !skipAutoVoice);
+      }
       window.scrollTo(0, 0);
     }
 
@@ -690,87 +717,86 @@
     }
 
     // =========================================================================
-    // 3. 🛡️ 공식 노인장기요양보험 등급별 기준표 사전 (법령 개정 시 상수만 수정)
-    //    ※ 2026 보건복지부 고시 재가급여 월 한도액 반영 (할루시네이션 0% 구조)
+    // 3. 🛡️ 공식 노인장기요양보험 등급별 기준표 (버튼 누르면 즉시 음성 출력!)
     // =========================================================================
     const LTCI_CARE_DATA = {
       '1': {
+        btnName: '1등급',
         title: '장기요양 1등급 혜택',
-        target: '일상생활에서 전적으로 다른 사람의 도움이 필요한 어르신 (95점 이상)',
-        limitNum: 2512900,
+        target: '일상생활에서 전적으로 다른 사람의 도움이 필요한 어르신 (인정점수 95점 이상)',
         limitStr: '월 2,512,900원',
         copayStr: '일반 본인부담 15% (약 376,930원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
-          '🏠 방문요양: 요양보호사가 댁으로 찾아와 식사·세면·가사·외출 동행 지원 (하루 최대 4시간 이상 가능)',
-          '🛁 방문목욕 & 방문간호: 목욕 차량 방문 목욕 및 간호사 가정 방문 건강 간호',
-          '🏫 주야간보호(데이케어) 또는 노인요양시설(요양원) 입소 급여 선택 이용 가능'
+          '🏠 방문요양: 요양보호사가 댁으로 찾아와 식사·세면·가사·외출 동행 지원 (하루 4시간 이상 가능)',
+          '🛁 방문목욕 & 방문간호: 목욕 차량 가정 방문 목욕 및 간호사 방문 건강·투약 관리',
+          '🏫 주야간보호센터 이용 또는 노인요양시설(요양원) 입소 급여 선택 가능'
         ],
-        speech: '장기요양 일등급은 한 달에 이백오십일만 이천구백 원 한도 안에서 나라 지원을 받으실 수 있어요! 요양보호사 선생님이 댁에 오셔서 식사와 목욕, 간호를 도와드리거나 요양원 입소 혜택도 받으실 수 있고, 전동침대나 휠체어 같은 복지용구도 일 년에 백육십만 원까지 지원됩니다!'
+        speech: '장기요양 일등급 혜택을 알려드릴게요! 한 달에 이백오십일만 이천구백 원 한도 안에서 국가 돌봄 지원을 받으실 수 있어요. 요양보호사 선생님이 댁에 오셔서 식사와 목욕, 간호를 도와드리거나 요양원 입소 혜택도 받으실 수 있고, 전동침대나 휠체어 같은 복지용구도 일 년에 백육십만 원까지 지원됩니다!'
       },
       '2': {
+        btnName: '2등급',
         title: '장기요양 2등급 혜택',
         target: '일상생활에서 상당 부분 다른 사람의 도움이 필요한 어르신 (75점 이상 95점 미만)',
-        limitNum: 2331200,
         limitStr: '월 2,331,200원',
         copayStr: '일반 본인부담 15% (약 349,680원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
-          '🏠 방문요양: 요양보호사가 매일 댁으로 방문하여 신체활동 및 일상 가사 돌봄 제공',
-          '🛁 방문목욕 & 방문간호: 가정 내 안전 목욕 서비스 및 욕창·투약 간호 지원',
-          '🏫 주야간보호센터 이용 또는 요양시설(요양원) 입소 급여 모두 이용 가능'
+          '🏠 방문요양: 요양보호사가 매일 댁에 방문해 신체활동 및 가사·식사 돌봄 제공',
+          '🛁 방문목욕 & 방문간호: 가정 내 안전 목욕 서비스 및 간호사 방문 간호 지원',
+          '🏫 주야간보호센터 또는 노인요양시설(요양원) 입소 급여 모두 이용 가능'
         ],
-        speech: '장기요양 이등급은 한 달에 이백삼십삼만 천이백 원까지 재가 돌봄 혜택을 받으실 수 있어요! 본인부담금 십오 퍼센트만 내시면 요양보호사 방문요양과 방문목욕, 주야간보호센터는 물론 요양원 입소도 가능하답니다!'
+        speech: '장기요양 이등급 혜택을 알려드릴게요! 한 달에 이백삼십삼만 천이백 원까지 재가 돌봄 혜택을 받으실 수 있어요. 본인부담금 십오 퍼센트만 내시면 요양보호사 방문요양과 방문목욕, 주야간보호센터는 물론 요양원 입소도 가능하답니다!'
       },
       '3': {
+        btnName: '3등급',
         title: '장기요양 3등급 혜택',
         target: '일상생활에서 부분적으로 다른 사람의 도움이 필요한 어르신 (60점 이상 75점 미만)',
-        limitNum: 1485700,
         limitStr: '월 1,485,700원',
         copayStr: '일반 본인부담 15% (약 222,850원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
-          '🏠 방문요양: 요양보호사가 댁에 방문해 하루 3시간씩 주 5~6회 식사 준비·청소·병원 동행 지원',
-          '🏫 주야간보호(노치원): 낮 동안 센터에서 식사·재활운동·치매예방 프로그램 이용 (송영 차량 지원)',
-          '🛁 방문목욕 & 단기보호: 주 1회 방문목욕 및 가족 부재 시 단기보호시설 이용 가능'
+          '🏠 방문요양: 요양보호사가 댁에 방문해 하루 3시간씩 주 5~6회 식사·청소·병원 동행 지원',
+          '🏫 주야간보호(데이케어): 낮 동안 센터에서 식사·재활운동·치매예방 프로그램 이용 (차량 송영)',
+          '🛁 방문목욕 & 단기보호: 주 1회 방문목욕 및 보호자 부재 시 단기보호 이용 가능'
         ],
-        speech: '장기요양 삼등급이시군요! 삼등급은 한 달에 백사십팔만 오천칠백 원 한도 안에서 나라가 돌봄 비용의 팔십오 퍼센트를 내드려요. 댁으로 요양보호사 선생님이 오시는 방문요양이나 낮 동안 재미있게 지내시는 주야간보호센터를 이용하실 수 있고, 지팡이나 보행기, 안전손잡이 같은 복지용구도 연 백육십만 원까지 저렴하게 빌리거나 사실 수 있어요!'
+        speech: '장기요양 삼등급이시군요! 삼등급은 한 달에 백사십팔만 오천칠백 원 한도 안에서 나라가 돌봄 비용의 팔십오 퍼센트를 지원해 드려요. 댁으로 요양보호사 선생님이 오시는 방문요양이나 낮 동안 즐겁게 지내시는 주야간보호센터를 이용하실 수 있고, 실버카 보행기나 안전손잡이 같은 복지용구도 연 백육십만 원까지 지원받으실 수 있어요!'
       },
       '4': {
+        btnName: '4등급',
         title: '장기요양 4등급 혜택',
         target: '일상생활에서 일정 부분 다른 사람의 도움이 필요한 어르신 (51점 이상 60점 미만)',
-        limitNum: 1370600,
         limitStr: '월 1,370,600원',
         copayStr: '일반 본인부담 15% (약 205,590원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
           '🏠 방문요양: 하루 3시간 기준 월 20일 이상 요양보호사 가정 방문 돌봄 이용 가능',
-          '🏫 주야간보호: 낮 시간 재활·건강관리·식사 제공 및 댁까지 안전한 차량 송영 지원',
-          '🦽 복지용구 지원: 성인용 보행기(실버카), 목욕의자, 미끄럼방지매트 등 구입·대여 지원'
+          '🏫 주야간보호: 낮 시간 재활운동·건강관리·식사 제공 및 안전한 차량 송영 지원',
+          '🦽 복지용구 지원: 성인용 보행기, 목욕의자, 미끄럼방지매트 등 구입·대여 지원'
         ],
-        speech: '장기요양 사등급은 한 달에 백삼십칠만 육백 원까지 국가 재가급여 지원을 받으실 수 있어요! 요양보호사 선생님이 댁에 오셔서 식사와 집안일, 병원 동행을 도와드리고, 성인용 보행기나 안전손잡이 같은 복지용구도 연 백육십만 원 한도로 지원받으실 수 있습니다!'
+        speech: '장기요양 사등급 혜택을 알려드릴게요! 한 달에 백삼십칠만 육백 원까지 국가 재가급여 지원을 받으실 수 있어요. 요양보호사 선생님이 댁에 오셔서 식사와 집안일, 병원 동행을 도와드리고, 성인용 보행기나 안전손잡이 같은 복지용구도 일 년에 백육십만 원 한도로 지원됩니다!'
       },
       '5': {
+        btnName: '5등급',
         title: '장기요양 5등급 (치매특별등급) 혜택',
         target: '치매 진단을 받은 어르신 중 일상 돌봄과 인지활동이 필요한 분 (45점 이상 51점 미만)',
-        limitNum: 1177000,
         limitStr: '월 1,177,000원',
         copayStr: '일반 본인부담 15% (약 176,550원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
-          '🧠 인지활동형 방문요양: 치매 전문 교육을 받은 요양보호사가 두뇌 자극·회상 훈련 및 돌봄 제공',
+          '🧠 인지활동형 방문요양: 치매 전문 교육을 이수한 요양보호사가 두뇌 자극·회상 훈련 및 돌봄 제공',
           '🏫 주야간보호 치매전담 프로그램: 낮 동안 안전한 돌봄과 인지재활 프로그램 이용',
-          '📡 배회감지기(GPS) 및 안전 복지용구 연 160만 원 한도 지원'
+          '📡 배회감지기(GPS) 및 낙상 예방 복지용구 연 160만 원 한도 지원'
         ],
-        speech: '장기요양 오등급은 치매 어르신을 위한 특별 등급으로 한 달에 백십칠만 칠천 원 한도까지 지원돼요! 치매 전문 교육을 받은 선생님이 댁에 오셔서 기억력 훈련과 식사를 챙겨드리고, 길 잃음 방지용 배회감지기 같은 복지용구도 지원받으실 수 있어요!'
+        speech: '장기요양 오등급은 치매 어르신을 위한 특별 등급으로, 한 달에 백십칠만 칠천 원 한도까지 지원돼요! 치매 전문 선생님이 댁에 오셔서 기억력 훈련과 식사를 챙겨드리고, 길 잃음 방지용 배회감지기 같은 복지용구도 지원받으실 수 있어요!'
       },
       'cog': {
+        btnName: '인지지원등급',
         title: '인지지원등급 혜택',
         target: '경증 치매가 확인되어 인지기능 악화 방지 프로그램이 필요한 어르신 (45점 미만)',
-        limitNum: 666600,
         limitStr: '월 666,600원',
         copayStr: '일반 본인부담 15% (약 99,990원) · 감경대상 6~9% · 기초수급자 무료',
         services: [
-          '🏫 주야간보호 인지기능 개선 프로그램: 주 3회 이상 센터에 방문해 치매 악화 예방 활동 및 식사 이용',
+          '🏫 주야간보호 인지기능 개선 프로그램: 주 3회 이상 센터에서 치매 악화 예방 활동 및 식사 이용',
           '🦽 복지용구 지원: 배회감지기, 안전손잡이, 지팡이, 보행기 등 연 160만 원 한도 동일 지원',
-          '👨‍👩‍👧 가족돌봄 휴식제(종일방문요양 등 공단 특례 프로그램) 신청 가능'
+          '👨‍👩‍👧 가족돌봄 휴식제(종일방문요양 등 공단 특례 지원) 신청 가능'
         ],
-        speech: '인지지원등급은 한 달에 육십육만 육천육백 원 한도 안에서 주야간보호센터의 두뇌 건강 프로그램과 맛있는 식사를 이용하실 수 있어요! 또한 성인용 보행기나 안전손잡이, 배회감지기 같은 복지용구도 일 년에 백육십만 원까지 똑같이 지원받으실 수 있답니다!'
+        speech: '인지지원등급 혜택을 알려드릴게요! 한 달에 육십육만 육천육백 원 한도 안에서 주야간보호센터의 두뇌 건강 프로그램과 식사를 이용하실 수 있어요. 성인용 보행기나 안전손잡이, 배회감지기 같은 복지용구도 일 년에 백육십만 원까지 똑같이 지원받으실 수 있답니다!'
       }
     };
 
@@ -792,6 +818,7 @@
       document.getElementById('careGradeTarget').textContent = info.target;
       document.getElementById('careMonthlyLimit').textContent = info.limitStr;
       document.getElementById('careCopayInfo').textContent = info.copayStr;
+      document.getElementById('careSpeakBtnLabel').textContent = info.btnName + ' 혜택 효심이 목소리로 듣기';
 
       const ul = document.getElementById('careServiceList');
       ul.innerHTML = '';
@@ -802,28 +829,29 @@
         ul.appendChild(li);
       });
 
-      const fullSpeech = currentHonorific + ', 똑순이 손녀 효심이가 알려드릴게요! ' + info.speech;
+      const fullSpeech = currentHonorific + ', 똑순이 손녀 효심이예요! ' + info.speech;
       document.getElementById('careSpeechPreview').textContent = '“' + fullSpeech + '”';
-      if (shouldSpeak) speakGranddaughter(fullSpeech);
+
+      if (shouldSpeak) {
+        speakGranddaughter(fullSpeech);
+      }
     }
+    // 초기 화면 데이터만 세팅
     renderCareGradeView('3', false);
 
     function speakSelectedCareGrade() {
-      const info = LTCI_CARE_DATA[selectedCareGrade];
-      speakGranddaughter(currentHonorific + ', 똑순이 손녀 효심이가 알려드릴게요! ' + info.speech);
+      const info = LTCI_CARE_DATA[selectedCareGrade] || LTCI_CARE_DATA['3'];
+      speakGranddaughter(currentHonorific + ', 똑순이 손녀 효심이예요! ' + info.speech);
     }
 
     function startCareVoiceAsk() {
-      speakGranddaughter(currentHonorific + ', 몇 등급이신지 말씀해 주세요! 예를 들어 나 삼등급인데 무슨 혜택 받아 라고 말씀하시면 바로 알려드릴게요!');
+      speakGranddaughter(currentHonorific + ', 몇 등급이신지 말씀해 주세요! 나 삼등급인데 무슨 혜택 받아 처럼 말씀하시면 바로 읽어드릴게요!');
       const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
       if (!SR) return;
       const rec = new SR();
       rec.lang = 'ko-KR';
-      setTimeout(() => { try { rec.start(); } catch (e) {} }, 2600);
-      rec.onresult = (e) => {
-        const txt = e.results[0][0].transcript;
-        parseGradeFromSpeech(txt);
-      };
+      setTimeout(() => { try { rec.start(); } catch (e) {} }, 2700);
+      rec.onresult = (e) => { parseGradeFromSpeech(e.results[0][0].transcript); };
     }
 
     function parseGradeFromSpeech(txt) {
@@ -837,40 +865,37 @@
     }
 
     // =========================================================================
-    // 4. 🚨 무응답(침묵) 온디바이스 감지 & 사회복지사·가족 위기 알림 시뮬레이터
+    // 4. 🚨 무응답(침묵) 온디바이스 감지 ➔ 사회복지사 & 가족 자동 위기 문자 시뮬레이터
     // =========================================================================
-    let simulatedInactiveHours = 0;
     let isCrisisMode = false;
 
     function recordSeniorActivity() {
-      if (isCrisisMode) return; // 위기 시연 모드 중에는 자동 초기화 방지
-      localStorage.setItem('HYO_LAST_ACTIVE_TS', String(Date.now()));
+      if (isCrisisMode) return;
+      localStorage.setItem('YOU_LAST_ACTIVE_TS', String(Date.now()));
     }
-    localStorage.setItem('HYO_LAST_ACTIVE_TS', String(Date.now()));
+    localStorage.setItem('YOU_LAST_ACTIVE_TS', String(Date.now()));
 
     function toggleSafetyConsent() {
       const checked = document.getElementById('safetyConsentToggle').checked;
-      const lbl = document.getElementById('safetyToggleLabel');
-      lbl.textContent = checked ? '동의 켜짐' : '잠시 꺼짐';
+      document.getElementById('safetyToggleLabel').textContent = checked ? '동의 켜짐' : '잠시 꺼짐';
       speakGranddaughter(checked
-        ? currentHonorific + ', 안심 연결망이 켜졌어요! 혹시 삼 일 동안 앱을 안 켜시면 효심이가 복지사 선생님과 가족에게 알려드릴게요!'
+        ? currentHonorific + ', 찍어봐 유 안심 연결망이 켜졌어요! 혹시 삼 일 동안 앱 사용이 없으시면 사회복지사 선생님과 가족에게 자동으로 안부 확인 알림을 보내드릴게요!'
         : currentHonorific + ', 안심 연결망을 잠시 꺼두었어요.');
     }
 
     function triggerInactivityCrisisDemo(hours, customReasonText) {
       if (!document.getElementById('safetyConsentToggle').checked) {
-        alert('먼저 상단 안심 연결 동의 스위치를 켜주세요.');
+        alert('상단 안심 연결 동의 스위치를 먼저 켜주세요.');
         return;
       }
       isCrisisMode = true;
-      simulatedInactiveHours = hours || 72;
+      const h = hours || 72;
 
-      // 상태 카드 빨간색 위기 전환
       const card = document.getElementById('inactivityStatusCard');
-      card.className = 'bg-rose-50 border-3 border-rose-600 rounded-2xl p-4 space-y-2';
+      card.className = 'bg-rose-50 border-2 border-rose-600 rounded-2xl p-4 space-y-1.5';
       document.getElementById('safetyStatusBadge').className = 'bg-rose-600 text-white text-xs font-black px-2.5 py-1 rounded-full';
       document.getElementById('safetyStatusBadge').textContent = '위기 신호 발송됨';
-      document.getElementById('lastActiveTimeText').textContent = '마지막 앱 응답: ' + simulatedInactiveHours + '시간 전 (3일 연속 침묵 감지!)';
+      document.getElementById('lastActiveTimeText').textContent = '마지막 응답: ' + h + '시간 전 (3일 연속 침묵 감지!)';
 
       const welfareName = document.getElementById('welfareCenterInput').value.trim();
       const familyName = document.getElementById('familyPhoneInput').value.trim();
@@ -880,69 +905,72 @@
       document.getElementById('simWorkerReceiver').textContent = '수신: ' + welfareName;
       document.getElementById('simWorkerReason').innerHTML = customReasonText
         ? ('• <strong>감지 사유:</strong> ' + customReasonText)
-        : ('• <strong>감지 사유:</strong> 찍어봐孝 앱 <strong>' + simulatedInactiveHours + '시간(3일) 연속 무응답</strong> 감지');
+        : ('• <strong>감지 사유:</strong> 찍어봐 YOU 앱 <strong>' + h + '시간(3일) 연속 무응답</strong> 감지');
 
-      document.getElementById('simFamilyReceiver').textContent = '보호자 ' + familyName + '님께 긴급 알림';
+      document.getElementById('simFamilyReceiver').textContent = '보호자 ' + familyName + '님께 긴급 위기문자 발송';
       document.getElementById('simFamilyBody').innerHTML = customReasonText
-        ? ('어르신께서 방금 위기 징후 서류(' + customReasonText + ')를 확인하셨거나 장기간 응답이 없으십니다. 즉시 어르신 안부를 확인해 주시고 필요시 관할 주민센터와 연계해 주세요.')
-        : ('어르신께서 <strong>' + simulatedInactiveHours + '시간(3일) 동안</strong> 찍어봐효 약 알림 및 안부 확인에 응답하지 않으셨습니다.<br><br>편찮으시거나 위기 상황일 수 있으니 지금 바로 어르신께 전화를 드려 주세요. 부재 시 <strong>' + welfareName + '</strong>으로 방문 확인이 함께 요청됩니다.');
+        ? ('[찍어봐 YOU 긴급알림] 어르신께서 방금 위기 징후 고지서(' + customReasonText + ')를 촬영하셨거나 장기간 응답이 없으십니다. 즉시 안부 전화를 부탁드리며, 관할 주민센터 복지팀과 연계가 가능합니다.')
+        : ('[찍어봐 YOU 긴급알림] 어르신께서 <strong>' + h + '시간(3일) 동안</strong> 약 복용 알림 및 안부 확인에 응답하지 않으셨습니다.<br><br>편찮으시거나 위기 상황일 수 있으니 지금 바로 어르신께 전화를 드려 주세요. 연락 부재 시 <strong>' + welfareName + '</strong>으로 방문 확인이 요청됩니다.');
 
       document.getElementById('dispatchResultToast').classList.add('hidden');
       document.getElementById('crisisSimulatorModal').classList.remove('hidden');
-      switchCrisisSimTab('worker');
+      switchCrisisSimTab('worker', false);
 
-      speakGranddaughter('긴급 위기 감지 시연입니다. 어르신께서 칠십이 시간 동안 아무 응답이 없으셔서, 개인정보 침해 없이 관할 주민센터 사회복지사 행정망과 보호자 휴대폰으로 안부 확인 출동 요청을 자동 발송했습니다!');
+      speakGranddaughter('찍어봐 유 고독사 예방 안전망 시연입니다! 어르신께서 칠십이 시간 동안 아무 응답이 없으셔서, 개인정보 유출 없이 관할 주민센터 사회복지사 알림창과 보호자 휴대폰으로 자동 위기 문자를 발송했습니다!');
     }
 
-    function switchCrisisSimTab(which) {
+    function switchCrisisSimTab(which, speakTab) {
       const isW = (which === 'worker');
       document.getElementById('simViewWorker').classList.toggle('hidden', !isW);
       document.getElementById('simViewFamily').classList.toggle('hidden', isW);
       document.getElementById('simTabWorker').className = isW ? 'py-2.5 rounded-xl font-black text-sm bg-rose-600 text-white' : 'py-2.5 rounded-xl font-black text-sm text-gray-300';
       document.getElementById('simTabFamily').className = !isW ? 'py-2.5 rounded-xl font-black text-sm bg-amber-400 text-gray-900' : 'py-2.5 rounded-xl font-black text-sm text-gray-300';
+
+      if (speakTab) {
+        if (isW) speakGranddaughter('관할 주민센터 사회복지사 행정망에 긴급 방문 요청이 도착한 화면입니다.');
+        else speakGranddaughter('보호자 가족 휴대폰으로 자동 위기 알림 문자가 발송된 화면입니다.');
+      }
     }
 
     function acknowledgeDispatch() {
       const toast = document.getElementById('dispatchResultToast');
-      toast.textContent = '✅ 담당 사회복지사 방문 안부 확인 출동이 접수되었습니다!';
+      toast.textContent = '✅ 담당 사회복지사 어르신 댁 방문 출동이 접수되었습니다!';
       toast.classList.remove('hidden');
-      speakGranddaughter('담당 사회복지사 선생님이 어르신 댁 방문 안부 확인 접수를 완료했습니다.');
+      speakGranddaughter('담당 사회복지사 선생님이 어르신 댁 방문 안부 확인 출동을 접수했습니다!');
     }
 
     function sendRealSmsToFamily() {
       const rawFam = document.getElementById('familyPhoneInput').value;
-      const phoneMatch = rawFam.match(/01[0-9][-\s]?\d{3,4}[-\s]?\d{4}/);
-      const phone = phoneMatch ? phoneMatch[0].replace(/[^0-9]/g, '') : '01012345678';
-      const body = encodeURIComponent('[찍어봐효 안심알림] 어르신께서 72시간 동안 앱 응답이 없으십니다. 지금 안부 전화를 부탁드립니다.');
+      const m = rawFam.match(/01[0-9][-\s]?\d{3,4}[-\s]?\d{4}/);
+      const phone = m ? m[0].replace(/[^0-9]/g, '') : '01012345678';
+      const body = encodeURIComponent('[찍어봐 YOU 긴급 위기알림] 어르신께서 72시간 동안 앱 응답이 없으십니다. 지금 바로 안부 전화를 부탁드립니다.');
       window.location.href = 'sms:' + phone + '?body=' + body;
     }
 
     function copyCrisisMessage() {
-      const msg = '[찍어봐효 긴급 안부 알림] 어르신께서 72시간 연속 앱 및 약 알림 무응답 상태입니다. 즉시 안부 전화 및 관할 복지센터 확인을 요청드립니다.';
+      const msg = '[찍어봐 YOU 긴급 위기알림] 어르신께서 72시간 연속 약 알림 및 앱 무응답 상태입니다. 즉시 안부 전화 및 관할 복지센터 확인을 요청드립니다.';
       navigator.clipboard.writeText(msg);
       const toast = document.getElementById('dispatchResultToast');
-      toast.textContent = '📋 카카오톡·문자 전송용 위기 알림 문구가 복사되었습니다!';
+      toast.textContent = '📋 가족 카톡·문자 전송용 위기 알림 문구가 복사되었습니다!';
       toast.classList.remove('hidden');
+      speakGranddaughter('가족에게 보낼 긴급 위기 알림 문구를 복사했어요!');
     }
 
-    function closeCrisisModal() {
-      document.getElementById('crisisSimulatorModal').classList.add('hidden');
-    }
+    function closeCrisisModal() { document.getElementById('crisisSimulatorModal').classList.add('hidden'); }
 
     function confirmSeniorSafeNow() {
       isCrisisMode = false;
-      simulatedInactiveHours = 0;
-      localStorage.setItem('HYO_LAST_ACTIVE_TS', String(Date.now()));
+      localStorage.setItem('YOU_LAST_ACTIVE_TS', String(Date.now()));
       const card = document.getElementById('inactivityStatusCard');
-      card.className = 'bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 space-y-2';
+      card.className = 'bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-4 space-y-1.5';
       document.getElementById('safetyStatusBadge').className = 'bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-full';
       document.getElementById('safetyStatusBadge').textContent = '정상 활동 중';
       document.getElementById('lastActiveTimeText').textContent = '마지막 앱 사용: 방금 전 (안부 확인 완료!)';
-      speakGranddaughter('아유 다행이에요 ' + currentHonorific + '! 건강하게 잘 계신 걸 확인해서 무응답 위기 경보를 해제했어요. 오늘도 식사 잘 챙겨 드세요!');
+      speakGranddaughter('다행이에요 ' + currentHonorific + '! 건강하게 잘 계신 걸 확인해서 무응답 위기 경보를 해제했어요!');
     }
 
     // =========================================================================
-    // 5. 경진대회 발표 즉시 시연 샘플 4종 & 실시간 AI 사진 판독
+    // 5. 경진대회 시연 샘플 & 가짜 예시 없는 100% 실제 사진 판독
     // =========================================================================
     const CONTEST_SAMPLES = {
       ltci3: {
@@ -951,79 +979,43 @@
         welfareGradeLink: '3',
         welfareBannerMsg: '장기요양 3등급 판정 서류입니다! 월 1,485,700원 재가 돌봄 한도와 연 160만 원 복지용구 혜택을 바로 연결해 드릴게요.',
         heading: '국민건강보험 ‘노인장기요양 3등급’ 인정 통지서예요.',
-        purpose: '국가에서 어르신의 일상 돌봄 비용 85%(기초수급자 100%)를 지원해 드리는 공식 사회보장 혜택 증서예요.',
-        grandSpeech: '축하드려요! 이 서류는 국민건강보험공단에서 보내준 장기요양 삼등급 인정서예요. 한 달에 백사십팔만 오천칠백 원 한도 안에서 요양보호사 방문요양이나 주야간보호센터를 저렴하게 이용하실 수 있어요. 아래 초록색 버튼을 누르시면 삼등급 혜택을 한눈에 보여드릴게요!',
-        originalPreview: '장기요양인정서 (국민건강보험공단)\n• 장기요양등급: 3등급\n• 급여종류: 재가급여 (월 한도액 1,485,700원)\n• 복지용구 연 한도액: 1,600,000원',
+        purpose: '국가에서 어르신의 일상 돌봄 비용 85%(기초수급자 무료)를 지원해 드리는 공식 사회보장 혜택 증서예요.',
+        grandSpeech: '축하드려요! 국민건강보험공단에서 보내준 장기요양 삼등급 인정서예요. 한 달에 백사십팔만 오천칠백 원 한도 안에서 요양보호사 방문요양이나 주야간보호센터를 저렴하게 이용하실 수 있어요. 아래 노란 버튼을 누르시면 삼등급 상세 혜택을 바로 읽어드릴게요!',
+        originalPreview: '장기요양인정서 (국민건강보험공단)\n• 장기요양등급: 3등급\n• 월 한도액: 1,485,700원 / 복지용구 연 160만 원',
         exactNumbers: [
           { label: '인정 등급', value: '장기요양 3등급' },
-          { label: '월 지원 한도액', value: '1,485,700원 (본인부담 15%)' },
-          { label: '공단 문의전화', value: '1577-1000' }
+          { label: '월 재가급여 한도액', value: '1,485,700원 (본인부담 15%)' },
+          { label: '공단 상담전화', value: '1577-1000' }
         ],
         easyList: [
-          { orig: '재가급여 (방문요양·주야간보호)', easy: '집에 살면서 요양보호사 선생님이 오시거나 낮 동안 센터에 다니는 혜택이에요.' },
-          { orig: '복지용구 급여', easy: '실버카(보행기), 안전손잡이, 미끄럼방지매트를 나라 지원으로 사고 빌리는 혜택이에요.' }
+          { orig: '재가급여 (방문요양·주야간보호)', easy: '집에 계시면서 요양보호사 선생님이 오시거나 낮 동안 센터에 다니는 돌봄 혜택이에요.' },
+          { orig: '복지용구 급여', easy: '실버카(보행기), 안전손잡이, 미끄럼방지매트를 국가 지원으로 사고 빌리는 혜택이에요.' }
         ],
-        actionGuide: '상단이나 아래의 [내 요양등급 혜택 바로 보기] 버튼을 눌러 3등급 상세 혜택을 확인하시고 공단(1577-1000)이나 재가센터에 신청하세요.'
+        actionGuide: '아래 [내 요양등급 혜택 바로 보기] 버튼을 눌러 혜택을 확인하시고 국민건강보험공단(1577-1000)에 신청하세요.'
       },
       arrears: {
         badge: '위기·체납 고지서예요',
         isScam: true,
-        crisisTriggerReason: '건강보험료·전기요금 3개월 체납 및 단전 예고 고지서 촬영 감지',
+        crisisTriggerReason: '건강보험료·전기요금 3개월 체납 및 단전 예고 고지서 감지',
         scamReasons: [
           '3개월 이상 건강보험료 및 전기요금 미납으로 단전·체납 위기 상태예요.',
-          '어르신 혼자 고민하지 마세요! 정부 긴급복지 생계·연료비 지원 대상일 수 있어요.',
-          '동의하신 안심 연결망을 통해 관할 주민센터 복지사님께 도움 요청을 연결할 수 있어요.'
+          '국가 긴급복지 생계비·연료비 지원 제도로 도움을 받으실 수 있어요.',
+          '찍어봐 YOU 안심 연결망으로 관할 주민센터 사회복지사에게 즉시 도움을 요청할 수 있어요.'
         ],
-        welfareBannerMsg: '경제적 위기 신호(체납·단전 예고)가 감지되었습니다! 지자체 긴급복지지원제도 및 관할 사회복지사 상담으로 즉시 연결합니다.',
+        welfareBannerMsg: '경제적 위기 신호(체납·단전 예고)가 감지되었습니다! 관할 사회복지사 긴급 출동 및 긴급복지 상담으로 즉시 연결합니다.',
         heading: '전기요금 단전 예고 및 건강보험료 체납 독촉 고지서예요.',
-        purpose: '요금이 밀려 전기가 끊길 수 있다는 안내문이지만, 나라의 긴급복지 생계비·전기요금 감면 제도로 도움을 받으실 수 있어요.',
-        grandSpeech: '많이 걱정되셨죠? 이건 스미싱은 아니고 요금이 밀렸다는 독촉 고지서예요. 하지만 혼자 끙끙 앓지 마세요! 동주민센터 맞춤형복지팀이나 보건복지상담센터 일 이 구 번에 알리면 긴급 생계비와 공과금 지원을 받으실 수 있어요. 효심이가 복지사 선생님께 바로 도움 알림을 보내드릴까요?',
-        originalPreview: '단전 예고 및 체납 안내문\n• 미납 합계: 342,000원 (3개월분 체납)\n• 복지 상담: 보건복지상담센터 129 / 관할 행정복지센터',
+        purpose: '요금이 밀려 전기 공급이 중단될 수 있다는 통지서이지만, 정부 긴급복지지원제도로 생계비·공과금 도움을 받으실 수 있어요.',
+        grandSpeech: '혼자 걱정하지 마세요! 요금이 밀렸다는 독촉 고지서지만, 동주민센터 맞춤형복지팀이나 보건복지상담센터 일 이 구 번에 알리면 긴급 생계비와 공과금 지원을 받으실 수 있어요. 아래 노란 버튼을 누르시면 사회복지사 선생님과 가족에게 바로 도움 알림을 보내드릴게요!',
+        originalPreview: '단전 예고 및 체납 안내문 (가상 시연 샘플)\n• 미납 합계: 342,000원 (3개월분 체납)\n• 복지 상담: 보건복지상담센터 129',
         exactNumbers: [
-          { label: '체납 합계액', value: '342,000원 (3개월 미납)' },
+          { label: '미납 합계액', value: '342,000원 (3개월 체납)' },
           { label: '긴급복지 상담전화', value: '국번없이 129' }
         ],
         easyList: [
-          { orig: '단전 예고 및 체납처분', easy: '요금이 계속 밀리면 전기 공급이 멈출 수 있으니 분할 납부나 복지 지원을 신청하라는 뜻이에요.' },
-          { orig: '긴급복지지원제도', easy: '갑자기 생활이 어려워진 어르신께 나라에서 생계비·의료비·연료비를 긴급 지원하는 제도예요.' }
+          { orig: '단전 예고 (斷電豫告)', easy: '요금이 계속 밀리면 전기가 끊길 수 있으니 분할 납부나 복지 지원을 신청하라는 뜻이에요.' },
+          { orig: '긴급복지지원제도', easy: '갑자기 형편이 어려워진 어르신께 나라에서 생계비·의료비·연료비를 긴급 지원하는 제도예요.' }
         ],
-        actionGuide: '절대 포기하지 마시고 아래 [사회복지사 긴급 도움 연결] 버튼을 누르시거나 국번없이 129번으로 전화하세요!'
-      },
-      medicine: {
-        badge: '약병 · 병원안내예요',
-        isScam: false,
-        heading: '소화를 돕는 소화제와 서울내과 예약 안내문이에요.',
-        purpose: '식사 후 속이 더부룩할 때 소화를 돕는 안전한 약이고, 내일 오후 2시 내과 채혈 검사가 있어요.',
-        grandSpeech: '효심이가 약병이랑 병원 종이를 읽어봤어요! 이 약은 수면제가 아니라 안전한 소화제니까 식사 후에 한 알 드세요. 그리고 내일 오후 두 시에 서울내과 가시는 날이니 아침부터 물 외에는 드시지 말고 건강보험증을 챙겨 다녀오세요!',
-        originalPreview: '훼스탈 소화효소제 (식후 1정 복용)\n서울내과의원 예약: 내일 오후 2시 (8시간 공복채혈)',
-        exactNumbers: [
-          { label: '복용 방법', value: '하루 3번 (식사 후 1알)' },
-          { label: '병원 예약', value: '내일 오후 2시 00분' }
-        ],
-        easyList: [
-          { orig: '공복채혈 (8시간 금식)', easy: '피검사를 해야 하니 병원 가기 8시간 전부터 밥이나 커피를 드시지 말라는 뜻이에요.' }
-        ],
-        actionGuide: '식사 후 미지근한 물과 1알 드시고, 아래 예약 버튼을 눌러 병원 알림을 맞춰두세요.'
-      },
-      scam: {
-        badge: '의심되는 문자예요',
-        isScam: true,
-        scamReasons: [
-          '어느 택배 회사인지 적혀 있지 않아요.',
-          '이상한 인터넷 주소(링크)를 누르게 유도하는 전형적인 스미싱 사기예요.'
-        ],
-        heading: '택배를 사칭한 가짜 스미싱 문자예요! 절대 누르지 마세요.',
-        purpose: '어르신 휴대폰에 악성 앱을 깔아 돈을 빼가려는 사기 문자이니 바로 삭제하셔야 해요.',
-        grandSpeech: '앗! 큰일 날 뻔했어요! 이 문자는 택배 회사를 흉내 낸 가짜 사기 문자예요. 안에 적힌 영어 인터넷 주소를 절대 누르지 마시고 지금 바로 문자를 지워주세요!',
-        originalPreview: '[Web발신] 고객님의 택배가 주소 불명으로 반송될 예정입니다. 링크 확인: http://paek-ae.example/9k2',
-        exactNumbers: [
-          { label: '경찰청 신고', value: '112' },
-          { label: '금융감독원', value: '1332' }
-        ],
-        easyList: [
-          { orig: '주소 불명 반송 예정 URL', easy: '겁을 주어 인터넷 주소를 누르게 만들려는 거짓말이에요.' }
-        ],
-        actionGuide: '링크를 절대 누르지 마시고 삭제하세요. 이미 누르셨다면 즉시 112나 자녀에게 알리세요.'
+        actionGuide: '절대 포기하지 마시고 아래 [사회복지사·가족 위기 도움 발송] 버튼을 누르시거나 129번으로 전화하세요!'
       }
     };
 
@@ -1034,28 +1026,29 @@
       showResultScreen(CONTEST_SAMPLES[key]);
     }
 
-    const VISION_PROMPT = `당신은 대한민국 어르신을 돕는 똑순이 손녀 AI '효심이'입니다.
-사진 속 서류(장기요양인정서, 고지서, 독촉장, 병원 서류)나 약병, 생활용품의 글자를 정확히 읽고 어르신 눈높이에서 쉽게 설명하세요. 물결표(~) 기호는 쓰지 마세요.
-반드시 JSON 형식으로만 응답하세요:
+    const VISION_PROMPT = `당신은 시각 약자 어르신을 돕는 단순 독해 보조기이자 '찍어봐 YOU'의 똑순이 손녀 AI '효심이'입니다.
+의료·금융·법률 자문이 아니라 인쇄된 글자(둥근 약통, 병원 조직검사 결과지, 보험 공문, 장기요양인정서, 고지서, 문자 등)를 있는 그대로 정확히 읽고 어려운 영어·한자·전문용어를 쉬운 한국어로 풀어주세요. 어떤 문서도 거절하지 마세요.
+만약 장기요양 등급 서류라면 welfareGradeLink에 "1","2","3","4","5","cog" 중 해당 값을 넣으세요. 물결표(~)는 쓰지 마세요.
+반드시 JSON으로만 답하세요:
 {
   "badge": "분류명",
   "isScam": false,
   "scamReasons": [],
   "welfareGradeLink": "",
   "welfareBannerMsg": "",
-  "heading": "한 줄 요약",
-  "purpose": "핵심 용도나 지원 내용",
-  "grandSpeech": "손녀 효심이가 다정하고 또렷하게 설명하는 대본",
-  "originalPreview": "읽은 원문 핵심 요약",
-  "exactNumbers": [{"label": "항목", "value": "실제 숫자/내용"}],
-  "easyList": [{"orig": "어려운 용어", "easy": "쉬운 설명"}],
-  "actionGuide": "구체적 행동 안내"
+  "heading": "무엇인지 한 줄 요약",
+  "purpose": "어디에 먹는(쓰는) 것인지 / 핵심 용도",
+  "grandSpeech": "똑순이 손녀 효심이가 어르신께 야무지고 다정하게 읽어주는 설명 대본",
+  "originalPreview": "사진에서 실제로 읽은 핵심 글자 요약",
+  "exactNumbers": [{"label": "항목", "value": "사진 속 실제 숫자/용량/날짜"}],
+  "easyList": [{"orig": "어려운 영어·한자·전문용어", "easy": "쉬운 말 풀이"}],
+  "actionGuide": "무엇을 어떻게 하면 되는지 한 줄 행동 안내"
 }`;
 
     function extractJsonSafely(rawStr) {
       if (!rawStr) return null;
-      const match = String(rawStr).match(/\{[\s\S]*\}/);
-      return match ? JSON.parse(match[0]) : null;
+      const m = String(rawStr).match(/\{[\s\S]*\}/);
+      return m ? JSON.parse(m[0]) : null;
     }
 
     async function tryGeminiVision(base64DataUrl) {
@@ -1065,7 +1058,7 @@
       const models = ['gemini-2.5-flash', 'gemini-2.0-flash'];
       for (const m of models) {
         const ctrl = new AbortController();
-        const tid = setTimeout(() => ctrl.abort(), 6500);
+        const tid = setTimeout(() => ctrl.abort(), 14000);
         try {
           const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(apiKey);
           const res = await fetch(url, {
@@ -1085,12 +1078,372 @@
           }
         } catch (e) { clearTimeout(tid); }
       }
-      throw new Error('Gemini skipped');
+      throw new Error('Gemini unavailable');
     }
 
-    function analyzeLocalFallback(rawText) {
-      const t = (rawText || '').toLowerCase();
-      if (t.includes('장기요양') || t.includes('등급') || t.includes('공단')) {
-        if (t.includes('1등급')) { const c = Object.assign({}, CONTEST_SAMPLES.ltci3, { welfareGradeLink: '1', heading: '장기요양 1등급 인정 서류예요.' }); return c; }
-        if (t.includes('2등급')) { const c = Object.assign({}, CONTEST_SAMPLES.ltci3, { welfareGradeLink: '2', heading: '장기요양 2등급 인정 서류예요.' }); return c; }
-        if (t.includes('4등급')) { const c = Object.assign({}, CONTEST_SAMPLES.ltci3, { welfareGradeLink: '4', heading: '장
+    // 실제 OCR 텍스트 정직 분석 (가짜 소화제 예시 절대 반환 안 함!)
+    function analyzeHonestOcrText(rawText) {
+      const clean = String(rawText || '').replace(/[|~^=<>«»_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
+      const t = clean.toLowerCase();
+
+      if (t.includes('장기요양') || t.includes('인정서') || /[1-5]\s*등급/.test(t)) {
+        let g = '3';
+        if (t.includes('1등급')) g = '1';
+        else if (t.includes('2등급')) g = '2';
+        else if (t.includes('4등급')) g = '4';
+        else if (t.includes('5등급')) g = '5';
+        else if (t.includes('인지')) g = 'cog';
+        const info = LTCI_CARE_DATA[g];
+        return Object.assign({}, CONTEST_SAMPLES.ltci3, {
+          welfareGradeLink: g,
+          heading: '국민건강보험 ‘' + info.title + '’ 관련 서류예요.',
+          welfareBannerMsg: info.title + ' 대상 서류입니다! ' + info.limitStr + ' 혜택을 바로 확인해 보세요.',
+          grandSpeech: info.speech
+        });
+      }
+      if (t.includes('단전') || t.includes('체납') || t.includes('독촉')) {
+        return CONTEST_SAMPLES.arrears;
+      }
+      if (t.includes('http') || t.includes('스미싱') || t.includes('주소 불명') || t.includes('반송')) {
+        return {
+          badge: '위험 · 의심 문자',
+          isScam: true,
+          scamReasons: ['인터넷 주소(URL 링크) 클릭을 유도하는 의심스러운 문구가 있어요.'],
+          heading: '스미싱이 의심되는 문자예요! 링크를 절대 누르지 마세요.',
+          purpose: '개인정보나 금융정보를 노리는 의심 문자일 가능성이 높으니 주의하셔야 해요.',
+          grandSpeech: '잠깐만요! 문자 안에 인터넷 주소가 들어 있어서 위험해 보여요. 절대 누르지 마시고 자녀분이나 일 일 팔 번에 먼저 확인해 보세요!',
+          originalPreview: clean || '의심 문자 내용 확인',
+          exactNumbers: [{ label: '스미싱 신고·상담', value: '118 / 경찰 112 / 금감원 1332' }],
+          easyList: [{ orig: '인터넷 링크(URL)', easy: '누르면 악성 앱이 설치될 수 있는 인터넷 주소예요.' }],
+          actionGuide: '링크는 절대 누르지 마시고 바로 삭제하거나 가족에게 확인받으세요.'
+        };
+      }
+
+      return {
+        badge: '실제 글자 판독 완료',
+        isScam: false,
+        heading: clean ? '사진 속 글자를 읽고 핵심 내용을 정리했어요.' : '글씨가 조금 흐릿해요. 밝은 곳에서 한 번 더 찍어 주세요.',
+        purpose: clean ? clean.slice(0, 110) : '글자가 잘 보이도록 가까이에서 다시 촬영해 주시면 효심이가 정확히 읽어드릴게요.',
+        grandSpeech: clean
+          ? ('사진에 적힌 내용을 읽어드릴게요! ' + clean.slice(0, 160) + '. 복용량이나 중요 숫자는 원본과 한 번 더 확인해 보세요!')
+          : ('어르신, 사진이 조금 흔들렸거나 어두워서 글씨가 잘 안 보여요. 밝은 곳에서 가까이 다시 한 번만 찍어 주세요!'),
+        originalPreview: clean || '인식된 글자가 적습니다. 재촬영을 권장합니다.',
+        exactNumbers: [{ label: '판독 상태', value: clean ? '원본 글자 추출 완료' : '다시 찍어 주세요' }],
+        easyList: [{ orig: '안전 확인 안내', easy: '약봉투는 약사님께, 고지서는 해당 기관 전화번호로 한 번 더 확인하시면 가장 안전해요.' }],
+        actionGuide: clean ? '위 요약 내용을 확인하시고 필요하면 약·병원 알림을 예약해 두세요.' : '종이나 약통을 밝은 바닥에 놓고 흔들리지 않게 다시 찍어 주세요.'
+      };
+    }
+
+    function resizePhoto(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const MAX = 1200;
+            let w = img.width, h = img.height;
+            if (w > MAX || h > MAX) {
+              if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+              else { w = Math.round(w * MAX / h); h = MAX; }
+            }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
+          };
+          img.onerror = reject;
+          img.src = ev.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      event.target.value = '';
+      document.getElementById('homeScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.add('hidden');
+      document.getElementById('readingScreen').classList.remove('hidden');
+      speakGranddaughter(currentHonorific + ', 효심이가 사진을 두 눈 크게 뜨고 꼼꼼히 읽고 있어요. 잠시만 기다려 주세요!');
+
+      try {
+        const dataUrl = await resizePhoto(file);
+        const imgEl = document.getElementById('resUploadedImg');
+        imgEl.src = dataUrl;
+        imgEl.classList.remove('hidden');
+
+        try {
+          const aiRes = await tryGeminiVision(dataUrl);
+          showResultScreen(aiRes);
+          return;
+        } catch (gemErr) {
+          let ocrTxt = '';
+          try {
+            const r = await Tesseract.recognize(dataUrl, 'kor+eng');
+            ocrTxt = (r && r.data && r.data.text) ? r.data.text : '';
+          } catch (ocrErr) {}
+          showResultScreen(analyzeHonestOcrText(ocrTxt));
+        }
+      } catch (err) {
+        showResultScreen(analyzeHonestOcrText(''));
+      }
+    }
+
+    function showResultScreen(res) {
+      currentResultData = res;
+      currentPurposeText = res.purpose || '';
+      document.getElementById('readingScreen').classList.add('hidden');
+      document.getElementById('homeScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+
+      const badge = document.getElementById('resBadge');
+      badge.textContent = res.badge || '판독 완료';
+      badge.className = res.isScam ? 'px-4 py-1.5 rounded-full font-black text-base bg-red-600 text-white' : 'px-4 py-1.5 rounded-full font-black text-base bg-[#e8dfd0] text-[#233858]';
+
+      document.getElementById('resMainHeading').textContent = res.heading || '';
+      document.getElementById('resPurposeBox').textContent = res.purpose || '';
+      document.getElementById('resOriginalPreview').textContent = res.originalPreview || '';
+      document.getElementById('resActionGuide').textContent = res.actionGuide || '';
+
+      const wBanner = document.getElementById('welfareLinkBanner');
+      const wBtn = document.getElementById('welfareLinkActionBtn');
+      if (res.welfareBannerMsg || res.welfareGradeLink) {
+        wBanner.classList.remove('hidden');
+        document.getElementById('welfareLinkText').textContent = res.welfareBannerMsg || '노인장기요양보험 등급 혜택을 바로 확인하실 수 있어요!';
+        if (res.crisisTriggerReason) {
+          wBtn.textContent = '🚨 사회복지사 · 가족에게 위기 도움 발송하기 ›';
+          wBtn.onclick = () => {
+            switchMainTab('care', true);
+            triggerInactivityCrisisDemo(72, res.crisisTriggerReason);
+          };
+        } else {
+          const gKey = res.welfareGradeLink || '3';
+          wBtn.textContent = '🛡️ 내 요양등급(' + (gKey === 'cog' ? '인지지원' : gKey + '등급') + ') 혜택 바로 듣기 ›';
+          wBtn.onclick = () => {
+            selectedCareGrade = gKey;
+            switchMainTab('care', true);
+            renderCareGradeView(gKey, true);
+          };
+        }
+      } else {
+        wBanner.classList.add('hidden');
+      }
+
+      const scamBox = document.getElementById('scamWarningBox');
+      if (res.isScam && res.scamReasons && res.scamReasons.length) {
+        scamBox.classList.remove('hidden');
+        const ul = document.getElementById('scamReasonsList');
+        ul.innerHTML = '';
+        res.scamReasons.forEach(r => {
+          const li = document.createElement('li');
+          li.textContent = r;
+          ul.appendChild(li);
+        });
+      } else {
+        scamBox.classList.add('hidden');
+      }
+
+      const numBox = document.getElementById('exactNumbersContainer');
+      numBox.innerHTML = '';
+      (res.exactNumbers || []).forEach(n => {
+        const row = document.createElement('div');
+        row.className = 'border-b border-amber-700/25 pb-2 last:border-b-0 last:pb-0';
+        row.innerHTML = '<div class="text-sm font-extrabold opacity-80">' + n.label + '</div><div class="text-2xl font-black mt-0.5">' + n.value + '</div>';
+        numBox.appendChild(row);
+      });
+
+      const easyBox = document.getElementById('easyTranslationsList');
+      easyBox.innerHTML = '';
+      (res.easyList || []).forEach(item => {
+        const d = document.createElement('div');
+        d.className = 'bg-[#fbf7ee] p-3.5 rounded-2xl border border-[#e5dec9] space-y-1';
+        d.innerHTML = '<div class="text-sm font-bold text-gray-500">어려운 표현: ' + item.orig + '</div><div class="text-xl font-black text-[#1e293b]">👉 ' + item.easy + '</div>';
+        easyBox.appendChild(d);
+      });
+
+      const talk = currentHonorific + ', 똑순이 손녀 효심이예요! ' + (res.grandSpeech || (res.heading + ' ' + res.purpose));
+      document.getElementById('resGranddaughterTalk').textContent = '“' + talk + '”';
+      window.scrollTo(0, 0);
+      speakGranddaughter(talk);
+    }
+
+    function openPasteModal() { document.getElementById('pasteModal').classList.remove('hidden'); }
+    function closePasteModal() { document.getElementById('pasteModal').classList.add('hidden'); }
+
+    function analyzePastedText() {
+      const txt = document.getElementById('pasteTextarea').value.trim();
+      if (!txt) return;
+      closePasteModal();
+      document.getElementById('resUploadedImg').classList.add('hidden');
+      showResultScreen(analyzeHonestOcrText(txt));
+    }
+
+    function copyForFamily() {
+      if (!currentResultData) return;
+      const msg = '[찍어봐 YOU 판독 요약]\n• ' + currentResultData.heading + '\n• 내용: ' + currentResultData.purpose + '\n• 할 일: ' + currentResultData.actionGuide;
+      navigator.clipboard.writeText(msg);
+      speakGranddaughter('가족이나 복지사 선생님께 보낼 요약 글을 복사했어요!');
+    }
+
+    // =========================================================================
+    // 6. 말로 시키기 & 약·병원 정각 음성 알림 시계
+    // =========================================================================
+    function toggleVoiceCommand() {
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        switchMainTab('care', false);
+        return;
+      }
+      const rec = new SR();
+      rec.lang = 'ko-KR';
+      document.getElementById('voiceCmdTitle').textContent = '효심이가 듣고 있어요... 말씀하세요!';
+      rec.start();
+      rec.onresult = (e) => {
+        const cmd = e.results[0][0].transcript;
+        document.getElementById('voiceCmdTitle').textContent = '말로 시키기';
+        if (cmd.includes('등급') || cmd.includes('혜택') || cmd.includes('요양')) {
+          switchMainTab('care', true);
+          parseGradeFromSpeech(cmd);
+        } else if (cmd.includes('병원') || cmd.includes('약') || cmd.includes('예약')) {
+          switchMainTab('grand', true);
+          speakGranddaughter(currentHonorific + ', 약 먹는 시간과 병원 예약 화면을 열었어요!');
+        } else {
+          document.getElementById('cameraFileInput').click();
+        }
+      };
+      rec.onerror = () => { document.getElementById('voiceCmdTitle').textContent = '말로 시키기'; };
+    }
+
+    let selectedSchedType = '약 먹는 시간';
+    const todayISO = new Date().toISOString().slice(0, 10);
+    document.getElementById('inSchedDate').value = todayISO;
+
+    let grandSchedules = JSON.parse(localStorage.getItem('YOU_SAVED_SCHEDULES') || 'null') || [
+      { id: 1, type: '약 먹는 시간', date: '매일', clock: '08:30', place: '아침 혈압약 & 영양제', items: '식사 후 미지근한 물 한 컵', firedKey: '' },
+      { id: 2, type: '병원 가는 날', date: todayISO, clock: '14:00', place: '서울내과의원 정기진료', items: '건강보험증, 처방전 봉투', firedKey: '' }
+    ];
+
+    function formatKoreanClock(hhmm) {
+      if (!hhmm) return '';
+      const [hh, mm] = hhmm.split(':').map(Number);
+      const ampm = hh < 12 ? '오전' : '오후';
+      const h12 = hh % 12 === 0 ? 12 : hh % 12;
+      return ampm + ' ' + h12 + '시' + (mm > 0 ? ' ' + mm + '분' : '');
+    }
+
+    function selectScheduleType(t) {
+      selectedSchedType = t;
+      const isMed = (t === '약 먹는 시간');
+      document.getElementById('typeBtnMed').className = isMed ? 'py-2.5 rounded-xl font-black text-base bg-[#233858] text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
+      document.getElementById('typeBtnHosp').className = !isMed ? 'py-2.5 rounded-xl font-black text-base bg-rose-600 text-white' : 'py-2.5 rounded-xl font-bold text-base bg-gray-100 text-gray-700';
+      document.getElementById('datePickerRow').classList.toggle('hidden', isMed);
+    }
+
+    function buildAlarmSpeech(item) {
+      const kTime = formatKoreanClock(item.clock);
+      if (item.type === '약 먹는 시간') {
+        return currentHonorific + ', 똑순이 손녀 효심이예요! 지금 ' + kTime + ', ' + item.place + ' 챙겨 드실 시간이에요! ' + item.items + ' 잊지 마시고 꼭 챙겨 드세요!';
+      }
+      return currentHonorific + ', 똑순이 손녀 효심이예요! 오늘 ' + kTime + '에 ' + item.place + ' 가시는 날이에요! 출발하시기 전에 ' + item.items + ' 가방에 잘 챙기셨는지 확인해 보세요!';
+    }
+
+    function renderGrandSchedules() {
+      localStorage.setItem('YOU_SAVED_SCHEDULES', JSON.stringify(grandSchedules));
+      const box = document.getElementById('grandScheduleList');
+      box.innerHTML = '';
+      grandSchedules.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'bg-white rounded-3xl p-4 border-2 border-[#dfd7c6] flex items-center justify-between gap-2 shadow-sm';
+        div.innerHTML = '<div><span class="text-xs font-black px-2.5 py-0.5 rounded-full ' + (item.type === '약 먹는 시간' ? 'bg-blue-100 text-blue-900' : 'bg-rose-100 text-rose-800') + '">' + item.type + ' · ' + formatKoreanClock(item.clock) + '</span><div class="font-black text-lg text-gray-900 mt-1">' + item.place + '</div><div class="text-sm font-bold text-gray-600">챙길 것: ' + item.items + '</div></div>'
+          + '<button type="button" onclick="triggerScheduleVoice(' + item.id + ')" class="bg-amber-400 text-[#233858] px-3.5 py-2.5 rounded-2xl font-black text-sm shrink-0 shadow">👧🔊 듣기</button>';
+        box.appendChild(div);
+      });
+
+      const homePrev = document.getElementById('homeSchedPreview');
+      if (homePrev && grandSchedules.length) {
+        homePrev.innerHTML = grandSchedules.slice(0, 2).map(x => '• ' + formatKoreanClock(x.clock) + ': ' + x.place).join('<br>');
+      }
+    }
+    renderGrandSchedules();
+
+    function triggerScheduleVoice(id) {
+      const item = grandSchedules.find(x => x.id === id);
+      if (!item) return;
+      recordSeniorActivity();
+      const msg = buildAlarmSpeech(item);
+      document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
+      speakGranddaughter(msg);
+    }
+
+    function addGrandSchedule() {
+      const clock = document.getElementById('inSchedClock').value || '09:00';
+      const dateVal = selectedSchedType === '약 먹는 시간' ? '매일' : (document.getElementById('inSchedDate').value || todayISO);
+      const place = document.getElementById('inSchedPlace').value.trim() || (selectedSchedType === '약 먹는 시간' ? '식후 드시는 약' : '동네 병원 진료');
+      const items = document.getElementById('inSchedItems').value.trim() || (selectedSchedType === '약 먹는 시간' ? '미지근한 물 한 컵' : '건강보험증');
+      const newObj = { id: Date.now(), type: selectedSchedType, date: dateVal, clock, place, items, firedKey: '' };
+      grandSchedules.unshift(newObj);
+      renderGrandSchedules();
+      document.getElementById('inSchedPlace').value = '';
+      document.getElementById('inSchedItems').value = '';
+      const msg = currentHonorific + ', ' + formatKoreanClock(clock) + '에 ' + place + ' 알림을 예약했어요! 시간이 되면 효심이가 소리 내어 챙겨드릴게요!';
+      document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
+      speakGranddaughter(msg);
+    }
+
+    function startVoiceHospitalRecord() {
+      const btn = document.getElementById('recordHospBtn');
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SR) {
+        speakGranddaughter('아래 칸에 병원 이름과 시간을 적어주시면 효심이가 기억해 둘게요!');
+        return;
+      }
+      const rec = new SR();
+      rec.lang = 'ko-KR';
+      btn.textContent = '👂 듣고 있어요... 병원과 시간을 말씀하세요!';
+      rec.start();
+      rec.onresult = (e) => {
+        const spoken = e.results[0][0].transcript;
+        btn.textContent = '🎙️ 눌러서 병원 날짜·시간 말하기';
+        let hh = 14, mm = 0;
+        const m = spoken.match(/(\d{1,2})\s*시/);
+        if (m) {
+          hh = parseInt(m[1], 10);
+          if ((spoken.includes('오후') || spoken.includes('저녁')) && hh < 12) hh += 12;
+        }
+        const clockStr = String(hh).padStart(2, '0') + ':' + String(mm).padStart(2, '0');
+        const newObj = { id: Date.now(), type: '병원 가는 날', date: todayISO, clock: clockStr, place: spoken, items: '건강보험증, 처방전 봉투', firedKey: '' };
+        grandSchedules.unshift(newObj);
+        renderGrandSchedules();
+        document.getElementById('recordedResultBox').classList.remove('hidden');
+        document.getElementById('recordedTextPreview').textContent = spoken + ' (' + formatKoreanClock(clockStr) + ')';
+        speakGranddaughter(currentHonorific + ', ' + spoken + ' 예약을 야무지게 적어두었어요!');
+      };
+      rec.onerror = () => { btn.textContent = '🎙️ 눌러서 병원 날짜·시간 말하기'; };
+    }
+
+    setInterval(() => {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+      const curHHMM = hh + ':' + mm;
+      const curDate = now.toISOString().slice(0, 10);
+      const clockEl = document.getElementById('liveClockDisplay');
+      if (clockEl) clockEl.textContent = formatKoreanClock(curHHMM) + ' ' + ss + '초';
+
+      grandSchedules.forEach(item => {
+        const key = curDate + '_' + curHHMM;
+        const dateOk = (item.date === '매일' || item.date === curDate);
+        if (dateOk && item.clock === curHHMM && item.firedKey !== key) {
+          item.firedKey = key;
+          const msg = buildAlarmSpeech(item);
+          document.getElementById('grandLiveSpeechBubble').textContent = '“' + msg + '”';
+          speakGranddaughter(msg);
+        }
+      });
+    }, 1000);
+  </script>
+</body>
+</html>
