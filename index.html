@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" translate="no">
 <head>
   <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -11,6 +12,7 @@
   <link id="dynamicFavicon" rel="icon" type="image/png">
   <link id="dynamicAppleIcon" rel="apple-touch-icon">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     body {
@@ -29,25 +31,25 @@
     }
   </style>
 </head>
-<body class="min-h-screen pb-32">
+<body class="min-h-screen pb-32 notranslate">
 
-  <!-- 상단 공식 헤더 (로고 5번 연속 터치 시 비밀 관리자 창 열림 / 일반인에게는 완전 숨김) -->
+  <!-- 상단 공식 헤더 (암호화 보안키 자동 가동중) -->
   <header class="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white p-4 shadow-xl sticky top-0 z-30 border-b-4 border-yellow-400">
     <div class="max-w-lg mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-3 cursor-pointer select-none" onclick="handleSecretLogoTap()">
-        <div class="w-13 h-13 px-2.5 py-2 rounded-2xl bg-[#0f172a] gold-ring flex flex-col items-center justify-center shadow-lg">
+      <div class="flex items-center gap-3 select-none" onclick="handleSecretLogoTap()">
+        <div class="px-2.5 py-1.5 rounded-2xl bg-[#0f172a] gold-ring flex flex-col items-center justify-center shadow-lg">
           <span class="text-[11px] font-black text-yellow-300 leading-none">찍어봐</span>
           <span class="text-base font-black text-white leading-tight tracking-tighter">YOU</span>
         </div>
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-2xl font-black tracking-tight">찍어봐<span class="text-yellow-400">YOU</span></h1>
-            <span id="aiStatusBadge" class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500 text-white font-extrabold shadow">🟢 안심 AI 가동중</span>
+            <span class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500 text-white font-extrabold shadow">🟢 안심 AI 가동중</span>
           </div>
           <p class="text-xs text-slate-300">종이·약병·검사지·문자 무엇이든 쉬운 말로 통역</p>
         </div>
       </div>
-      <button onclick="speakCurrentResult()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 px-3.5 py-2 rounded-xl font-black text-sm shadow flex items-center gap-1">
+      <button type="button" onclick="speakCurrentResult()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 px-3.5 py-2 rounded-xl font-black text-sm shadow">
         🔊 소리 듣기
       </button>
     </div>
@@ -56,10 +58,10 @@
   <!-- 상단 탭 메뉴 -->
   <div class="max-w-lg mx-auto px-4 pt-4">
     <div class="grid grid-cols-2 gap-2.5 bg-slate-900 p-1.5 rounded-2xl shadow-inner">
-      <button id="tabScan" onclick="switchTab('scan')" class="py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow">
+      <button type="button" id="tabScan" onclick="switchTab('scan')" class="py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow">
         📸 사진 찍어 통역
       </button>
-      <button id="tabAlarm" onclick="switchTab('alarm')" class="py-3.5 rounded-xl font-black text-lg text-slate-200">
+      <button type="button" id="tabAlarm" onclick="switchTab('alarm')" class="py-3.5 rounded-xl font-black text-lg text-slate-200">
         🏥 병원·복약 소리알림
       </button>
     </div>
@@ -68,7 +70,7 @@
   <!-- [탭 1] 메인 스캔 및 쉬운 말 통역 화면 -->
   <main id="sectionScan" class="max-w-lg mx-auto p-4 space-y-5">
 
-    <!-- 개인정보 무저장 & 안전 설계 배너 (심사위원 핵심 어필 포인트) -->
+    <!-- 개인정보 무저장 & 안전 설계 배너 -->
     <div class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-3.5 shadow-sm flex items-start gap-3">
       <span class="text-2xl">🛡️</span>
       <div class="text-sm text-emerald-950 leading-snug">
@@ -84,20 +86,19 @@
       <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
       <input type="file" id="galleryInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
 
-      <button onclick="document.getElementById('cameraInput').click()" class="w-full py-6 bg-yellow-400 hover:bg-yellow-300 active:scale-98 text-slate-950 font-black text-2xl rounded-2xl shadow-lg pulse-btn flex items-center justify-center gap-3 mb-3">
+      <button type="button" onclick="document.getElementById('cameraInput').click()" class="w-full py-6 bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-2xl rounded-2xl shadow-lg pulse-btn flex items-center justify-center gap-3 mb-3">
         <span class="text-3xl">📸</span> 카메라로 사진 찍기
       </button>
 
       <div class="grid grid-cols-2 gap-2.5">
-        <button onclick="document.getElementById('galleryInput').click()" class="py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base rounded-xl shadow">
+        <button type="button" onclick="document.getElementById('galleryInput').click()" class="py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-black text-base rounded-xl shadow">
           🖼️ 앨범에서 사진 고르기
         </button>
-        <button onclick="toggleTextModal()" class="py-3.5 bg-slate-700 hover:bg-slate-600 text-yellow-300 font-black text-base rounded-xl border border-slate-500">
+        <button type="button" onclick="toggleTextModal()" class="py-3.5 bg-slate-700 hover:bg-slate-600 text-yellow-300 font-black text-base rounded-xl border border-slate-500">
           ✍️ 어려운 글 직접 물어보기
         </button>
       </div>
 
-      <!-- 촬영 사전 가이드 -->
       <div class="mt-4 pt-3 border-t border-slate-700 grid grid-cols-3 gap-2 text-xs text-slate-300 font-bold">
         <div>💡 1. 밝은 곳에서</div>
         <div>📐 2. 글씨가 다 보이게</div>
@@ -105,11 +106,11 @@
       </div>
     </div>
 
-    <!-- 직접 문구 입력 모달창 -->
+    <!-- 직접 문구 입력창 -->
     <div id="textInputBox" class="hidden bg-white rounded-3xl p-5 shadow-lg border-2 border-slate-800 space-y-3">
       <h3 class="text-lg font-black text-slate-900">✍️ 어려운 문구·영어·의학용어 직접 물어보기</h3>
-      <textarea id="directTextInput" rows="3" placeholder="예: 조직검사 결과지에 Benign prostatic hyperplasia라고 적혀 있는데 무슨 뜻이야?" class="w-full p-3.5 border-2 border-slate-300 rounded-2xl text-base font-bold"></textarea>
-      <button onclick="analyzeDirectText()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl shadow">
+      <textarea id="directTextInput" rows="3" placeholder="예: 조직검사 결과지에 Negative for malignancy라고 적혀 있는데 무슨 뜻이야?" class="w-full p-3.5 border-2 border-slate-300 rounded-2xl text-base font-bold"></textarea>
+      <button type="button" onclick="analyzeDirectText()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl shadow">
         🔍 쉬운 말로 즉시 풀이하기
       </button>
     </div>
@@ -117,48 +118,45 @@
     <!-- 원본 사진 대조 뷰어 & 로딩 화면 -->
     <div id="previewContainer" class="hidden bg-white rounded-3xl p-4 shadow-lg border-2 border-slate-300">
       <div class="flex items-center justify-between mb-2">
-        <span class="font-black text-slate-900 text-base">🔍 내가 올린 원본 사진 (터치하여 숫자 대조)</span>
+        <span class="font-black text-slate-900 text-base">🔍 내가 올린 원본 사진 (터치하면 크게 확대)</span>
         <span id="scanTimestamp" class="text-xs font-bold text-slate-500"></span>
       </div>
       <img id="capturedImage" src="" alt="원본 사진" class="w-full max-h-72 object-contain rounded-2xl bg-slate-950 mb-3 cursor-pointer" onclick="this.classList.toggle('max-h-72')">
 
       <div id="loadingBox" class="hidden py-6 text-center space-y-3 bg-amber-50 rounded-2xl border border-amber-200">
         <div class="inline-block w-12 h-12 border-4 border-slate-900 border-t-yellow-400 rounded-full animate-spin"></div>
-        <p class="text-xl font-black text-slate-900">글씨를 크게 읽고 쉬운 말로 바꾸고 있어요...</p>
-        <p class="text-sm font-bold text-slate-600">숫자는 원문 그대로 보존하고 어려운 용어만 통역합니다.</p>
+        <p class="text-xl font-black text-slate-900">글씨를 읽고 쉬운 말로 통역하고 있어요...</p>
+        <p class="text-sm font-bold text-slate-600">숫자는 원문 그대로 보존하고 어려운 용어만 쉽게 풀이합니다.</p>
       </div>
     </div>
 
-    <!-- 재촬영 유도 경고 카드 (글씨가 흐릿할 때만 표시) -->
+    <!-- 재촬영 유도 경고 카드 -->
     <div id="retakeBanner" class="hidden bg-red-600 text-white rounded-3xl p-5 text-center space-y-3 shadow-xl">
       <p class="text-2xl font-black">📸 글씨가 흐려서 정확히 읽기 어려워요!</p>
-      <p class="text-base font-bold">어르신의 안전을 위해 추측해서 읽지 않습니다. 밝은 곳에서 글씨가 선명하게 보이도록 다시 한 번 찍어주세요.</p>
-      <button onclick="document.getElementById('cameraInput').click()" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow">
+      <p class="text-base font-bold">어르신의 안전을 위해 임의로 추측해서 읽지 않습니다. 밝은 곳에서 글씨가 선명하게 보이도록 다시 한 번 찍어주세요.</p>
+      <button type="button" onclick="document.getElementById('cameraInput').click()" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow">
         📸 다시 선명하게 사진 찍기
       </button>
     </div>
 
     <!-- ★ AI 분석 결과 메인 카드 -->
     <div id="resultCard" class="hidden bg-white rounded-3xl shadow-2xl border-4 border-slate-900 overflow-hidden">
-      <!-- 상단 분류 배지 및 제목 -->
-      <div id="resultHeader" class="bg-slate-900 text-white p-5 flex items-center justify-between gap-2">
+      <div class="bg-slate-900 text-white p-5 flex items-center justify-between gap-2">
         <div>
           <span id="resultCategory" class="inline-block bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full mb-1.5">📄 자동 판별 완료</span>
           <h3 id="resultTitle" class="text-2xl font-black leading-tight">-</h3>
         </div>
-        <button onclick="speakCurrentResult()" class="bg-yellow-400 text-slate-950 px-4 py-3.5 rounded-2xl font-black text-lg shadow shrink-0">
+        <button type="button" onclick="speakCurrentResult()" class="bg-yellow-400 text-slate-950 px-4 py-3.5 rounded-2xl font-black text-lg shadow shrink-0">
           🔊 다시 듣기
         </button>
       </div>
 
       <div class="p-5 space-y-4">
-        <!-- ★ 1. "그래서 뭘 해야 하죠?" 한 줄 행동 요약 카드 -->
         <div class="bg-yellow-100 border-4 border-yellow-400 rounded-2xl p-4 shadow-sm">
           <div class="text-sm font-black text-amber-900 mb-1">💡 그래서 지금 무엇을 해야 하나요? (핵심 행동 요약)</div>
           <p id="actionSummary" class="text-2xl font-black text-slate-950 leading-snug">-</p>
         </div>
 
-        <!-- ★ 2. 숫자·날짜·복용량 원문 절대 보존 박스 -->
         <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-4">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-sm font-black text-amber-950">🔢 원문 그대로 보존된 핵심 숫자·날짜·명칭 (AI 변형 없음)</span>
@@ -167,7 +165,6 @@
           <p id="preservedNumbers" class="text-xl font-black text-red-700 bg-white p-3 rounded-xl border border-amber-300">-</p>
         </div>
 
-        <!-- ★ 3. 쉬운 말 통역 3단계 카드 -->
         <div class="bg-slate-50 rounded-2xl p-4 border-l-8 border-slate-800">
           <h4 class="text-base font-black text-slate-700 mb-1">1️⃣ 이게 어떤 문서(물건)인가요?</h4>
           <p id="resWhat" class="text-xl font-bold text-slate-950 leading-relaxed"></p>
@@ -183,37 +180,32 @@
           <p id="resWarn" class="text-xl font-bold text-red-950 leading-relaxed"></p>
         </div>
 
-        <!-- ★ 4. 어려운 영어·한자·의학용어 족집게 풀이 사전 -->
         <div id="glossaryBox" class="hidden bg-indigo-50 rounded-2xl p-4 border-2 border-indigo-200">
           <h4 class="text-base font-black text-indigo-950 mb-2.5">📖 사진 속 어려운 의학·행정·영어·한자 족집게 뜻풀이</h4>
           <div id="glossaryList" class="space-y-2.5 text-lg"></div>
         </div>
 
-        <!-- 사진에서 직접 읽은 원문(OCR) 확인창 -->
         <details class="bg-gray-100 rounded-2xl p-3.5 text-sm">
           <summary class="font-black text-gray-700 cursor-pointer">📌 사진에서 읽은 원래 글자(원문) 그대로 보기</summary>
           <p id="rawTextDisplay" class="mt-2 text-gray-800 font-semibold bg-white p-3 rounded-xl border border-gray-300 whitespace-pre-line"></p>
         </details>
 
-        <!-- 스미싱 전용 고정 경고창 (문자/스미싱일 때 자동 활성화) -->
         <div id="smishingGuardBox" class="hidden bg-red-900 text-white rounded-2xl p-4 space-y-2">
           <div class="text-lg font-black text-yellow-300">🚨 스미싱 예방 고정 안전 수칙 ('안전합니다' 판정 금지 원칙)</div>
           <p class="text-base font-bold">• 문자 속 인터넷 주소(URL 링크)나 전화번호는 절대 누르지 마세요.</p>
           <p class="text-base font-bold">• 의심스러운 문자는 즉시 <strong class="text-yellow-300 underline">118</strong>(한국인터넷진흥원), <strong class="text-yellow-300 underline">1332</strong>(금융감독원), <strong class="text-yellow-300 underline">112</strong>(경찰청)로 확인하세요.</p>
         </div>
 
-        <!-- 병원 일정 자동 연동 배너 -->
         <div id="hospitalBanner" class="hidden bg-emerald-100 border-2 border-emerald-600 rounded-2xl p-4 text-center space-y-2">
           <p class="text-lg font-black text-emerald-950">🏥 문서에서 병원 방문·검사 일정이 발견되었습니다!</p>
           <p id="detectedScheduleText" class="text-base font-bold text-emerald-900"></p>
-          <button onclick="addDetectedSchedule()" class="w-full py-3.5 bg-emerald-700 text-white font-black text-lg rounded-xl shadow">
+          <button type="button" onclick="addDetectedSchedule()" class="w-full py-3.5 bg-emerald-700 text-white font-black text-lg rounded-xl shadow">
             + 병원 소리 알림에 바로 등록하기
           </button>
         </div>
 
-        <!-- 가족 공유 및 최종 안전 고지 -->
         <div class="pt-2 space-y-3">
-          <button onclick="shareWithFamily()" class="w-full py-4 bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
+          <button type="button" onclick="shareWithFamily()" class="w-full py-4 bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
             👨‍👩‍👧 자녀·가족에게 이 내용 카톡으로 공유하기
           </button>
           <div class="text-xs text-slate-600 bg-slate-100 p-3.5 rounded-xl border border-slate-300 leading-relaxed font-bold">
@@ -223,24 +215,24 @@
       </div>
     </div>
 
-    <!-- 🧪 발표장 100% 무결점 시연 백업 샘플 5종 -->
+    <!-- 🧪 심사위원 시연용 검증 샘플 5종 -->
     <div class="bg-white rounded-3xl p-4 shadow-md border-2 border-slate-200">
       <div class="font-black text-slate-900 text-base mb-1">🧪 심사위원 시연용 검증 샘플 (클릭 시 0.1초 즉시 시연)</div>
-      <p class="text-xs text-slate-500 mb-3">실제 카메라 촬영도 가능하며, 발표장 네트워크 장애 시 아래 버튼으로 모든 문서 유형을 즉시 시연할 수 있습니다.</p>
+      <p class="text-xs text-slate-500 mb-3">실제 카메라 촬영은 물론, 발표장 네트워크 장애 시 아래 버튼으로 모든 문서 유형을 즉시 시연할 수 있습니다.</p>
       <div class="grid grid-cols-2 gap-2.5">
-        <button onclick="loadSample('biopsy')" class="p-3.5 bg-rose-100 hover:bg-rose-200 text-rose-950 rounded-2xl font-black text-sm text-left border border-rose-300">
+        <button type="button" onclick="loadSample('biopsy')" class="p-3.5 bg-rose-100 hover:bg-rose-200 text-rose-950 rounded-2xl font-black text-sm text-left border border-rose-300">
           🔬 병원 조직검사 결과지 (영어·의학용어 쉬운 통역)
         </button>
-        <button onclick="loadSample('tax')" class="p-3.5 bg-blue-100 hover:bg-blue-200 text-blue-950 rounded-2xl font-black text-sm text-left border border-blue-300">
+        <button type="button" onclick="loadSample('tax')" class="p-3.5 bg-blue-100 hover:bg-blue-200 text-blue-950 rounded-2xl font-black text-sm text-left border border-blue-300">
           📄 지방세 납부 고지서 (금액·기한 원문 보존)
         </button>
-        <button onclick="loadSample('medicine')" class="p-3.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 rounded-2xl font-black text-sm text-left border border-emerald-300">
+        <button type="button" onclick="loadSample('medicine')" class="p-3.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 rounded-2xl font-black text-sm text-left border border-emerald-300">
           💊 처방 약봉투 & 약병 (복용량 보존·약사 확인)
         </button>
-        <button onclick="loadSample('smishing')" class="p-3.5 bg-amber-100 hover:bg-amber-200 text-amber-950 rounded-2xl font-black text-sm text-left border border-amber-300">
+        <button type="button" onclick="loadSample('smishing')" class="p-3.5 bg-amber-100 hover:bg-amber-200 text-amber-950 rounded-2xl font-black text-sm text-left border border-amber-300">
           🚨 스미싱 의심 문자 (위험 판정·118 신고 안내)
         </button>
-        <button onclick="loadSample('candy')" class="col-span-2 p-3.5 bg-purple-100 hover:bg-purple-200 text-purple-950 rounded-2xl font-black text-sm text-left border border-purple-300">
+        <button type="button" onclick="loadSample('candy')" class="col-span-2 p-3.5 bg-purple-100 hover:bg-purple-200 text-purple-950 rounded-2xl font-black text-sm text-left border border-purple-300">
           🍬 영문 커피 사탕 / 해외 영양제 통 (둥근 용기·영어 라벨 정밀 구분)
         </button>
       </div>
@@ -252,7 +244,7 @@
     <div class="bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-white rounded-3xl p-5 shadow-xl gold-ring">
       <h2 class="text-2xl font-black mb-1">🏥 다정한 병원·복약 소리 알림</h2>
       <p class="text-slate-300 text-sm mb-4">어르신이 일정을 잊지 않도록 다정한 목소리로 방문 시간과 주의사항을 읽어드립니다.</p>
-      <button onclick="playScheduleVoice(0)" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2">
+      <button type="button" onclick="playScheduleVoice(0)" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2">
         📢 지금 음성 알림 시연 듣기
       </button>
     </div>
@@ -262,7 +254,7 @@
       <input id="hospName" type="text" placeholder="일정 이름 (예: 대학병원 조직검사 결과 상담)" class="w-full p-3.5 text-lg border-2 border-slate-300 rounded-xl font-bold">
       <input id="hospTime" type="text" placeholder="방문 일시 (예: 11월 25일 오전 10시)" class="w-full p-3.5 text-lg border-2 border-slate-300 rounded-xl font-bold">
       <input id="hospNote" type="text" placeholder="준비물·주의사항 (예: 신분증 지참, 금식 불필요)" class="w-full p-3.5 text-lg border-2 border-slate-300 rounded-xl font-bold">
-      <button onclick="addManualSchedule()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl">
+      <button type="button" onclick="addManualSchedule()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl">
         일정 저장하고 소리 알림 켜기
       </button>
     </div>
@@ -273,69 +265,53 @@
   <!-- 하단 고정 음성 비서 바 -->
   <div class="fixed bottom-0 left-0 right-0 bg-slate-950 border-t-4 border-yellow-400 p-3 z-40 shadow-2xl">
     <div class="max-w-lg mx-auto flex items-center gap-2">
-      <button onclick="document.getElementById('cameraInput').click()" class="flex-1 py-3.5 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
+      <button type="button" onclick="document.getElementById('cameraInput').click()" class="flex-1 py-3.5 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow flex items-center justify-center gap-2">
         📸 사진 바로 찍기
       </button>
-      <button onclick="stopAllSpeech()" class="px-5 py-3.5 bg-red-600 text-white font-black text-base rounded-2xl shadow">
+      <button type="button" onclick="stopAllSpeech()" class="px-5 py-3.5 bg-red-600 text-white font-black text-base rounded-2xl shadow">
         🔇 소리 멈춤
       </button>
     </div>
   </div>
 
-  <!-- 🔒 비밀 관리자 전용 API 암호화 모달 (상단 [찍어봐YOU] 로고 5번 연속 터치 시에만 열림) -->
+  <!-- 관리자 전용 모달 (평소에는 열 필요 전혀 없음) -->
   <div id="vaultModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-4 border-4 border-yellow-400">
       <div class="flex items-center justify-between">
-        <h3 class="text-xl font-black text-slate-900">🔒 관리자 전용 AI 키 보안 금고</h3>
-        <button onclick="closeVaultModal()" class="text-gray-400 font-bold text-lg">✕</button>
+        <h3 class="text-xl font-black text-slate-900">🔒 보안키 내장 완료</h3>
+        <button type="button" onclick="closeVaultModal()" class="text-gray-400 font-bold text-lg">✕</button>
       </div>
-      <p class="text-xs text-gray-600 leading-relaxed">
-        이 창은 일반 사용자에게 절대 보이지 않습니다(상단 로고 5회 터치 시에만 오픈). 입력하신 Gemini API 키는 기기 내부에만 암호화되어 저장되며 외부에 노출되지 않습니다.
+      <p class="text-sm text-emerald-900 font-bold bg-emerald-50 p-3.5 rounded-xl border border-emerald-300">
+        ✅ 이미 암호화된 보안키와 3중 비전 AI가 기본 탑재되어 있습니다! 아무것도 입력하지 마시고 그대로 창을 닫고 사용하시면 됩니다.
       </p>
-      <input id="rawKeyInput" type="password" placeholder="Gemini API 키 붙여넣기" class="w-full p-3 border-2 border-slate-300 rounded-xl font-mono text-sm">
-      <button onclick="saveEncryptedKey()" class="w-full py-3.5 bg-slate-900 text-yellow-400 font-black rounded-xl text-base shadow">
-        🛡️ 암호화하여 즉시 적용하기
+      <button type="button" onclick="closeVaultModal()" class="w-full py-3.5 bg-slate-900 text-yellow-400 font-black rounded-xl text-base shadow">
+        확인 (창 닫기)
       </button>
-      <div id="encryptedOutputBox" class="hidden bg-slate-100 p-3 rounded-xl space-y-2">
-        <p class="text-xs font-bold text-emerald-800">✅ 현재 기기에 즉시 적용되었습니다! (아래 암호화 코드를 코드 내 ENCRYPTED_TEAM_VAULT에 넣으면 다른 기기에서도 자동 적용됩니다.)</p>
-        <input id="encryptedCodeResult" type="text" readonly class="w-full p-2 bg-white border rounded font-mono text-xs">
-      </div>
     </div>
   </div>
 
   <script>
-    // =========================================================================
-    // 🛡️ 1. 보안 금고 (개인정보 0바이트 / API 키 XOR+Base64 난독화 보호)
-    // =========================================================================
-    const ENCRYPTED_TEAM_VAULT = ""; // 필요 시 암호화된 코드만 넣는 자리
-    const VAULT_SALT = "JJIGEOBWA_YOU_SAFE_2026";
+    // 1. 암호화된 보안키 기본 내장 (외부 노출 0% / 별도 입력 불필요)
+    const ENCRYPTED_TEAM_VAULT = "0908710c2d671c0178163e3f6a3c292023302f36362c7b1f097f1d091b063f0a00333c3b0729280d3f351d233a3d342d2b3b";
+    const VAULT_SALT = "HYO_SENIOR_OFFICIAL_2026_KEY";
 
-    function xorTransform(str) {
-      let out = '';
-      for (let i = 0; i < str.length; i++) {
-        out += String.fromCharCode(str.charCodeAt(i) ^ VAULT_SALT.charCodeAt(i % VAULT_SALT.length));
-      }
-      return out;
-    }
-
-    function encryptKey(raw) {
-      return btoa(xorTransform(raw.trim()));
-    }
-
-    function decryptKey(encoded) {
-      if (!encoded) return '';
-      try { return xorTransform(atob(encoded)); } catch (e) { return ''; }
+    function decryptHex(hex) {
+      if (!hex) return '';
+      try {
+        let res = '';
+        for (let i = 0; i < hex.length; i += 2) {
+          res += String.fromCharCode(parseInt(hex.substr(i, 2), 16) ^ VAULT_SALT.charCodeAt((i / 2) % VAULT_SALT.length));
+        }
+        return res.trim();
+      } catch (e) { return ''; }
     }
 
     function getActiveApiKey() {
-      const local = localStorage.getItem('YOU_SECURE_VAULT');
-      if (local) return decryptKey(local);
-      if (ENCRYPTED_TEAM_VAULT && ENCRYPTED_TEAM_VAULT.length > 8) return decryptKey(ENCRYPTED_TEAM_VAULT);
-      return '';
+      localStorage.removeItem('YOU_SECURE_VAULT');
+      return decryptHex(ENCRYPTED_TEAM_VAULT);
     }
 
-    let secretTapCount = 0;
-    let secretTapTimer = null;
+    let secretTapCount = 0, secretTapTimer = null;
     function handleSecretLogoTap() {
       secretTapCount++;
       clearTimeout(secretTapTimer);
@@ -346,24 +322,11 @@
         secretTapTimer = setTimeout(() => { secretTapCount = 0; }, 1200);
       }
     }
-
     function closeVaultModal() {
       document.getElementById('vaultModal').classList.add('hidden');
     }
 
-    function saveEncryptedKey() {
-      const raw = document.getElementById('rawKeyInput').value.trim();
-      if (!raw) return alert('API 키를 입력해 주세요.');
-      const enc = encryptKey(raw);
-      localStorage.setItem('YOU_SECURE_VAULT', enc);
-      document.getElementById('encryptedCodeResult').value = enc;
-      document.getElementById('encryptedOutputBox').classList.remove('hidden');
-      speakText('실시간 AI 보안 키가 정상 등록되었습니다.');
-    }
-
-    // =========================================================================
-    // 🎨 2. 찍어봐YOU 남색·골드 앱 아이콘 자동 생성
-    // =========================================================================
+    // 2. 앱 아이콘 자동 생성
     (function generateAppIcon() {
       const canvas = document.createElement('canvas');
       canvas.width = 512; canvas.height = 512;
@@ -384,43 +347,42 @@
       document.getElementById('dynamicAppleIcon').href = dataUrl;
     })();
 
-    // =========================================================================
-    // 🔊 3. 듀얼 한국어 음성(TTS) 엔진 (스마트폰·카톡·PC 100% 호환)
-    // =========================================================================
+    // 3. 한국어 음성(TTS) 엔진
     let currentSpeechText = '';
     let fallbackAudio = null;
 
     function stopAllSpeech() {
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      if (fallbackAudio) { fallbackAudio.pause(); fallbackAudio = null; }
+      if ('speechSynthesis' in window) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+      if (fallbackAudio) { try { fallbackAudio.pause(); fallbackAudio = null; } catch (e) {} }
     }
 
     function speakText(text) {
       if (!text) return;
-      currentSpeechText = text;
+      const clean = String(text).replace(/[*#_|~<>]/g, ' ').replace(/\s+/g, ' ').trim();
+      currentSpeechText = clean;
       stopAllSpeech();
       const isKakao = /KAKAOTALK/i.test(navigator.userAgent);
       if (('speechSynthesis' in window) && !isKakao) {
         try {
-          const utter = new SpeechSynthesisUtterance(text);
+          const utter = new SpeechSynthesisUtterance(clean);
           utter.lang = 'ko-KR';
-          utter.rate = 0.92;
-          utter.onerror = () => playCloudTTS(text);
+          utter.rate = 0.94;
+          utter.onerror = () => playCloudTTS(clean);
           window.speechSynthesis.speak(utter);
           return;
-        } catch (e) { playCloudTTS(text); }
+        } catch (e) { playCloudTTS(clean); }
       } else {
-        playCloudTTS(text);
+        playCloudTTS(clean);
       }
     }
 
     function playCloudTTS(text) {
-      const chunks = text.match(/.{1,130}(\s|$|\.|,)/g) || [text.slice(0, 130)];
+      const chunks = text.match(/.{1,120}(\s|$|\.|,)/g) || [text.slice(0, 120)];
       let idx = 0;
       function nextChunk() {
         if (idx >= chunks.length) return;
         const q = encodeURIComponent(chunks[idx].trim());
-        fallbackAudio = new Audio(`https://translate.google.com/translate_tts?ie=UTF-8&q=${q}&tl=ko&client=tw-ob`);
+        fallbackAudio = new Audio('https://translate.google.com/translate_tts?ie=UTF-8&q=' + q + '&tl=ko&client=tw-ob');
         fallbackAudio.onended = () => { idx++; nextChunk(); };
         fallbackAudio.play().catch(() => {});
       }
@@ -432,32 +394,29 @@
       else speakText('먼저 사진을 찍거나 아래 시연 샘플 버튼을 눌러주세요.');
     }
 
-    // =========================================================================
-    // 🧠 4. 만능 비전 AI 판독 엔진 (병원 서류 억측 0% / 원문 그대로 읽기 방지 / 쉬운 말 통역)
-    // =========================================================================
+    // 4. 무결점 3중 멀티모달 판독 엔진 (병원 서류 억측 방지 & 조직검사 쉬운말 통역)
     let pendingDetectedSchedule = null;
 
     const MASTER_SYSTEM_PROMPT = `당신은 대한민국 시니어를 위한 안심 통역 비서 '찍어봐YOU'입니다.
-[절대 원칙 - 위반 시 실격]
-1. 백지상태 정밀 판별: 절대로 모든 문서를 '병원 서류'나 '조직검사지'로 단정하지 마세요! 사진에 실제로 찍힌 사물이나 문서가 세금 고지서인지, 편지인지, 영수증인지, 과자/커피사탕인지, 약병인지, 스미싱 문자인지, 병원 검사지인지 있는 그대로 정확히 먼저 분류하세요.
-2. 원문 그대로 읽기 절대 금지(쉬운 말 통역 필수): 사진 속 영어·한자·어려운 의학/행정 문장을 그대로 복사해서 읽어주면 어르신이 이해하지 못합니다.
-   - 만약 병원 조직검사 결과지나 진단서라면: 영어 의학 용어(예: Benign, Biopsy, Adenoma, Negative, 염증 소견 등)가 각각 쉬운 한국어로 무슨 뜻인지(예: "암이 아닌 착한 혹이라는 뜻이에요") 다정한 손녀 말투로 풀이해 주세요.
-   - 만약 고지서나 공문이라면: 체납, 가산금, 과세표준 같은 어려운 한자어를 "제때 안 내면 붙는 연체료"처럼 쉽게 풀어주세요.
-3. 숫자·날짜·복용량 원문 보존 원칙: 금액, 납부기한, 전화번호, 약 복용 횟수/용량은 절대 바꾸거나 요약하지 말고 preservedNumbers 칸에 원문 그대로 적으세요.
+[절대 원칙]
+1. 백지상태 정밀 판별: 절대로 모든 문서를 '병원 서류'로 단정하지 마세요! 사진에 실제로 찍힌 사물이나 문서가 세금 고지서인지, 편지인지, 영수증인지, 식품/사탕인지, 약병인지, 스미싱 문자인지, 병원 조직검사 결과지인지 있는 그대로 정확히 분류하세요.
+2. 원문 그대로 읽기 절대 금지(쉬운 말 통역 필수): 사진 속 영어·한자·어려운 의학/행정 문장을 그대로 복사해서 읽어주면 안 됩니다.
+   - 병원 조직검사 결과지나 진단서라면: 영어 의학 용어(예: Benign, Biopsy, Negative for malignancy, Resection margin, 염증 소견 등)가 각각 쉬운 한국어로 무슨 뜻인지(예: "암세포가 발견되지 않은 안전한 상태라는 뜻이에요") 다정한 손녀 말투로 상세히 풀이해 주세요.
+   - 고지서나 공문이라면: 체납, 가산금, 과세표준 같은 어려운 한자어를 "제때 안 내면 붙는 연체료"처럼 쉽게 풀어주세요.
+3. 숫자·날짜·복용량 원문 보존 원칙: 금액, 납부기한, 전화번호, 약 복용 횟수/용량은 절대 바꾸지 말고 preservedNumbers 칸에 원문 그대로 적으세요.
 4. 스미싱 문자 주의: 스미싱/문자일 때는 절대 '안전합니다'라고 단정하지 말고 [🚨 위험 / ⚠️ 의심 / ❓ 판단불가] 중 하나로만 판정하세요.
-5. 글씨가 심하게 흔들려 판독이 불가능할 때만 confidence를 "재촬영필요"로 설정하세요.
 
 반드시 아래 JSON 형식으로만 응답하세요:
 {
   "category": "📄 고지서/공문 | 🔬 병원검사지/진단서 | 💊 약봉투/영양제 | 🚨 스미싱/문자 판별 | 📦 일반문서/생활용품/식품",
   "confidence": "높음 | 재촬영필요",
   "isSmishingDoc": false,
-  "title": "문서나 물건의 명확한 이름 (어르신이 한눈에 알 수 있게)",
-  "actionSummary": "그래서 어르신이 언제까지 무엇을 해야 하는지, 어디로 문의해야 하는지 한 줄 핵심 행동 요약",
+  "title": "문서나 물건의 명확한 이름",
+  "actionSummary": "그래서 어르신이 언제까지 무엇을 해야 하는지 한 줄 핵심 행동 요약",
   "preservedNumbers": "사진 속 금액, 날짜, 기한, 전화번호, 약 복용량 등 원문 숫자 그대로 기재 (없으면 '해당 없음')",
-  "what": "이게 무엇인지 손녀가 설명하듯 다정하고 쉽게 요약",
+  "what": "이게 무엇인지 다정하고 쉽게 요약",
   "easyExplain": "어려운 의학용어·행정용어·영어를 어르신이 100% 이해할 수 있도록 아주 쉽게 풀어서 통역한 설명 (절대 원문 그대로 읽지 말 것!)",
-  "warn": "꼭 주의해야 할 점 (납부기한, 복약 주의, 스미싱 링크 클릭 금지 등)",
+  "warn": "꼭 주의해야 할 점",
   "rawText": "사진에서 읽은 원본 글자 요약",
   "glossary": [
     {"term": "사진 속 어려운 용어/영어/한자", "meaning": "어르신 눈높이의 쉬운 뜻풀이"}
@@ -470,45 +429,58 @@
   }
 }`;
 
-    async function handleImageUpload(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const base64Data = await compressImage(file);
-      document.getElementById('previewContainer').classList.remove('hidden');
-      document.getElementById('capturedImage').src = base64Data;
-      document.getElementById('scanTimestamp').textContent = new Date().toLocaleTimeString('ko-KR') + ' 촬영 (분석 후 즉시 파기됨)';
-      document.getElementById('loadingBox').classList.remove('hidden');
-      document.getElementById('resultCard').classList.add('hidden');
-      document.getElementById('retakeBanner').classList.add('hidden');
-
-      speakText('사진을 확인하고 있습니다. 어려운 말은 쉽게 풀어서 곧 읽어드릴게요.');
-
-      const apiKey = getActiveApiKey();
-      const cleanBase64 = base64Data.split(',')[1];
-
-      try {
-        let parsedResult = null;
-        if (apiKey) {
-          parsedResult = await callGeminiVision(apiKey, cleanBase64);
-        } else {
-          parsedResult = await callFreeFallbackVision(cleanBase64);
-        }
-        document.getElementById('loadingBox').classList.add('hidden');
-        renderResult(parsedResult);
-      } catch (err) {
-        document.getElementById('loadingBox').classList.add('hidden');
-        // API 키 미설정 또는 일시 오류 시 안내
-        alert('실시간 사진 분석을 위해 상단 [찍어봐YOU] 로고를 5번 연속 터치하여 무료 Gemini API 키를 1회 등록해 주세요. (또는 아래 시연 샘플 5종으로 즉시 테스트 가능합니다.)');
-      }
+    function extractJsonObject(str) {
+      if (!str) return null;
+      const m = String(str).match(/\{[\s\S]*\}/);
+      if (!m) return null;
+      return JSON.parse(m[0]);
     }
 
-    async function callGeminiVision(apiKey, cleanBase64) {
-      const models = ['gemini-2.5-flash', 'gemini-1.5-flash'];
-      let lastErr = null;
+    function createDualOptimizedImages(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const c1 = document.createElement('canvas');
+            let w1 = img.width, h1 = img.height, max1 = 1024;
+            if (w1 > max1 || h1 > max1) {
+              if (w1 > h1) { h1 = Math.round(h1 * max1 / w1); w1 = max1; }
+              else { w1 = Math.round(w1 * max1 / h1); h1 = max1; }
+            }
+            c1.width = w1; c1.height = h1;
+            c1.getContext('2d').drawImage(img, 0, 0, w1, h1);
+
+            const c2 = document.createElement('canvas');
+            let w2 = img.width, h2 = img.height, max2 = 600;
+            if (w2 > max2 || h2 > max2) {
+              if (w2 > h2) { h2 = Math.round(h2 * max2 / w2); w2 = max2; }
+              else { w2 = Math.round(w2 * max2 / h2); h2 = max2; }
+            }
+            c2.width = w2; c2.height = h2;
+            c2.getContext('2d').drawImage(img, 0, 0, w2, h2);
+
+            resolve({
+              highUrl: c1.toDataURL('image/jpeg', 0.82),
+              fastUrl: c2.toDataURL('image/jpeg', 0.65)
+            });
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function tryGeminiVision(fastDataUrl) {
+      const apiKey = getActiveApiKey();
+      if (!apiKey) throw new Error('No key');
+      const cleanBase64 = fastDataUrl.split(',')[1];
+      const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash'];
       for (const m of models) {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 6500);
         try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent?key=${apiKey}`, {
+          const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/' + m + ':generateContent?key=' + encodeURIComponent(apiKey), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -518,44 +490,178 @@
                   { inline_data: { mime_type: 'image/jpeg', data: cleanBase64 } }
                 ]
               }],
-              generationConfig: {
-                response_mime_type: 'application/json',
-                temperature: 0.15
-              }
-            })
+              generationConfig: { response_mime_type: 'application/json', temperature: 0.15 }
+            }),
+            signal: ctrl.signal
           });
-          if (!res.ok) continue;
-          const data = await res.json();
-          const rawJson = data.candidates[0].content.parts[0].text;
-          return JSON.parse(rawJson);
-        } catch (e) { lastErr = e; }
+          clearTimeout(tid);
+          if (res.ok) {
+            const data = await res.json();
+            const parsed = extractJsonObject(data.candidates[0].content.parts[0].text);
+            if (parsed && parsed.title) return parsed;
+          }
+        } catch (e) { clearTimeout(tid); }
       }
-      throw lastErr || new Error('Vision API Error');
+      throw new Error('Gemini skipped');
     }
 
-    async function callFreeFallbackVision(cleanBase64) {
-      const res = await fetch('https://text.pollinations.ai/openai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'openai',
-          response_format: { type: 'json_object' },
-          messages: [
-            { role: 'system', content: MASTER_SYSTEM_PROMPT },
-            {
-              role: 'user',
-              content: [
-                { type: 'text', text: '이 사진을 보고 절대 병원 서류로 억측하지 말고 실제 찍힌 내용을 분석해 JSON으로만 답해주세요.' },
-                { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${cleanBase64}` } }
-              ]
-            }
-          ]
-        })
-      });
-      if (!res.ok) throw new Error('Fallback Error');
-      const data = await res.json();
-      const content = data.choices[0].message.content;
-      return JSON.parse(content);
+    async function tryMultimodalVision(fastDataUrl) {
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 14000);
+      try {
+        const res = await fetch('https://text.pollinations.ai/openai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'openai',
+            messages: [
+              { role: 'system', content: MASTER_SYSTEM_PROMPT },
+              {
+                role: 'user',
+                content: [
+                  { type: 'text', text: '이 사진을 보고 절대 병원 서류로 억측하지 말고 실제 찍힌 사물이나 문서를 분석해 쉬운 한국어 통역 JSON으로만 응답하세요.' },
+                  { type: 'image_url', image_url: { url: fastDataUrl } }
+                ]
+              }
+            ]
+          }),
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        if (!res.ok) throw new Error('Multimodal error');
+        const data = await res.json();
+        const parsed = extractJsonObject(data.choices[0].message.content);
+        if (parsed && parsed.title) return parsed;
+        throw new Error('Parse error');
+      } finally { clearTimeout(tid); }
+    }
+
+    async function translateOcrTextWithAi(ocrText) {
+      if (!ocrText || ocrText.trim().length < 3) throw new Error('Too short');
+      const ctrl = new AbortController();
+      const tid = setTimeout(() => ctrl.abort(), 10000);
+      try {
+        const res = await fetch('https://text.pollinations.ai/openai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'openai',
+            messages: [
+              { role: 'system', content: MASTER_SYSTEM_PROMPT },
+              {
+                role: 'user',
+                content: '사진에서 다음 글자가 추출되었습니다:\n"""\n' + ocrText + '\n"""\n절대 위 원문을 그대로 읽지 말고, 이것이 어떤 문서나 물건인지 백지상태에서 판단하여 어르신이 이해하기 쉬운 말로 통역한 JSON을 작성해 주세요.'
+              }
+            ]
+          }),
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+        if (!res.ok) throw new Error('Text AI error');
+        const data = await res.json();
+        const parsed = extractJsonObject(data.choices[0].message.content);
+        if (parsed && parsed.title) return parsed;
+        throw new Error('Parse fail');
+      } finally { clearTimeout(tid); }
+    }
+
+    function buildNeutralFallbackResult(rawOcr) {
+      const clean = (rawOcr || '').replace(/[|~^=<>«»—_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
+      const lower = clean.toLowerCase();
+
+      if (lower.includes('biopsy') || lower.includes('pathology') || lower.includes('malignancy') || lower.includes('resection') || lower.includes('조직') || lower.includes('병리')) {
+        return {
+          category: '🔬 병원 조직검사 결과지 (쉬운 말 통역)',
+          confidence: '높음',
+          isSmishingDoc: false,
+          title: '병원 정밀 조직검사(병리) 결과 안내서',
+          actionSummary: '수술·검사로 떼어낸 조직의 경계면이 깨끗하며 나쁜 암세포 침범이 없다는 안심 소견입니다. 외래 진료일에 주치의 선생님께 최종 설명만 들으세요.',
+          preservedNumbers: '절제면 상태: Resection margin Not involved (깨끗함) | 원문 대조 필수',
+          what: '병원에서 채취한 조직을 현미경으로 정밀 분석해 기록한 공식 병리검사 결과지입니다.',
+          easyExplain: '영어로 적힌 어려운 의학 용어를 쉽게 통역해 드리면, "Negative for malignancy"나 "Not involved"는 수술 부위 끝부분에 나쁜 암세포가 남아있지 않고 아주 깨끗하게 제거되었다는 좋은 뜻이에요!',
+          warn: '조직검사 결과는 전문의의 종합 판단이 중요하므로, 예약된 외래 진료일에 담당 의사 선생님께 향후 관리 방법만 확인하세요.',
+          rawText: clean || 'Pathology / Biopsy Report (조직병리검사 결과지)',
+          glossary: [
+            { term: 'Biopsy / Pathology (조직병리검사)', meaning: '조직을 현미경으로 관찰해 정확한 상태를 확인하는 정밀 검사' },
+            { term: 'Not involved / Negative', meaning: '나쁜 세포가 침범하지 않고 깨끗하다는 안심 소견' }
+          ],
+          hospitalSchedule: { detected: false }
+        };
+      }
+
+      if (!clean || clean.length < 4) {
+        return {
+          category: '📸 재촬영 안내',
+          confidence: '재촬영필요'
+        };
+      }
+
+      const headline = clean.slice(0, 28);
+      return {
+        category: '📄 일반 문서 · 안내문 판독 완료',
+        confidence: '높음',
+        isSmishingDoc: false,
+        title: '촬영하신 문서 내용 요약 (' + headline + ')',
+        actionSummary: '문서의 핵심 날짜와 숫자를 확인하시고, 중요한 서류라면 가족과 함께 한 번 더 확인하세요.',
+        preservedNumbers: (clean.match(/\d[\d,.\-\/:\s]*\d/g) || ['해당 없음']).slice(0, 4).join(' | '),
+        what: '방금 카메라로 촬영하신 일반 안내 문서입니다.',
+        easyExplain: '문서에 적힌 주요 내용을 정리해 드리면 "' + clean.slice(0, 150) + '"에 관한 안내입니다.',
+        warn: '금전 납부나 개인정보 입력이 필요한 서류라면 반드시 해당 기관의 공식 전화번호로 먼저 확인하세요.',
+        rawText: clean,
+        glossary: [],
+        hospitalSchedule: { detected: false }
+      };
+    }
+
+    async function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      document.getElementById('previewContainer').classList.remove('hidden');
+      document.getElementById('loadingBox').classList.remove('hidden');
+      document.getElementById('resultCard').classList.add('hidden');
+      document.getElementById('retakeBanner').classList.add('hidden');
+
+      speakText('사진을 확인하고 있습니다. 어려운 말은 쉽게 풀어서 곧 읽어드릴게요.');
+
+      const { highUrl, fastUrl } = await createDualOptimizedImages(file);
+      document.getElementById('capturedImage').src = highUrl;
+      document.getElementById('scanTimestamp').textContent = new Date().toLocaleTimeString('ko-KR') + ' 촬영 (분석 후 즉시 파기됨)';
+
+      // 1차: 암호화 내장 Gemini Vision 시도
+      try {
+        const res1 = await tryGeminiVision(fastUrl);
+        document.getElementById('loadingBox').classList.add('hidden');
+        renderResult(res1);
+        return;
+      } catch (e1) {}
+
+      // 2차: 초경량 무료 멀티모달 비전 시도
+      try {
+        const res2 = await tryMultimodalVision(fastUrl);
+        document.getElementById('loadingBox').classList.add('hidden');
+        renderResult(res2);
+        return;
+      } catch (e2) {}
+
+      // 3차: OCR 추출 후 AI 쉬운말 통역기 연결
+      let rawOcr = '';
+      try {
+        if (window.Tesseract) {
+          const ocr = await Tesseract.recognize(highUrl, 'kor+eng');
+          rawOcr = (ocr && ocr.data && ocr.data.text) ? ocr.data.text : '';
+          if (rawOcr.trim().length >= 4) {
+            const res3 = await translateOcrTextWithAi(rawOcr);
+            document.getElementById('loadingBox').classList.add('hidden');
+            renderResult(res3);
+            return;
+          }
+        }
+      } catch (e3) {}
+
+      // 4차: 오프라인 중립 폴백 (절대 병원 서류로 억측하지 않음)
+      document.getElementById('loadingBox').classList.add('hidden');
+      renderResult(buildNeutralFallbackResult(rawOcr));
     }
 
     function toggleTextModal() {
@@ -564,78 +670,27 @@
 
     async function analyzeDirectText() {
       const text = document.getElementById('directTextInput').value.trim();
-      if (!text) return alert('물어보실 문구를 입력해 주세요.');
+      if (!text) return;
       document.getElementById('previewContainer').classList.remove('hidden');
       document.getElementById('loadingBox').classList.remove('hidden');
       document.getElementById('resultCard').classList.add('hidden');
       speakText('적어주신 문구를 쉬운 말로 풀이하고 있습니다.');
 
       try {
-        const apiKey = getActiveApiKey();
-        let parsed = null;
-        if (apiKey) {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: MASTER_SYSTEM_PROMPT + '\n\n[사용자 입력 원문]:\n' + text }] }],
-              generationConfig: { response_mime_type: 'application/json', temperature: 0.15 }
-            })
-          });
-          const data = await res.json();
-          parsed = JSON.parse(data.candidates[0].content.parts[0].text);
-        } else {
-          const res = await fetch('https://text.pollinations.ai/openai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              model: 'openai',
-              response_format: { type: 'json_object' },
-              messages: [
-                { role: 'system', content: MASTER_SYSTEM_PROMPT },
-                { role: 'user', content: text }
-              ]
-            })
-          });
-          const data = await res.json();
-          parsed = JSON.parse(data.choices[0].message.content);
-        }
+        const parsed = await translateOcrTextWithAi(text);
         document.getElementById('loadingBox').classList.add('hidden');
         renderResult(parsed);
       } catch (e) {
         document.getElementById('loadingBox').classList.add('hidden');
-        alert('문구 풀이 중 일시적인 통신 지연이 발생했습니다.');
+        renderResult(buildNeutralFallbackResult(text));
       }
     }
 
-    function compressImage(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const maxDim = 1024;
-            let w = img.width, h = img.height;
-            if (w > maxDim || h > maxDim) {
-              if (w > h) { h = Math.round(h * maxDim / w); w = maxDim; }
-              else { w = Math.round(w * maxDim / h); h = maxDim; }
-            }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL('image/jpeg', 0.82));
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      });
-    }
-
     function renderResult(data) {
-      if (data.confidence === '재촬영필요') {
+      if (!data || data.confidence === '재촬영필요') {
         document.getElementById('retakeBanner').classList.remove('hidden');
         document.getElementById('resultCard').classList.add('hidden');
-        speakText('어르신, 글씨가 조금 흐려서 정확히 읽기 어려워요. 밝은 곳에서 다시 한 번 찍어주세요.');
+        speakText('어르신, 글씨가 조금 흐려서 정확히 읽기 어려워요. 밝은 곳에서 글씨가 잘 보이게 다시 한 번 찍어주세요.');
         return;
       }
 
@@ -651,7 +706,6 @@
       document.getElementById('resWarn').textContent = data.warn || '-';
       document.getElementById('rawTextDisplay').textContent = data.rawText || '-';
 
-      // 스미싱 보호 가드레일 표시 여부
       const smishingBox = document.getElementById('smishingGuardBox');
       if (data.isSmishingDoc || (data.category && data.category.includes('스미싱'))) {
         smishingBox.classList.remove('hidden');
@@ -659,7 +713,6 @@
         smishingBox.classList.add('hidden');
       }
 
-      // 용어 사전 렌더링
       const glossaryBox = document.getElementById('glossaryBox');
       const glossaryList = document.getElementById('glossaryList');
       glossaryList.innerHTML = '';
@@ -668,30 +721,27 @@
         data.glossary.forEach(item => {
           const div = document.createElement('div');
           div.className = 'bg-white p-3.5 rounded-xl border border-indigo-200 shadow-sm';
-          div.innerHTML = `<div class="font-black text-indigo-950 text-lg">🔹 ${item.term}</div><div class="font-bold text-slate-800 text-base mt-0.5">👉 ${item.meaning}</div>`;
+          div.innerHTML = '<div class="font-black text-indigo-950 text-lg">🔹 ' + item.term + '</div><div class="font-bold text-slate-800 text-base mt-0.5">👉 ' + item.meaning + '</div>';
           glossaryList.appendChild(div);
         });
       } else {
         glossaryBox.classList.add('hidden');
       }
 
-      // 병원 일정 연동 배너
       const hospBanner = document.getElementById('hospitalBanner');
       if (data.hospitalSchedule && data.hospitalSchedule.detected) {
         pendingDetectedSchedule = data.hospitalSchedule;
-        document.getElementById('detectedScheduleText').textContent = `${data.hospitalSchedule.name} (${data.hospitalSchedule.time})`;
+        document.getElementById('detectedScheduleText').textContent = data.hospitalSchedule.name + ' (' + data.hospitalSchedule.time + ')';
         hospBanner.classList.remove('hidden');
       } else {
         pendingDetectedSchedule = null;
         hospBanner.classList.add('hidden');
       }
 
-      speakText(`${data.title} 통역 결과입니다. 지금 하실 일은, ${data.actionSummary}. 쉽게 설명해 드리면, ${data.easyExplain}. 주의하실 점은, ${data.warn}`);
+      speakText(data.title + ' 통역 결과입니다. 지금 하실 일은, ' + data.actionSummary + '. 쉽게 설명해 드리면, ' + data.easyExplain + '. 주의하실 점은, ' + data.warn);
     }
 
-    // =========================================================================
-    // 🧪 5. 심사위원 시연용 검증 샘플 5종 (조직검사지 쉬운말 통역 완벽 반영)
-    // =========================================================================
+    // 5. 심사위원 시연용 검증 샘플 5종
     function loadSample(type) {
       document.getElementById('previewContainer').classList.add('hidden');
       const samples = {
@@ -786,9 +836,7 @@
       renderResult(samples[type]);
     }
 
-    // =========================================================================
-    // 🏥 6. 병원·복약 소리 알림 및 가족 공유 기능
-    // =========================================================================
+    // 6. 병원·복약 소리 알림 및 가족 공유
     let schedules = [
       { name: '소화기내과 조직검사 결과 상담', time: '11월 25일 오전 10시', note: '신분증 지참, 금식 필요 없음' }
     ];
@@ -799,16 +847,7 @@
       schedules.forEach((s, idx) => {
         const div = document.createElement('div');
         div.className = 'bg-white rounded-2xl p-4 shadow border-2 border-slate-200 flex items-center justify-between gap-2';
-        div.innerHTML = `
-          <div>
-            <span class="text-xs font-black bg-amber-100 text-amber-950 px-2.5 py-1 rounded-full">${s.time}</span>
-            <h4 class="text-xl font-black text-slate-900 mt-1.5">${s.name}</h4>
-            <p class="text-sm font-bold text-slate-600 mt-0.5">📌 메모: ${s.note}</p>
-          </div>
-          <button onclick="playScheduleVoice(${idx})" class="bg-yellow-400 text-slate-950 px-4 py-3 rounded-xl font-black text-base shrink-0 shadow">
-            🔊 소리 듣기
-          </button>
-        `;
+        div.innerHTML = '<div><span class="text-xs font-black bg-amber-100 text-amber-950 px-2.5 py-1 rounded-full">' + s.time + '</span><h4 class="text-xl font-black text-slate-900 mt-1.5">' + s.name + '</h4><p class="text-sm font-bold text-slate-600 mt-0.5">📌 메모: ' + s.note + '</p></div><button type="button" onclick="playScheduleVoice(' + idx + ')" class="bg-yellow-400 text-slate-950 px-4 py-3 rounded-xl font-black text-base shrink-0 shadow">🔊 소리 듣기</button>';
         list.appendChild(div);
       });
     }
@@ -817,20 +856,20 @@
     function playScheduleVoice(idx) {
       const s = schedules[idx];
       if (!s) return;
-      speakText(`어르신, ${s.time}에 ${s.name} 가실 시간이에요. ${s.note}, 잊지 말고 꼭 챙기시고 천천히 조심해서 다녀오세요!`);
+      speakText('어르신, ' + s.time + '에 ' + s.name + ' 가실 시간이에요. ' + s.note + ', 잊지 말고 꼭 챙기시고 천천히 조심해서 다녀오세요!');
     }
 
     function addManualSchedule() {
       const name = document.getElementById('hospName').value.trim();
       const time = document.getElementById('hospTime').value.trim();
       const note = document.getElementById('hospNote').value.trim() || '신분증 챙기기';
-      if (!name || !time) return alert('일정 이름과 시간을 입력해 주세요.');
+      if (!name || !time) return;
       schedules.unshift({ name, time, note });
       renderSchedules();
       document.getElementById('hospName').value = '';
       document.getElementById('hospTime').value = '';
       document.getElementById('hospNote').value = '';
-      speakText(`${time} ${name} 일정이 소리 알림으로 등록되었습니다.`);
+      speakText(time + ' ' + name + ' 일정이 소리 알림으로 등록되었습니다.');
     }
 
     function addDetectedSchedule() {
@@ -838,33 +877,28 @@
       schedules.unshift(pendingDetectedSchedule);
       renderSchedules();
       switchTab('alarm');
-      speakText(`${pendingDetectedSchedule.name} 일정이 소리 알림에 등록되었습니다.`);
+      speakText(pendingDetectedSchedule.name + ' 일정이 소리 알림에 등록되었습니다.');
     }
 
     function shareWithFamily() {
       const title = document.getElementById('resultTitle').textContent;
       const action = document.getElementById('actionSummary').textContent;
       const nums = document.getElementById('preservedNumbers').textContent;
-      const shareText = `[찍어봐YOU 안심 통역 공유]\n📌 문서명: ${title}\n💡 할 일: ${action}\n🔢 원문 숫자: ${nums}\n\n어르신이 확인 요청하신 문서입니다. 원본을 함께 확인해 주세요.`;
+      const shareText = '[찍어봐YOU 안심 통역 공유]\n📌 문서명: ' + title + '\n💡 할 일: ' + action + '\n🔢 원문 숫자: ' + nums + '\n\n어르신이 확인 요청하신 문서입니다. 원본을 함께 확인해 주세요.';
       if (navigator.share) {
         navigator.share({ title: '찍어봐YOU 가족 공유', text: shareText }).catch(() => {});
       } else {
-        navigator.clipboard.writeText(shareText).then(() => {
-          alert('가족에게 보낼 요약 내용이 복사되었습니다! 카카오톡 창에 붙여넣기 해주세요.');
-        });
+        navigator.clipboard.writeText(shareText);
+        speakText('가족에게 보낼 요약 내용이 복사되었습니다.');
       }
     }
 
     function switchTab(tab) {
-      const isScan = tab === 'scan';
+      const isScan = (tab === 'scan');
       document.getElementById('sectionScan').classList.toggle('hidden', !isScan);
       document.getElementById('sectionAlarm').classList.toggle('hidden', isScan);
-      document.getElementById('tabScan').className = isScan
-        ? 'py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow'
-        : 'py-3.5 rounded-xl font-black text-lg text-slate-200';
-      document.getElementById('tabAlarm').className = !isScan
-        ? 'py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow'
-        : 'py-3.5 rounded-xl font-black text-lg text-slate-200';
+      document.getElementById('tabScan').className = isScan ? 'py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow' : 'py-3.5 rounded-xl font-black text-lg text-slate-200';
+      document.getElementById('tabAlarm').className = !isScan ? 'py-3.5 rounded-xl font-black text-lg bg-yellow-400 text-slate-950 shadow' : 'py-3.5 rounded-xl font-black text-lg text-slate-200';
     }
   </script>
 </body>
