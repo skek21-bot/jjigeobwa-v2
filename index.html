@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="찍어봐YOU">
-  <title>찍어봐YOU - 시니어 맞춤형 AI 안심 통역 & 골든타임 케어</title>
+  <title>찍어봐YOU - 사회보장·장기요양 AI 쉬운말 통역 & 골든타임 안심케어</title>
   <link id="dynamicFavicon" rel="icon" type="image/png">
   <link id="dynamicAppleIcon" rel="apple-touch-icon">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -47,7 +47,7 @@
     </button>
   </div>
 
-  <!-- 상단 공식 헤더 + 성함 존칭 배지 -->
+  <!-- 상단 공식 헤더 -->
   <header class="bg-gradient-to-r from-[#0f172a] via-[#1e293b] to-[#0f172a] text-white p-3.5 shadow-xl sticky top-0 z-30 border-b-4 border-yellow-400">
     <div class="max-w-lg mx-auto flex items-center justify-between gap-2">
       <div class="flex items-center gap-2.5 select-none cursor-pointer" onclick="handleSecretLogoTap()">
@@ -60,13 +60,13 @@
             <h1 class="text-xl font-black tracking-tight">찍어봐<span class="text-yellow-400">YOU</span></h1>
             <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500 text-white font-extrabold">🟢 안심가동</span>
           </div>
-          <p id="greetingSubtitle" class="text-xs text-yellow-300 font-bold">김복순 님 전용 AI 통역·안심비서</p>
+          <p id="greetingSubtitle" class="text-xs text-yellow-300 font-bold">이경란 님 전용 AI 통역·안심케어</p>
         </div>
       </div>
 
       <div class="flex items-center gap-1.5">
         <button type="button" onclick="openProfileModal()" class="bg-slate-800 hover:bg-slate-700 text-yellow-300 border border-yellow-400/60 px-2.5 py-2 rounded-xl font-black text-xs shadow">
-          👤 호칭변경
+          👤 호칭설정
         </button>
         <button type="button" onclick="speakCurrentResult(true)" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 px-3 py-2 rounded-xl font-black text-xs shadow-lg">
           🔊 소리듣기
@@ -77,43 +77,44 @@
 
   <!-- 음성 재생 상태 표시줄 -->
   <div id="voicePlayingBar" class="hidden bg-emerald-600 text-white text-center py-2 px-4 font-black text-sm sticky top-[68px] z-20 shadow">
-    🔊 다정한 목소리로 설명을 읽어드리고 있어요...
+    🔊 또렷한 목소리로 설명을 읽어드리고 있어요...
   </div>
 
-  <!-- ★ 상단 3대 핵심 탭 메뉴: [1. 사진 통역] [2. 3시간전 병원알림] [3. 골든타임 안심망] -->
-  <div class="max-w-lg mx-auto px-4 pt-3.5">
-    <div class="grid grid-cols-3 gap-1.5 bg-slate-900 p-1.5 rounded-2xl shadow-inner">
-      <button type="button" id="tabScan" onclick="switchTab('scan')" class="py-3 rounded-xl font-black text-sm bg-yellow-400 text-slate-950 shadow">
-        📸 쉬운말 통역
+  <!-- ★ 상단 4대 핵심 기능 탭 메뉴: [1. 사진 통역] [2. 장기요양등급] [3. 3시간전 알림] [4. 골든타임망] -->
+  <div class="max-w-lg mx-auto px-3 pt-3.5">
+    <div class="grid grid-cols-4 gap-1 bg-slate-900 p-1.5 rounded-2xl shadow-inner">
+      <button type="button" id="tabScan" onclick="switchTab('scan')" class="py-3 rounded-xl font-black text-xs bg-yellow-400 text-slate-950 shadow">
+        📸 사진통역
       </button>
-      <button type="button" id="tabAlarm" onclick="switchTab('alarm')" class="py-3 rounded-xl font-black text-sm text-slate-200">
-        ⏰ 3시간전 알림
+      <button type="button" id="tabLongterm" onclick="switchTab('longterm')" class="py-3 rounded-xl font-black text-xs text-blue-300">
+        🏛️ 장기요양
       </button>
-      <button type="button" id="tabGolden" onclick="switchTab('golden')" class="py-3 rounded-xl font-black text-sm text-rose-300">
+      <button type="button" id="tabAlarm" onclick="switchTab('alarm')" class="py-3 rounded-xl font-black text-xs text-slate-200">
+        ⏰ 3시간전알림
+      </button>
+      <button type="button" id="tabGolden" onclick="switchTab('golden')" class="py-3 rounded-xl font-black text-xs text-rose-300">
         🚨 골든타임망
       </button>
     </div>
   </div>
 
   <!-- =================================================================== -->
-  <!-- [탭 1] 메인 스캔 및 사회보장·의료·생활 쉬운 말 통역 화면 -->
+  <!-- [탭 1] 메인 스캔 및 사회보장·의료·행정 쉬운 말 통역 화면 -->
   <!-- =================================================================== -->
   <main id="sectionScan" class="max-w-lg mx-auto p-4 space-y-5">
 
-    <!-- 맞춤형 성함 인사 & 개인정보 무저장 배너 -->
-    <div class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-3.5 shadow-sm flex items-start justify-between gap-2">
-      <div class="flex items-start gap-2.5">
-        <span class="text-2xl">🛡️</span>
-        <div class="text-sm text-emerald-950 leading-snug">
-          <strong class="font-black"><span class="userNameSpan">김복순</span> 님 안심 보호 설계:</strong> 할머니·할아버지 대신 존칭으로 안내하며, 촬영 사진은 분석 즉시 파기(서버 무저장)되고 문서 속 실명·주민번호는 자동 가림 처리됩니다.
-        </div>
+    <!-- 개인정보 무저장 안심 배너 -->
+    <div class="bg-emerald-50 border-2 border-emerald-500 rounded-2xl p-3.5 shadow-sm flex items-start gap-2.5">
+      <span class="text-2xl">🛡️</span>
+      <div class="text-sm text-emerald-950 leading-snug">
+        <strong class="font-black"><span class="userNameSpan">이경란</span> 님 전용 안심 보호:</strong> 촬영된 서류 사진은 분석 직후 즉시 파기되며 서버에 절대 저장되지 않습니다. 주민등록번호 뒷자리는 자동으로 가려 보호합니다.
       </div>
     </div>
 
     <!-- 원버튼 촬영 카드 -->
     <div class="bg-gradient-to-b from-[#0f172a] to-[#1e293b] rounded-3xl p-6 text-center text-white shadow-xl gold-ring">
-      <p class="text-yellow-300 font-extrabold text-sm mb-1">장기요양통지서 · 병원검사지 · 고지서 · 약봉투 · 스미싱문자</p>
-      <h2 class="text-2xl font-black mb-4"><span class="userNameSpan text-yellow-300">김복순</span> 님, 궁금한 서류를 찍어보세요!</h2>
+      <p class="text-yellow-300 font-extrabold text-sm mb-1">장기요양인정서 · 복지통지서 · 병원검사지 · 고지서 · 약봉투</p>
+      <h2 class="text-2xl font-black mb-4"><span class="userNameSpan text-yellow-300">이경란</span> 님, 궁금한 서류를 찍어보세요!</h2>
 
       <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="handleImageUpload(event)">
       <input type="file" id="galleryInput" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
@@ -140,8 +141,8 @@
 
     <!-- 직접 문구 입력창 -->
     <div id="textInputBox" class="hidden bg-white rounded-3xl p-5 shadow-lg border-2 border-slate-800 space-y-3">
-      <h3 class="text-lg font-black text-slate-900">✍️ 어려운 문구·장기요양·의학용어 직접 물어보기</h3>
-      <textarea id="directTextInput" rows="3" placeholder="예: 장기요양 4등급 재가급여 월 한도액이 무슨 뜻이야? / 조직검사 결과지에 Negative for malignancy는 무슨 뜻이야?" class="w-full p-3.5 border-2 border-slate-300 rounded-2xl text-base font-bold"></textarea>
+      <h3 class="text-lg font-black text-slate-900">✍️ 어려운 장기요양·복지·의학용어 직접 물어보기</h3>
+      <textarea id="directTextInput" rows="3" placeholder="예: 장기요양 4등급 재가급여 월 한도액과 복지용구가 무슨 뜻이야? / 조직검사 결과지에 Negative for malignancy는 무슨 뜻이야?" class="w-full p-3.5 border-2 border-slate-300 rounded-2xl text-base font-bold"></textarea>
       <button type="button" onclick="analyzeDirectText()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl shadow">
         🔍 쉬운 말로 즉시 풀이하기
       </button>
@@ -165,7 +166,7 @@
     <!-- 재촬영 유도 경고 카드 -->
     <div id="retakeBanner" class="hidden bg-red-600 text-white rounded-3xl p-5 text-center space-y-3 shadow-xl">
       <p class="text-2xl font-black">📸 글씨가 흐려서 정확히 읽기 어려워요!</p>
-      <p class="text-base font-bold"><span class="userNameSpan">김복순</span> 님의 안전을 위해 임의로 추측하지 않습니다. 밝은 곳에서 가까이 다시 찍어주세요.</p>
+      <p class="text-base font-bold"><span class="userNameSpan">이경란</span> 님의 안전을 위해 임의로 추측하지 않습니다. 밝은 곳에서 가까이 다시 찍어주세요.</p>
       <button type="button" onclick="unlockAudioAndClick('cameraInput')" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow">
         📸 다시 선명하게 사진 찍기
       </button>
@@ -176,7 +177,7 @@
       <div class="bg-slate-900 text-white p-5 space-y-3">
         <div class="flex items-center justify-between">
           <span id="resultCategory" class="inline-block bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">📄 쉬운 말 통역 완료</span>
-          <span class="text-xs text-yellow-300 font-bold"><span class="userNameSpan">김복순</span> 님 맞춤 통역</span>
+          <span class="text-xs text-yellow-300 font-bold"><span class="userNameSpan">이경란</span> 님 맞춤 안내</span>
         </div>
         <h3 id="resultTitle" class="text-2xl font-black leading-snug">-</h3>
         <button type="button" onclick="speakCurrentResult(true)" class="w-full py-4 bg-yellow-400 hover:bg-yellow-300 text-slate-950 rounded-2xl font-black text-xl shadow-lg flex items-center justify-center gap-2 pulse-btn">
@@ -187,7 +188,7 @@
       <div class="p-5 space-y-4">
         <!-- 1. 핵심 행동 요약 -->
         <div class="bg-yellow-100 border-4 border-yellow-400 rounded-2xl p-4 shadow-sm">
-          <div class="text-sm font-black text-amber-900 mb-1">💡 <span class="userNameSpan">김복순</span> 님, 지금 이렇게 하시면 됩니다!</div>
+          <div class="text-sm font-black text-amber-900 mb-1">💡 <span class="userNameSpan">이경란</span> 님, 지금 이렇게 하시면 됩니다!</div>
           <p id="actionSummary" class="text-2xl font-black text-slate-950 leading-snug">-</p>
         </div>
 
@@ -200,14 +201,17 @@
           <p id="preservedNumbers" class="text-xl font-black text-red-700 bg-white p-3 rounded-xl border border-amber-300">-</p>
         </div>
 
-        <!-- ★ 사회보장·장기요양 혜택 자동 연계 박스 (장기요양/복지 문서 시 자동 활성화!) -->
-        <div id="welfareBenefitBox" class="hidden bg-blue-50 border-2 border-blue-600 rounded-2xl p-4 space-y-2">
+        <!-- ★ 사회보장·장기요양 혜택 자동 연계 박스 -->
+        <div id="welfareBenefitBox" class="hidden bg-blue-50 border-2 border-blue-600 rounded-2xl p-4 space-y-2.5">
           <div class="flex items-center justify-between">
-            <span class="text-base font-black text-blue-950">🏛️ 사회보장 데이터 맞춤 복지 혜택 연결</span>
-            <span class="text-xs font-black bg-blue-600 text-white px-2.5 py-0.5 rounded-full">복지로·건보공단 연계</span>
+            <span class="text-base font-black text-blue-950">🏛️ 사회보장 데이터 맞춤 복지·장기요양 혜택 연계</span>
+            <span class="text-xs font-black bg-blue-600 text-white px-2.5 py-0.5 rounded-full">건보공단·복지로</span>
           </div>
           <p id="welfareBenefitText" class="text-lg font-bold text-slate-900 leading-relaxed"></p>
-          <div class="grid grid-cols-2 gap-2 pt-1">
+          <button type="button" onclick="switchTab('longterm')" class="w-full py-3 bg-blue-900 text-yellow-300 font-black text-sm rounded-xl shadow">
+            📊 내 장기요양등급별 월 지원금·본인부담금 계산기 바로가기
+          </button>
+          <div class="grid grid-cols-2 gap-2">
             <a href="tel:15771000" class="py-3 bg-blue-700 text-white font-black text-sm rounded-xl text-center shadow">📞 건보공단(1577-1000)</a>
             <a href="tel:129" class="py-3 bg-emerald-700 text-white font-black text-sm rounded-xl text-center shadow">📞 보건복지상담(129)</a>
           </div>
@@ -236,16 +240,9 @@
         </div>
 
         <details class="bg-gray-100 rounded-2xl p-3.5 text-sm">
-          <summary class="font-black text-gray-700 cursor-pointer">📌 사진에서 읽은 글자 요약 보기 (실명·주민번호 자동 가림)</summary>
+          <summary class="font-black text-gray-700 cursor-pointer">📌 사진에서 읽은 원문 글자 보기</summary>
           <p id="rawTextDisplay" class="mt-2 text-gray-800 font-semibold bg-white p-3 rounded-xl border border-gray-300 whitespace-pre-line"></p>
         </details>
-
-        <!-- 스미싱 고정 경고창 -->
-        <div id="smishingGuardBox" class="hidden bg-red-900 text-white rounded-2xl p-4 space-y-2">
-          <div class="text-lg font-black text-yellow-300">🚨 스미싱 예방 고정 안전 수칙 ('안전합니다' 판정 금지 원칙)</div>
-          <p class="text-base font-bold">• 문자 속 인터넷 주소(URL 링크)나 전화번호는 절대 누르지 마세요.</p>
-          <p class="text-base font-bold">• 의심 시 즉시 <strong class="text-yellow-300 underline">118</strong>(한국인터넷진흥원), <strong class="text-yellow-300 underline">1332</strong>(금융감독원), <strong class="text-yellow-300 underline">112</strong>(경찰청)로 확인하세요.</p>
-        </div>
 
         <!-- ★ 병원 방문 '3시간 전' 소리 알림 자동 연동 배너 -->
         <div id="hospitalBanner" class="hidden bg-emerald-100 border-2 border-emerald-600 rounded-2xl p-4 text-center space-y-2">
@@ -261,58 +258,132 @@
             👨‍👩‍👧 보호자·가족에게 이 내용 카톡으로 공유하기
           </button>
           <div class="text-xs text-slate-600 bg-slate-100 p-3.5 rounded-xl border border-slate-300 leading-relaxed font-bold">
-            ⚖️ <strong>최종 확인 안전 안내:</strong> 본 서비스는 독해를 돕는 시각 보조 도구이며 의학적 진단이나 법률·금융 자문을 대신하지 않습니다. 급여 신청·세금 납부 전 해당 기관에 확인하시고, 의약품 복용 및 검사 결과는 반드시 의사·약사에게 최종 확인하세요.
+            ⚖️ <strong>최종 확인 안전 안내:</strong> 본 서비스는 독해를 돕는 시각 보조 도구이며 의학적 진단이나 법률·행정 결정을 대신하지 않습니다. 급여 신청·세금 납부 전 해당 기관에 확인하시고, 의약품 복용 및 검사 결과는 반드시 의사·약사에게 최종 확인하세요.
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ★ 심사위원 시연용 검증 샘플 6종 (장기요양등급 통지서 최상단 탑재!) -->
+    <!-- ★ 심사위원 시연용 검증 샘플 5종 (장기요양 & 복지 중심 재편!) -->
     <div class="bg-white rounded-3xl p-4 shadow-md border-2 border-slate-200">
-      <div class="font-black text-slate-900 text-base mb-1">🧪 심사위원 시연용 검증 샘플 6종 (클릭 시 0.1초 즉시 시연)</div>
-      <p class="text-xs text-slate-500 mb-3">실제 카메라 촬영은 물론, 사회보장 데이터 연계(장기요양등급)부터 조직검사지·고지서·약봉투·스미싱까지 즉시 시연됩니다.</p>
+      <div class="font-black text-slate-900 text-base mb-1">🧪 심사위원 시연용 검증 샘플 5종 (클릭 시 0.1초 즉시 시연)</div>
+      <p class="text-xs text-slate-500 mb-3">실제 카메라 촬영은 물론, 사회보장 데이터(장기요양인정서·복지통지서)부터 병원 조직검사지·약봉투까지 즉시 시연됩니다.</p>
       <div class="grid grid-cols-2 gap-2.5">
-        <button type="button" onclick="loadSample('longterm')" class="col-span-2 p-4 bg-blue-100 hover:bg-blue-200 text-blue-950 rounded-2xl font-black text-base text-left border-2 border-blue-500 shadow-sm">
-          🏛️ [사회보장 핵심] 노인장기요양인정 통지서 (등급·월한도액·복지용구 혜택 연계)
+        <button type="button" onclick="loadSample('longterm')" class="col-span-2 p-4 bg-blue-100 hover:bg-blue-200 text-blue-950 rounded-2xl font-black text-base text-left border-2 border-blue-600 shadow-sm">
+          🏛️ [사회보장 핵심 1] 노인장기요양인정 통지서 (4등급·월한도액·복지용구 혜택 연계)
+        </button>
+        <button type="button" onclick="loadSample('welfare')" class="col-span-2 p-3.5 bg-sky-100 hover:bg-sky-200 text-sky-950 rounded-2xl font-black text-sm text-left border border-sky-400">
+          💌 [사회보장 핵심 2] 기초연금 · 에너지바우처 복지급여 안내 통지서
         </button>
         <button type="button" onclick="loadSample('biopsy')" class="p-3.5 bg-rose-100 hover:bg-rose-200 text-rose-950 rounded-2xl font-black text-sm text-left border border-rose-300">
-          🔬 병원 조직검사 결과지 (의학용어 쉬운통역 + 3시간전 알림 연동)
-        </button>
-        <button type="button" onclick="loadSample('tax')" class="p-3.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-950 rounded-2xl font-black text-sm text-left border border-indigo-300">
-          📄 지방세·공과금 고지서 (금액·기한 원문 보존)
+          🔬 병원 조직검사 결과지 (의학용어 통역 + 3시간전 알림)
         </button>
         <button type="button" onclick="loadSample('medicine')" class="p-3.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-950 rounded-2xl font-black text-sm text-left border border-emerald-300">
           💊 처방 약봉투 & 약병 (복용량 보존·약사 확인)
         </button>
-        <button type="button" onclick="loadSample('smishing')" class="p-3.5 bg-amber-100 hover:bg-amber-200 text-amber-950 rounded-2xl font-black text-sm text-left border border-amber-300">
-          🚨 스미싱 의심 문자 (위험 판정·118 신고 안내)
-        </button>
-        <button type="button" onclick="loadSample('candy')" class="col-span-2 p-3 bg-purple-100 hover:bg-purple-200 text-purple-950 rounded-2xl font-black text-sm text-left border border-purple-300">
-          🍬 영문 커피 사탕 / 해외 영양제 통 (둥근 용기·의약품 오인 방지)
+        <button type="button" onclick="loadSample('tax')" class="col-span-2 p-3.5 bg-indigo-100 hover:bg-indigo-200 text-indigo-950 rounded-2xl font-black text-sm text-left border border-indigo-300">
+          📄 지방세·공과금 납부 고지서 (납기내 금액·가산금 원문 보존)
         </button>
       </div>
     </div>
   </main>
 
   <!-- =================================================================== -->
-  <!-- [탭 2] 병원 방문 '3시간 전' 사전 케어 알림 & 복약 소리 알림 화면 -->
+  <!-- ★ [탭 2] 노인장기요양등급 맞춤 혜택 & 본인부담금 계산기 전용 화면 -->
+  <!-- =================================================================== -->
+  <section id="sectionLongterm" class="hidden max-w-lg mx-auto p-4 space-y-5">
+    <div class="bg-gradient-to-b from-blue-950 via-slate-900 to-slate-900 text-white rounded-3xl p-6 shadow-xl gold-ring space-y-3">
+      <div class="inline-block bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">🏛️ 국민건강보험공단 · 사회보장 데이터 연계</div>
+      <h2 class="text-2xl font-black"><span class="userNameSpan text-yellow-300">이경란</span> 님 맞춤 장기요양등급 안내</h2>
+      <p class="text-slate-200 text-sm leading-relaxed">
+        어려운 장기요양인정서 없이도 등급만 누르시면 <strong>국가 지원 월 한도액, 실제 내실 본인부담금, 이용 가능한 돌봄·복지용구 혜택</strong>을 쉬운 말과 목소리로 바로 알려드립니다.
+      </p>
+      <button type="button" onclick="speakLongtermGuide()" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-lg rounded-2xl shadow-lg flex items-center justify-center gap-2 pulse-btn">
+        🔊 선택한 장기요양등급 혜택 목소리로 듣기
+      </button>
+    </div>
+
+    <!-- 등급 선택 및 본인부담 유형 선택 카드 -->
+    <div class="bg-white rounded-3xl p-5 shadow-lg border-2 border-blue-600 space-y-4">
+      <h3 class="text-lg font-black text-slate-900">1️⃣ 장기요양등급을 선택해 주세요</h3>
+      <div class="grid grid-cols-3 gap-2" id="ltcGradeButtons">
+        <button type="button" onclick="selectLtcGrade('1등급')" id="btnGrade_1등급" class="py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800">1등급</button>
+        <button type="button" onclick="selectLtcGrade('2등급')" id="btnGrade_2등급" class="py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800">2등급</button>
+        <button type="button" onclick="selectLtcGrade('3등급')" id="btnGrade_3등급" class="py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800">3등급</button>
+        <button type="button" onclick="selectLtcGrade('4등급')" id="btnGrade_4등급" class="py-3 rounded-xl font-black text-sm border-2 border-blue-700 bg-blue-700 text-white shadow">4등급</button>
+        <button type="button" onclick="selectLtcGrade('5등급')" id="btnGrade_5등급" class="py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800">5등급</button>
+        <button type="button" onclick="selectLtcGrade('인지지원등급')" id="btnGrade_인지지원등급" class="py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800">인지지원</button>
+      </div>
+
+      <h3 class="text-lg font-black text-slate-900 pt-1">2️⃣ 본인부담금 감경 대상 여부</h3>
+      <div class="grid grid-cols-2 gap-2">
+        <button type="button" onclick="selectCopayRate(0.15, '일반 대상 (15%)')" id="copay_15" class="py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-900 bg-slate-900 text-yellow-300">일반 (15% 부담)</button>
+        <button type="button" onclick="selectCopayRate(0.09, '감경 대상 (9%)')" id="copay_9" class="py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-700">감경 (9% 부담)</button>
+        <button type="button" onclick="selectCopayRate(0.06, '의료급여·감경 (6%)')" id="copay_6" class="py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-700">차상위·감경 (6%)</button>
+        <button type="button" onclick="selectCopayRate(0, '기초생활수급권자 (무료)')" id="copay_0" class="py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-700">기초수급자 (0원)</button>
+      </div>
+
+      <!-- 실시간 계산 결과 박스 -->
+      <div class="bg-blue-50 border-2 border-blue-500 rounded-2xl p-4 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span id="ltcSelectedBadge" class="bg-blue-700 text-white text-xs font-black px-3 py-1 rounded-full">장기요양 4등급 기준</span>
+          <span id="ltcCopayLabel" class="text-xs font-black text-blue-900">일반 대상 (15%)</span>
+        </div>
+        <div class="bg-white p-3.5 rounded-xl border border-blue-200 space-y-1.5">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-bold text-slate-600">매달 사용 가능한 총 돌봄 한도액</span>
+            <span id="ltcLimitAmount" class="text-xl font-black text-blue-800">1,370,600원</span>
+          </div>
+          <div class="flex justify-between items-center border-t pt-1.5">
+            <span class="text-sm font-bold text-slate-600">국가가 대신 내주는 지원금</span>
+            <span id="ltcGovSupport" class="text-lg font-black text-emerald-700">1,165,010원</span>
+          </div>
+          <div class="flex justify-between items-center border-t pt-1.5">
+            <span class="text-sm font-black text-rose-800"><span class="userNameSpan">이경란</span> 님 월 최대 본인부담금</span>
+            <span id="ltcSelfPay" class="text-xl font-black text-rose-600">205,590원</span>
+          </div>
+        </div>
+        <p id="ltcGradeDesc" class="text-base font-bold text-slate-900 leading-relaxed pt-1"></p>
+      </div>
+
+      <!-- 복지용구 및 신청 절차 안내 -->
+      <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-4 space-y-2">
+        <h4 class="font-black text-amber-950 text-base">🎁 별도로 챙기실 ‘복지용구’ 지원 (연 160만 원 한도)</h4>
+        <p class="text-sm font-bold text-slate-800 leading-relaxed">
+          월 돌봄 한도액과 별도로 <strong>성인용 보행기(실버카), 안전손잡이, 미끄럼방지 매트, 목욕의자, 전동침대</strong> 등을 연간 160만 원 한도 내에서 저렴하게 구입·대여하실 수 있습니다.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <button type="button" onclick="unlockAudioAndClick('cameraInput'); switchTab('scan');" class="py-3.5 bg-yellow-400 text-slate-950 font-black text-sm rounded-xl shadow">
+          📸 장기요양 통지서 사진 찍기
+        </button>
+        <a href="tel:15771000" class="py-3.5 bg-blue-800 text-white font-black text-sm rounded-xl text-center shadow flex items-center justify-center">
+          📞 공단 상담 (1577-1000)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================================================================== -->
+  <!-- [탭 3] 병원 방문 '3시간 전' 사전 케어 알림 화면 -->
   <!-- =================================================================== -->
   <section id="sectionAlarm" class="hidden max-w-lg mx-auto p-4 space-y-5">
     <div class="bg-gradient-to-b from-[#0f172a] to-[#1e293b] text-white rounded-3xl p-5 shadow-xl gold-ring space-y-3">
-      <div class="inline-block bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">⏰ 시니어 외출 준비 골든타임 설계</div>
+      <div class="inline-block bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">⏰ 외출 준비 골든타임 설계</div>
       <h2 class="text-2xl font-black">🏥 병원 방문 ‘3시간 전’ 사전 케어 알림</h2>
       <p class="text-slate-300 text-sm leading-relaxed">
-        임박해서 울리면 준비하다 늦기 쉽습니다. <strong class="text-yellow-300"><span class="userNameSpan">김복순</span> 님의 외출 준비와 이동 시간을 고려해 예약 정확히 3시간 전</strong>에 신분증·금식 여부·준비물을 다정한 음성으로 미리 챙겨드립니다!
+        임박해서 울리면 준비하다 늦기 쉽습니다. <strong class="text-yellow-300"><span class="userNameSpan">이경란</span> 님의 외출 준비와 이동 시간을 고려해 예약 정확히 3시간 전</strong>에 신분증·금식 여부·준비물을 목소리로 미리 챙겨드립니다!
       </p>
       <button type="button" onclick="playScheduleVoice(0)" class="w-full py-4 bg-yellow-400 text-slate-950 font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2 pulse-btn">
         📢 [3시간 전 사전 알림] 음성 시연 듣기
       </button>
     </div>
 
-    <!-- 새 병원 일정 등록 (예약 시간 입력 시 3시간 전 알림 시각 자동 계산!) -->
+    <!-- 새 병원 일정 등록 -->
     <div class="bg-white rounded-3xl p-5 shadow border-2 border-slate-200 space-y-3">
-      <h3 class="text-lg font-black text-slate-900">➕ 새 병원 방문 일정 등록 (3시간 전 알림 자동 설정)</h3>
-      <input id="hospName" type="text" placeholder="병원·진료과 (예: 전남대병원 소화기내과)" class="w-full p-3.5 text-base border-2 border-slate-300 rounded-xl font-bold">
+      <h3 class="text-lg font-black text-slate-900">➕ 새 병원 방문 일정 등록 (3시간 전 알림 자동 계산)</h3>
+      <input id="hospName" type="text" placeholder="병원·진료과 (예: 대학병원 소화기내과)" class="w-full p-3.5 text-base border-2 border-slate-300 rounded-xl font-bold">
       <div class="grid grid-cols-2 gap-2">
         <div>
           <label class="text-xs font-black text-slate-600">방문 날짜</label>
@@ -326,7 +397,7 @@
       <div id="threeHourCalcBadge" class="bg-amber-100 border border-amber-400 text-amber-950 px-3.5 py-2.5 rounded-xl text-sm font-black">
         🔔 자동 계산: 진료 3시간 전인 [오전 07:00]에 1차 사전 준비 음성 알림이 울립니다!
       </div>
-      <input id="hospNote" type="text" placeholder="준비물·주의사항 (예: 신분증·건강보험증 지참, 아침 금식)" class="w-full p-3.5 text-base border-2 border-slate-300 rounded-xl font-bold">
+      <input id="hospNote" type="text" placeholder="준비물·주의사항 (예: 신분증·건강보험증 지참, 금식 여부)" class="w-full p-3.5 text-base border-2 border-slate-300 rounded-xl font-bold">
       <button type="button" onclick="addManualSchedule()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black text-lg rounded-xl shadow">
         ⏰ 3시간 전 사전 케어 알림 저장하기
       </button>
@@ -336,34 +407,33 @@
   </section>
 
   <!-- =================================================================== -->
-  <!-- [탭 3] 위급상황 ‘골든타임 안심망’ (SOS 긴급출동 · 보호자 알림 · 응급의료카드) -->
+  <!-- [탭 4] 위급상황 ‘골든타임 안심망’ (SOS 긴급출동 · 보호자 알림 · 응급의료카드) -->
   <!-- =================================================================== -->
   <section id="sectionGolden" class="hidden max-w-lg mx-auto p-4 space-y-5">
     <div class="bg-gradient-to-b from-red-900 via-red-800 to-slate-900 text-white rounded-3xl p-6 shadow-2xl border-4 border-yellow-400 space-y-4">
       <div class="flex items-center justify-between">
-        <span class="bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">🚨 독거·고령층 생명 보호 안전망</span>
+        <span class="bg-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-full">🚨 생명 보호 골든타임 안전망</span>
         <span class="text-xs font-bold text-rose-200">24시간 즉시 작동</span>
       </div>
-      <h2 class="text-2xl font-black leading-tight"><span class="userNameSpan text-yellow-300">김복순</span> 님 전용 ‘골든타임 안심망’</h2>
+      <h2 class="text-2xl font-black leading-tight"><span class="userNameSpan text-yellow-300">이경란</span> 님 전용 ‘골든타임 안심망’</h2>
       <p class="text-sm text-rose-100 leading-relaxed">
-        갑자기 어지럽거나 가슴이 답답할 때, 복잡한 번호를 찾을 필요 없이 아래 버튼만 누르세요. <strong>119 구급대 연결, 보호자 긴급 문자 발송, 구급대원용 응급 의료정보(복용약·지병) 브리핑</strong>이 즉시 작동합니다.
+        갑자기 어지럽거나 위급할 때 아래 버튼만 누르세요. <strong>119 구급대 연결, 보호자 긴급 문자 발송(장기요양등급·복용약 자동 첨부), 구급대원용 응급 의료정보 음성 브리핑</strong>이 즉시 작동합니다.
       </p>
 
-      <!-- 원터치 119 & 보호자 SOS 호출 -->
       <div class="grid grid-cols-1 gap-3 pt-1">
-        <a href="tel:119" onclick="triggerGoldenTimeAlert('119')" class="w-full py-5 bg-red-600 hover:bg-red-500 text-white font-black text-2xl rounded-2xl shadow-xl sos-pulse flex items-center justify-center gap-3 border-2 border-white">
+        <a href="tel:119" onclick="triggerGoldenTimeAlert()" class="w-full py-5 bg-red-600 hover:bg-red-500 text-white font-black text-2xl rounded-2xl shadow-xl sos-pulse flex items-center justify-center gap-3 border-2 border-white">
           🚑 119 응급 구급대 즉시 연결
         </a>
         <button type="button" onclick="triggerGoldenTimeFamilySMS()" class="w-full py-4 bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-xl rounded-2xl shadow-lg flex items-center justify-center gap-2">
-          📲 보호자(<span id="guardianNameDisplay">자녀</span>)에게 위급 SOS 알림 전송
+          📲 보호자(<span id="guardianNameDisplay">자녀</span>)에게 위급 SOS 문자 전송
         </button>
         <button type="button" onclick="speakEmergencyCard()" class="w-full py-3.5 bg-slate-950 text-yellow-300 font-black text-base rounded-2xl border border-yellow-400">
-          🔊 구급대원에게 내 지병·복용약 음성으로 브리핑하기
+          🔊 구급대원에게 내 지병·복용약·장기요양 음성 브리핑
         </button>
       </div>
     </div>
 
-    <!-- 구급대원·응급실 제시용 '골든타임 응급 의료정보 카드' -->
+    <!-- 구급대원 확인용 골든타임 응급카드 -->
     <div class="bg-white rounded-3xl p-5 shadow-lg border-4 border-red-600 space-y-3">
       <div class="flex items-center justify-between border-b pb-2.5">
         <h3 class="text-lg font-black text-red-700">🪪 구급대원 확인용 골든타임 응급카드</h3>
@@ -372,16 +442,16 @@
       <div class="grid grid-cols-2 gap-2.5 text-base">
         <div class="bg-slate-50 p-3 rounded-xl border">
           <div class="text-xs font-bold text-slate-500">성함 (호칭)</div>
-          <div class="font-black text-slate-950 text-lg"><span class="userNameSpan">김복순</span> 님</div>
+          <div class="font-black text-slate-950 text-lg"><span class="userNameSpan">이경란</span> 님</div>
         </div>
         <div class="bg-slate-50 p-3 rounded-xl border">
-          <div class="text-xs font-bold text-slate-500">혈액형 / 장기요양</div>
+          <div class="text-xs font-bold text-slate-500">혈액형 / 장기요양등급</div>
           <div id="cardBloodGrade" class="font-black text-red-700 text-lg">A형 / 장기요양 4등급</div>
         </div>
       </div>
       <div class="bg-rose-50 p-3.5 rounded-xl border border-rose-200">
         <div class="text-xs font-black text-rose-800">💊 기저질환 및 현재 복용 중인 주요 약물</div>
-        <div id="cardMedicalNote" class="font-black text-slate-900 text-base mt-0.5">고혈압 약(아모디핀정 아침 식후 복용), 위장약 복용 중 / 페니실린 알레르기 없음</div>
+        <div id="cardMedicalNote" class="font-black text-slate-900 text-base mt-0.5">고혈압 약(아모디핀정 아침 식후 복용), 위장약 복용 중 / 약물 알레르기 없음</div>
       </div>
       <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-300 flex items-center justify-between">
         <div>
@@ -392,16 +462,15 @@
       </div>
     </div>
 
-    <!-- 안부 확인 및 지역 돌봄 연계 -->
     <div class="bg-emerald-50 border-2 border-emerald-600 rounded-3xl p-4 space-y-2">
-      <h4 class="font-black text-emerald-950 text-base">🤝 독거노인 맞춤돌봄 · 응급안전안심서비스 연계</h4>
+      <h4 class="font-black text-emerald-950 text-base">🤝 노인맞춤돌봄 · 응급안전안심서비스 연계</h4>
       <p class="text-sm text-emerald-900 font-bold leading-relaxed">
-        장시간 휴대폰 미사용 또는 위급 신호 감지 시 보호자 및 관할 노인맞춤돌봄 생활지원사·보건복지상담센터(129)로 즉시 도움을 요청할 수 있습니다.
+        위급 신호 발생 시 등록된 보호자 비상연락망 및 관할 노인맞춤돌봄센터·보건복지상담센터(129)로 신속히 도움을 요청할 수 있습니다.
       </p>
     </div>
   </section>
 
-  <!-- 하단 고정 실행 바 (통역 소리듣기 + 골든타임 SOS 원터치 바로가기) -->
+  <!-- 하단 고정 실행 바 -->
   <div class="fixed bottom-0 left-0 right-0 bg-slate-950 border-t-4 border-yellow-400 p-2.5 z-40 shadow-2xl">
     <div class="max-w-lg mx-auto flex items-center gap-2">
       <button type="button" onclick="speakCurrentResult(true)" class="flex-1 py-3.5 bg-yellow-400 text-slate-950 font-black text-base rounded-2xl shadow flex items-center justify-center gap-1">
@@ -411,26 +480,26 @@
         🔇 멈춤
       </button>
       <button type="button" onclick="switchTab('golden')" class="px-4 py-3.5 bg-red-600 text-white font-black text-sm rounded-2xl shadow sos-pulse">
-        🚨 SOS안심망
+        🚨 골든타임SOS
       </button>
     </div>
   </div>
 
   <audio id="youAudioPlayer" playsinline preload="auto" class="hidden"></audio>
 
-  <!-- 👤 성함 존칭 변경 & 골든타임 응급정보 설정 모달 ('할머니·할아버지' 대신 성함으로 호칭!) -->
+  <!-- 👤 호칭(성함) 설정 & 골든타임 응급정보 수정 모달 -->
   <div id="profileModal" class="hidden fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-md w-full p-6 space-y-3.5 border-4 border-yellow-400 max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between">
-        <h3 class="text-xl font-black text-slate-900">👤 맞춤 성함 호칭 & 골든타임 설정</h3>
+        <h3 class="text-xl font-black text-slate-900">👤 내 호칭 및 골든타임 정보 설정</h3>
         <button type="button" onclick="closeProfileModal()" class="text-gray-400 font-bold text-lg">✕</button>
       </div>
       <p class="text-xs text-slate-600 font-bold">
-        획일적인 '할머니·할아버지' 대신 등록하신 성함(예: 김복순 님)으로 모든 화면과 음성을 다정하게 불러드립니다.
+        입력하신 성함(예: 이경란 님)으로 모든 화면과 음성을 또렷하고 정확하게 불러드립니다.
       </p>
       <div>
-        <label class="text-xs font-black text-slate-700">불러드릴 성함 (예: 김복순)</label>
-        <input id="inputUserName" type="text" value="김복순" class="w-full p-3 border-2 border-slate-300 rounded-xl font-bold text-base">
+        <label class="text-xs font-black text-slate-700">불러드릴 성함·호칭 (예: 이경란)</label>
+        <input id="inputUserName" type="text" value="이경란" class="w-full p-3 border-2 border-slate-300 rounded-xl font-bold text-base">
       </div>
       <div>
         <label class="text-xs font-black text-slate-700">혈액형 및 장기요양등급</label>
@@ -442,7 +511,7 @@
       </div>
       <div class="grid grid-cols-2 gap-2">
         <div>
-          <label class="text-xs font-black text-slate-700">보호자 호칭</label>
+          <label class="text-xs font-black text-slate-700">보호자 관계</label>
           <input id="inputGuardianRel" type="text" value="자녀" class="w-full p-3 border-2 border-slate-300 rounded-xl font-bold text-sm">
         </div>
         <div>
@@ -451,7 +520,7 @@
         </div>
       </div>
       <button type="button" onclick="saveUserProfile()" class="w-full py-4 bg-slate-900 text-yellow-400 font-black rounded-xl text-base shadow">
-        ✅ 성함 호칭 및 골든타임 정보 저장
+        ✅ 호칭 및 골든타임 정보 저장
       </button>
     </div>
   </div>
@@ -475,7 +544,7 @@
 
   <script>
     // =========================================================================
-    // 0. 카카오톡 인앱 브라우저 감지 및 성함 존칭 프로필 초기화
+    // 0. 브라우저 환경 및 사용자 호칭 프로필 초기화 (이름 가림 없이 또렷하게 발음!)
     // =========================================================================
     const isKakaoBrowser = /KAKAOTALK/i.test(navigator.userAgent);
     if (isKakaoBrowser) {
@@ -492,7 +561,7 @@
     }
 
     let userProfile = {
-      name: '김복순',
+      name: '이경란',
       bloodGrade: 'A형 / 장기요양 4등급',
       medicalNote: '고혈압 약(아모디핀정 아침 식후 복용), 위장약 복용 중',
       guardianRel: '자녀',
@@ -501,15 +570,21 @@
 
     (function loadSavedProfile() {
       try {
-        const saved = JSON.parse(localStorage.getItem('YOU_USER_PROFILE_2026') || 'null');
+        const saved = JSON.parse(localStorage.getItem('YOU_PROFILE_CLEAN_V2') || 'null');
         if (saved && saved.name) userProfile = saved;
       } catch (e) {}
       applyProfileToUI();
     })();
 
+    function getCleanHonorificName() {
+      const raw = (userProfile.name || '이경란').trim().replace(/\s*님$/, '');
+      return raw + ' 님';
+    }
+
     function applyProfileToUI() {
-      document.querySelectorAll('.userNameSpan').forEach(el => { el.textContent = userProfile.name; });
-      document.getElementById('greetingSubtitle').textContent = userProfile.name + ' 님 전용 AI 통역·골든타임 비서';
+      const baseName = (userProfile.name || '이경란').trim().replace(/\s*님$/, '');
+      document.querySelectorAll('.userNameSpan').forEach(el => { el.textContent = baseName; });
+      document.getElementById('greetingSubtitle').textContent = baseName + ' 님 전용 AI 통역·안심케어';
       document.getElementById('cardBloodGrade').textContent = userProfile.bloodGrade;
       document.getElementById('cardMedicalNote').textContent = userProfile.medicalNote;
       document.getElementById('guardianNameDisplay').textContent = userProfile.guardianRel;
@@ -518,7 +593,7 @@
     }
 
     function openProfileModal() {
-      document.getElementById('inputUserName').value = userProfile.name;
+      document.getElementById('inputUserName').value = (userProfile.name || '이경란').replace(/\s*님$/, '');
       document.getElementById('inputBloodGrade').value = userProfile.bloodGrade;
       document.getElementById('inputMedicalNote').value = userProfile.medicalNote;
       document.getElementById('inputGuardianRel').value = userProfile.guardianRel;
@@ -531,32 +606,28 @@
     }
 
     function saveUserProfile() {
+      const cleanInputName = (document.getElementById('inputUserName').value || '이경란').trim().replace(/\s*님$/, '');
       userProfile = {
-        name: document.getElementById('inputUserName').value.trim() || '김복순',
+        name: cleanInputName || '이경란',
         bloodGrade: document.getElementById('inputBloodGrade').value.trim() || '정보 없음',
         medicalNote: document.getElementById('inputMedicalNote').value.trim() || '복용약 정보 없음',
         guardianRel: document.getElementById('inputGuardianRel').value.trim() || '보호자',
         guardianTel: document.getElementById('inputGuardianTel').value.trim() || '010-0000-0000'
       };
-      localStorage.setItem('YOU_USER_PROFILE_2026', JSON.stringify(userProfile));
+      localStorage.setItem('YOU_PROFILE_CLEAN_V2', JSON.stringify(userProfile));
       applyProfileToUI();
       closeProfileModal();
       renderSchedules();
-      speakText('반갑습니다, ' + userProfile.name + ' 님! 앞으로 할머니, 할아버지 대신 ' + userProfile.name + ' 님이라고 존중하여 불러드릴게요.', true);
+      updateLtcCalculatorUI();
+      speakText('반갑습니다, ' + getCleanHonorificName() + '! 입력하신 성함으로 맞춤 안내를 시작합니다.', true);
     }
 
     // =========================================================================
-    // 1. 문서 내 민감 개인정보 자동 마스킹 (촬영된 서류의 실명·주민번호 보호)
+    // 1. 주민등록번호 뒷자리만 안전 보호 (성함 마스킹 완전 제거 -> 또렷하게 발음!)
     // =========================================================================
-    function maskPersonalInfo(str) {
+    function maskResidentIdOnly(str) {
       if (!str) return '';
-      let s = String(str);
-      s = s.replace(/(\d{6})\s*[-~]\s*[1-4]\d{6}/g, '$1-*******');
-      s = s.replace(/(성\s*명|수\s*신\s*인|출\s*원\s*인|환\s*자\s*명|수\s*급\s*자|명의인|대표자)\s*[:：]?\s*([가-힣])([가-힣])([가-힣]?)/g, function(_, label, f, m, l) {
-        return label + ': ' + f + '*' + (l || '');
-      });
-      s = s.replace(/이\s*경\s*란/g, '이*란');
-      return s;
+      return String(str).replace(/(\d{6})\s*[-~]\s*[1-4]\d{6}/g, '$1-*******');
     }
 
     // =========================================================================
@@ -602,7 +673,7 @@
       const v = document.getElementById('rawKeyInput').value.trim();
       if (v) localStorage.setItem('YOU_REAL_AIZA_KEY', encryptSimple(v));
       closeVaultModal();
-      speakText('보안 설정이 저장되었습니다.', true);
+      speakText(getCleanHonorificName() + ', 보안 설정이 저장되었습니다.', true);
     }
 
     (function generateAppIcon() {
@@ -626,9 +697,9 @@
     })();
 
     // =========================================================================
-    // 3. 한국어 성우 음성(TTS) 엔진 (성함 호칭 적용 + 카톡/크롬 100% 호환)
+    // 3. 한국어 성우 음성(TTS) 엔진 (입력된 성함을 또렷하게 발음!)
     // =========================================================================
-    let currentSpeechText = userProfile.name + ' 님 안녕하세요! 찍어봐유 안심 통역 비서입니다. 장기요양 통지서나 병원 서류, 약봉투를 찍으시면 쉬운 말로 풀어서 읽어드릴게요.';
+    let currentSpeechText = getCleanHonorificName() + ', 안녕하세요! 찍어봐유 안심 통역 비서입니다. 장기요양인정서나 복지 통지서, 병원 검사지를 찍으시면 쉬운 말로 풀어서 읽어드릴게요.';
     let isSpeakingFlag = false;
 
     function unlockAudioAndClick(inputId) {
@@ -649,7 +720,7 @@
     }
 
     function cleanForVoice(raw) {
-      return maskPersonalInfo(raw || '')
+      return maskResidentIdOnly(raw || '')
         .replace(/[*#_|~<>•·\[\]()]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
@@ -671,7 +742,7 @@
           const u = new SpeechSynthesisUtterance(clean);
           u.lang = 'ko-KR';
           u.rate = 0.94;
-          u.pitch = 1.05;
+          u.pitch = 1.04;
           const voices = window.speechSynthesis.getVoices();
           const kor = voices.find(v => v.lang && v.lang.toLowerCase().includes('ko'));
           if (kor) u.voice = kor;
@@ -739,29 +810,115 @@
     }
 
     // =========================================================================
-    // 4. 사회보장(장기요양)·병원검사·고지서 만능 쉬운 말 통역 엔진
+    // ★ 4. [전용 기능] 노인장기요양등급별 월 한도액 · 본인부담금 계산기 & 음성 가이드
+    // =========================================================================
+    const LTC_GRADE_DATA = {
+      '1등급': {
+        limit: 2069900,
+        desc: '일상생활에서 전적으로 다른 사람의 도움이 필요한 상태입니다. 방문요양, 방문간호, 방문목욕 등 재가급여는 물론 요양시설 입소 급여도 선택하실 수 있습니다.'
+      },
+      '2등급': {
+        limit: 1869600,
+        desc: '일상생활에서 상당 부분 다른 사람의 도움이 필요한 상태입니다. 가정 내 방문요양·목욕·주야간보호 및 시설급여를 모두 이용하실 수 있습니다.'
+      },
+      '3등급': {
+        limit: 1455800,
+        desc: '일상생활에서 부분적으로 도움이 필요한 상태입니다. 요양보호사 가정 방문요양, 주야간보호센터 이용 및 연 160만 원 복지용구 혜택을 받으실 수 있습니다.'
+      },
+      '4등급': {
+        limit: 1370600,
+        desc: '거동이나 일상생활에서 일정 부분 도움이 필요한 상태입니다. 가정으로 찾아오는 방문요양, 주야간보호센터, 안전손잡이·보행기 등 복지용구 지원을 받으실 수 있습니다.'
+      },
+      '5등급': {
+        limit: 1177000,
+        desc: '치매 등 인지기능 관리와 일상 돌봄이 필요한 상태입니다. 인지활동형 방문요양과 주야간보호센터 프로그램, 복지용구 혜택을 이용하실 수 있습니다.'
+      },
+      '인지지원등급': {
+        limit: 657400,
+        desc: '신체 기능은 양호하나 경증 치매 등으로 인지 건강 관리가 필요한 상태입니다. 주야간보호센터 인지재활 프로그램과 복지용구 지원을 받으실 수 있습니다.'
+      }
+    };
+
+    let selectedLtcGrade = '4등급';
+    let selectedCopayRate = 0.15;
+    let selectedCopayLabel = '일반 대상 (15%)';
+
+    function selectLtcGrade(grade) {
+      selectedLtcGrade = grade;
+      Object.keys(LTC_GRADE_DATA).forEach(g => {
+        const btn = document.getElementById('btnGrade_' + g);
+        if (!btn) return;
+        btn.className = (g === grade)
+          ? 'py-3 rounded-xl font-black text-sm border-2 border-blue-700 bg-blue-700 text-white shadow'
+          : 'py-3 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-800';
+      });
+      updateLtcCalculatorUI();
+      speakLongtermGuide();
+    }
+
+    function selectCopayRate(rate, label) {
+      selectedCopayRate = rate;
+      selectedCopayLabel = label;
+      const map = { '0.15': 'copay_15', '0.09': 'copay_9', '0.06': 'copay_6', '0': 'copay_0' };
+      Object.values(map).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.className = 'py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-300 text-slate-700';
+      });
+      const activeId = map[String(rate)];
+      if (document.getElementById(activeId)) {
+        document.getElementById(activeId).className = 'py-3 px-2 rounded-xl font-black text-sm border-2 border-slate-900 bg-slate-900 text-yellow-300';
+      }
+      updateLtcCalculatorUI();
+      speakLongtermGuide();
+    }
+
+    function updateLtcCalculatorUI() {
+      const info = LTC_GRADE_DATA[selectedLtcGrade];
+      if (!info) return;
+      const selfPay = Math.round(info.limit * selectedCopayRate);
+      const govPay = info.limit - selfPay;
+
+      document.getElementById('ltcSelectedBadge').textContent = '장기요양 ' + selectedLtcGrade + ' 기준';
+      document.getElementById('ltcCopayLabel').textContent = selectedCopayLabel;
+      document.getElementById('ltcLimitAmount').textContent = info.limit.toLocaleString('ko-KR') + '원';
+      document.getElementById('ltcGovSupport').textContent = govPay.toLocaleString('ko-KR') + '원';
+      document.getElementById('ltcSelfPay').textContent = selfPay.toLocaleString('ko-KR') + '원';
+      document.getElementById('ltcGradeDesc').textContent = info.desc;
+    }
+    updateLtcCalculatorUI();
+
+    function speakLongtermGuide() {
+      const info = LTC_GRADE_DATA[selectedLtcGrade];
+      const selfPay = Math.round(info.limit * selectedCopayRate);
+      const govPay = info.limit - selfPay;
+      const msg = `${getCleanHonorificName()}, 선택하신 장기요양 ${selectedLtcGrade} 맞춤 혜택 안내입니다. 매달 사용하실 수 있는 재가 돌봄 총 한도액은 ${info.limit.toLocaleString('ko-KR')}원이며, 이 중 국가가 ${govPay.toLocaleString('ko-KR')}원을 지원해 드리고, ${getCleanHonorificName()}의 월 최대 본인부담금은 ${selfPay.toLocaleString('ko-KR')}원입니다. ${info.desc} 추가로 성인용 보행기와 안전손잡이 같은 복지용구도 연간 160만 원 한도 내에서 지원받으실 수 있습니다.`;
+      speakText(msg, true);
+    }
+
+    // =========================================================================
+    // 5. 사회보장(장기요양)·병원검사·고지서 만능 쉬운 말 통역 엔진 (스미싱 완전 제외)
     // =========================================================================
     let pendingDetectedSchedule = null;
 
     function getMasterPrompt() {
-      return `당신은 대한민국 시니어를 위한 안심 통역 비서 '찍어봐YOU'입니다.
-호칭 원칙: 절대 '할머니', '할아버지'라고 부르지 마세요! 반드시 '${userProfile.name} 님'이라고 존중하여 불러주세요.
+      const honorName = getCleanHonorificName();
+      return `당신은 대한민국 사회보장·의료·생활 안심 통역 비서 '찍어봐YOU'입니다.
+호칭 원칙: 사용자를 부를 때는 오직 '${honorName}'이라고만 또렷하고 정중하게 부르세요. 다른 호칭 언급은 절대 하지 마세요.
 [핵심 원칙]
-1. 백지상태 정밀 분류: 절대로 모든 문서를 병원 서류로 억측하지 마세요. 노인장기요양인정서/복지통지서, 세금/공과금 고지서, 병원 조직검사/진단서, 약봉투/영양제, 스미싱 문자, 일반 문서를 실제 내용 그대로 분류하세요.
-2. 장기요양·복지 문서 특화: 장기요양등급(1~5등급, 인지지원등급)이나 사회보장 안내문이면 등급, 유효기간, 월 한도액, 본인부담률, 이용 가능한 서비스(방문요양, 주야간보호, 복지용구 연 160만원 한도 등)를 welfareGuide 칸에 쉽게 안내하세요.
-3. 원문 그대로 읽기 금지: 영어 의학용어나 행정 한자어를 그대로 읽지 말고 '${userProfile.name} 님' 눈높이에서 쉽게 풀어서 통역하세요.
+1. 백지상태 정밀 분류: 절대로 모든 문서를 병원 서류로 억측하지 마세요. 노인장기요양인정서/복지급여 통지서, 세금/공과금 고지서, 병원 조직검사/진단서, 약봉투/영양제, 일반 문서를 실제 찍힌 내용 그대로 분류하세요.
+2. 장기요양·사회보장 문서 특화: 노인장기요양인정서나 복지 안내문이면 장기요양등급(1~5등급, 인지지원등급), 유효기간, 재가급여 월 한도액, 본인부담률, 이용 가능한 혜택(방문요양, 주야간보호, 복지용구 연 160만원 한도, 기초연금, 바우처 등)을 welfareGuide 칸에 상세하고 쉽게 안내하세요.
+3. 원문 그대로 읽기 금지: 영어 의학용어나 행정 한자어를 그대로 읽지 말고 '${honorName}'이 이해하기 쉽게 풀어서 통역하세요.
 4. 숫자·기한 원문 보존: 금액, 등급, 날짜, 복용량은 preservedNumbers에 원문 그대로 적으세요.
 
 순수 JSON 형식으로만 응답하세요:
 {
-  "category": "🏛️ 장기요양/사회보장 | 🔬 병원검사지/진단서 | 📄 행정/고지서 | 💊 약봉투/영양제 | 🚨 스미싱/문자 판별 | 📦 생활문서/물품",
+  "category": "🏛️ 장기요양/사회보장 | 🔬 병원검사지/진단서 | 📄 행정/고지서 | 💊 약봉투/영양제 | 📦 생활문서/물품",
   "confidence": "높음",
-  "isSmishingDoc": false,
   "title": "이해하기 쉬운 문서/물건 제목",
-  "actionSummary": "${userProfile.name} 님이 지금 무엇을 하시면 되는지 한 줄 행동 요약",
+  "actionSummary": "${honorName}, 지금 무엇을 하시면 되는지 한 줄 행동 요약",
   "preservedNumbers": "등급, 월한도액, 금액, 날짜, 기한, 복용량 등 핵심 숫자 원문",
   "welfareGuide": "장기요양등급이나 복지 혜택 관련 문서일 때 받을 수 있는 사회보장 서비스 안내 (해당 없으면 빈 문자열)",
-  "what": "이게 무엇인지 다정하고 쉽게 요약",
+  "what": "이게 무엇인지 쉽게 요약",
   "easyExplain": "어려운 전문용어·영어·한자어를 아주 쉽게 풀어서 통역한 설명",
   "warn": "꼭 주의하실 점",
   "rawText": "읽은 글자 요약",
@@ -845,7 +1002,7 @@
               {
                 role: 'user',
                 content: [
-                  { type: 'text', text: '이 사진을 보고 절대 원문 그대로 읽지 말고 ' + userProfile.name + ' 님 눈높이의 쉬운 한국어 통역 JSON으로만 응답하세요.' },
+                  { type: 'text', text: '이 사진을 보고 원문 그대로 읽지 말고 ' + getCleanHonorificName() + '을 위한 쉬운 한국어 통역 JSON으로만 응답하세요.' },
                   { type: 'image_url', image_url: { url: fastUrl } }
                 ]
               }
@@ -863,8 +1020,8 @@
     }
 
     async function interpretOcrTextWithCloudAi(ocrRaw) {
-      const maskedOcr = maskPersonalInfo(ocrRaw).slice(0, 700);
-      if (maskedOcr.trim().length < 3) throw new Error('Too short');
+      const safeOcr = maskResidentIdOnly(ocrRaw).slice(0, 700);
+      if (safeOcr.trim().length < 3) throw new Error('Too short');
 
       try {
         const ctrl1 = new AbortController();
@@ -876,7 +1033,7 @@
             model: 'openai',
             messages: [
               { role: 'system', content: getMasterPrompt() },
-              { role: 'user', content: '추출된 글자:\n' + maskedOcr + '\n절대 원문 그대로 읽지 말고 쉬운 한국어 통역 JSON으로 답하세요.' }
+              { role: 'user', content: '추출된 글자:\n' + safeOcr + '\n절대 원문 그대로 읽지 말고 쉬운 한국어 통역 JSON으로 답하세요.' }
             ]
           }),
           signal: ctrl1.signal
@@ -889,7 +1046,7 @@
         }
       } catch (e) {}
 
-      const shortPrompt = userProfile.name + ' 님을 위해 다음 문서 글자를 쉬운 말로 통역한 JSON만 출력하세요. 형식:{"category":"분류","title":"쉬운제목","actionSummary":"할일한줄","preservedNumbers":"핵심숫자","welfareGuide":"복지혜택안내","what":"무슨문서인지","easyExplain":"쉬운말풀이","warn":"주의사항","glossary":[{"term":"용어","meaning":"뜻"}]} 원문:' + maskedOcr.slice(0, 300);
+      const shortPrompt = getCleanHonorificName() + '을 위해 다음 문서 글자를 쉬운 말로 통역한 JSON만 출력하세요. 형식:{"category":"분류","title":"쉬운제목","actionSummary":"할일한줄","preservedNumbers":"핵심숫자","welfareGuide":"장기요양또는복지혜택안내","what":"무슨문서인지","easyExplain":"쉬운말풀이","warn":"주의사항","glossary":[{"term":"용어","meaning":"뜻"}]} 원문:' + safeOcr.slice(0, 300);
       const ctrl2 = new AbortController();
       const t2 = setTimeout(() => ctrl2.abort(), 8000);
       try {
@@ -906,9 +1063,10 @@
     }
 
     function smartOfflineKoreanInterpreter(rawOcr) {
-      const masked = maskPersonalInfo(rawOcr || '');
-      const clean = masked.replace(/[|~^=<>«»—_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
+      const clean = maskResidentIdOnly(rawOcr || '').replace(/[|~^=<>«»—_\\\/\[\]{}]/g, ' ').replace(/\s+/g, ' ').trim();
       const lower = clean.toLowerCase();
+      const honorName = getCleanHonorificName();
+
       if (!clean || clean.length < 4) return { confidence: '재촬영필요' };
 
       const foundNums = (clean.match(/\d{2,4}[-./년월일]\s*\d{1,4}([-./]\d{1,4})?|\d{1,3}(,\d{3})+\s*원|\d+\s*(등급|mg|정|포|원|호|일|시)/gi) || []).slice(0, 5);
@@ -919,18 +1077,17 @@
         return {
           category: '🏛️ 장기요양 · 사회보장 통지서',
           confidence: '높음',
-          isSmishingDoc: false,
-          title: '노인장기요양등급 및 복지 급여 안내 통지서',
-          actionSummary: userProfile.name + ' 님, 국가에서 돌봄 서비스와 복지용구 비용을 지원해 드리는 결정 통지서입니다. 건강보험공단(1577-1000)이나 재가센터에 연결해 혜택을 신청하세요.',
+          title: '노인장기요양등급 및 사회보장 급여 통지서',
+          actionSummary: honorName + ', 국가에서 방문돌봄 서비스와 복지용구 비용을 지원해 드리는 결정 통지서입니다. 상단 [장기요양] 탭에서 등급별 월 지원금을 확인해 보세요.',
           preservedNumbers: numSummary,
-          welfareGuide: '요양보호사 가정 방문(방문요양), 주야간보호센터 이용은 물론 지팡이·안전손잡이·보행기 등 복지용구를 연 160만 원 한도 내에서 본인부담금(15% 내외)만 내고 이용하실 수 있습니다.',
-          what: '국민건강보험공단에서 장기요양등급과 매달 국가가 지원해 주는 돌봄 한도액을 알려주는 공식 문서예요.',
-          easyExplain: '문서에 적힌 "재가급여"는 시설에 입소하지 않고 댁에서 편안히 지내시면서 요양보호사 방문이나 목욕·간호 도움을 받는 국가 지원금을 뜻해요.',
+          welfareGuide: '요양보호사 가정 방문(방문요양), 주야간보호센터 이용은 물론 성인용 보행기·안전손잡이 등 복지용구를 연 160만 원 한도 내에서 본인부담금(15% 내외, 감경 시 0~9%)만 내고 이용하실 수 있습니다.',
+          what: '국민건강보험공단 또는 지자체에서 국가 돌봄 지원 자격과 월 한도액을 알려주는 공식 문서예요.',
+          easyExplain: '문서에 적힌 "재가급여"는 요양시설에 입소하지 않고 집에서 생활하시면서 요양보호사 방문이나 목욕·간호 도움을 받는 국가 지원금을 뜻해요.',
           warn: '인정 유효기간이 끝나기 90일 전부터 갱신 신청을 하셔야 지원이 끊기지 않습니다.',
           rawText: clean,
           glossary: [
             { term: '재가급여 (在家給與)', meaning: '집에서 생활하면서 요양보호사 방문·목욕 등 돌봄을 받는 국가 지원금' },
-            { term: '복지용구', meaning: '성인용 보행기, 미끄럼방지 매트, 안전손잡이 등 어르신 안전 생활용품 지원' }
+            { term: '복지용구', meaning: '성인용 보행기, 미끄럼방지 매트, 안전손잡이 등 일상 안전 생활용품 지원' }
           ],
           hospitalSchedule: { detected: false }
         };
@@ -941,9 +1098,8 @@
         return {
           category: '🔬 병원 검사지 · 진료 안내서',
           confidence: '높음',
-          isSmishingDoc: false,
           title: '병원 정밀 검사 결과 및 외래 안내서',
-          actionSummary: userProfile.name + ' 님, 예약된 외래 진료일에 담당 의사 선생님께 최종 설명을 들으시고 3시간 전 사전 알림을 켜두세요.',
+          actionSummary: honorName + ', 예약된 외래 진료일에 담당 의사 선생님께 최종 설명을 들으시고 병원 방문 3시간 전 사전 알림을 켜두세요.',
           preservedNumbers: numSummary,
           welfareGuide: '',
           what: '병원에서 시행한 정밀 검사 결과를 기록한 공식 의료 문서예요.',
@@ -960,16 +1116,15 @@
 
       // 3) 관공서 등록증·공문·고지서
       return {
-        category: '📄 행정 · 생활 안내 문서',
+        category: '📄 행정 · 공식 등록/안내 문서',
         confidence: '높음',
-        isSmishingDoc: false,
-        title: '공식 기관 안내 및 확인 문서 요약',
-        actionSummary: userProfile.name + ' 님, 문서 속 핵심 번호와 기한을 확인하시고 잘 보관해 두세요.',
+        title: '기관 공식 안내 및 등록 확인 문서 요약',
+        actionSummary: honorName + ', 문서 속 핵심 등록번호와 기한을 확인하시고 잘 보관해 두세요.',
         preservedNumbers: numSummary,
         welfareGuide: '',
-        what: '기관에서 공식 번호나 안내 사항을 전달하기 위해 발급한 문서예요.',
+        what: '공공기관에서 공식 번호나 안내 사항을 전달하기 위해 발급한 문서예요.',
         easyExplain: '복잡한 기호를 제외하고 핵심 날짜와 번호만 위 노란 박스에 그대로 뽑아드렸으니 원본과 함께 확인해 보세요.',
-        warn: '금전 납부나 서명이 필요한 서류라면 가족이나 해당 기관 공식 번호로 먼저 확인하세요.',
+        warn: '납부나 신청 기한이 적힌 서류라면 기한 내에 해당 기관으로 확인하세요.',
         rawText: clean,
         glossary: [],
         hospitalSchedule: { detected: false }
@@ -985,7 +1140,7 @@
       document.getElementById('resultCard').classList.add('hidden');
       document.getElementById('retakeBanner').classList.add('hidden');
 
-      speakText(userProfile.name + ' 님, 사진을 꼼꼼히 살펴보고 있어요. 잠시만 기다려 주시면 쉬운 말로 풀어서 읽어드릴게요.', false);
+      speakText(getCleanHonorificName() + ', 사진을 꼼꼼히 살펴보고 있어요. 잠시만 기다려 주시면 쉬운 말로 풀어서 읽어드릴게요.', false);
 
       const { highUrl, fastUrl } = await compressImageDual(file);
       document.getElementById('capturedImage').src = highUrl;
@@ -1033,7 +1188,7 @@
       document.getElementById('previewContainer').classList.remove('hidden');
       document.getElementById('loadingBox').classList.remove('hidden');
       document.getElementById('resultCard').classList.add('hidden');
-      speakText(userProfile.name + ' 님이 물어보신 문구를 쉬운 말로 풀이하고 있어요.', true);
+      speakText(getCleanHonorificName() + ', 물어보신 문구를 쉬운 말로 풀이하고 있어요.', true);
 
       try {
         const parsed = await interpretOcrTextWithCloudAi(text);
@@ -1049,20 +1204,20 @@
       if (!data || data.confidence === '재촬영필요') {
         document.getElementById('retakeBanner').classList.remove('hidden');
         document.getElementById('resultCard').classList.add('hidden');
-        speakText(userProfile.name + ' 님, 글씨가 조금 흐려서 정확히 읽기 어려워요. 밝은 곳에서 가까이 다시 한 번 찍어주세요.', false);
+        speakText(getCleanHonorificName() + ', 글씨가 조금 흐려서 정확히 읽기 어려워요. 밝은 곳에서 가까이 다시 한 번 찍어주세요.', false);
         return;
       }
 
       document.getElementById('retakeBanner').classList.add('hidden');
       document.getElementById('resultCard').classList.remove('hidden');
 
-      const safeTitle = maskPersonalInfo(data.title || '쉬운 말 통역 결과');
-      const safeAction = maskPersonalInfo(data.actionSummary || '아래 쉬운 설명을 확인해 주세요.');
-      const safeNums = maskPersonalInfo(data.preservedNumbers || '별도 숫자/기한 없음');
-      const safeWhat = maskPersonalInfo(data.what || '-');
-      const safeEasy = maskPersonalInfo(data.easyExplain || '-');
-      const safeWarn = maskPersonalInfo(data.warn || '-');
-      const safeRaw = maskPersonalInfo(data.rawText || '-');
+      const safeTitle = maskResidentIdOnly(data.title || '쉬운 말 통역 결과');
+      const safeAction = maskResidentIdOnly(data.actionSummary || '아래 쉬운 설명을 확인해 주세요.');
+      const safeNums = maskResidentIdOnly(data.preservedNumbers || '별도 숫자/기한 없음');
+      const safeWhat = maskResidentIdOnly(data.what || '-');
+      const safeEasy = maskResidentIdOnly(data.easyExplain || '-');
+      const safeWarn = maskResidentIdOnly(data.warn || '-');
+      const safeRaw = maskResidentIdOnly(data.rawText || '-');
 
       document.getElementById('resultCategory').textContent = data.category || '📄 쉬운 말 통역 완료';
       document.getElementById('resultTitle').textContent = safeTitle;
@@ -1073,20 +1228,12 @@
       document.getElementById('resWarn').textContent = safeWarn;
       document.getElementById('rawTextDisplay').textContent = safeRaw;
 
-      // 장기요양·사회보장 복지 혜택 박스 표시
       const welfareBox = document.getElementById('welfareBenefitBox');
       if (data.welfareGuide && data.welfareGuide.trim().length > 2) {
         document.getElementById('welfareBenefitText').textContent = data.welfareGuide;
         welfareBox.classList.remove('hidden');
       } else {
         welfareBox.classList.add('hidden');
-      }
-
-      const smishingBox = document.getElementById('smishingGuardBox');
-      if (data.isSmishingDoc || (data.category && data.category.includes('스미싱'))) {
-        smishingBox.classList.remove('hidden');
-      } else {
-        smishingBox.classList.add('hidden');
       }
 
       const glossaryBox = document.getElementById('glossaryBox');
@@ -1097,7 +1244,7 @@
         data.glossary.forEach(item => {
           const div = document.createElement('div');
           div.className = 'bg-white p-3.5 rounded-xl border border-indigo-200 shadow-sm';
-          div.innerHTML = '<div class="font-black text-indigo-950 text-lg">🔹 ' + maskPersonalInfo(item.term) + '</div><div class="font-bold text-slate-800 text-base mt-0.5">👉 ' + maskPersonalInfo(item.meaning) + '</div>';
+          div.innerHTML = '<div class="font-black text-indigo-950 text-lg">🔹 ' + maskResidentIdOnly(item.term) + '</div><div class="font-bold text-slate-800 text-base mt-0.5">👉 ' + maskResidentIdOnly(item.meaning) + '</div>';
           glossaryList.appendChild(div);
         });
       } else {
@@ -1115,48 +1262,63 @@
         hospBanner.classList.add('hidden');
       }
 
-      const welfareVoice = (data.welfareGuide && data.welfareGuide.length > 2) ? (' 받으실 수 있는 복지 혜택은, ' + data.welfareGuide) : '';
-      const fullVoice = userProfile.name + ' 님, ' + safeTitle + ' 통역 결과입니다. 지금 하실 일은, ' + safeAction + ' 쉽게 설명해 드리면, ' + safeEasy + welfareVoice + ' 주의하실 점은, ' + safeWarn;
+      const welfareVoice = (data.welfareGuide && data.welfareGuide.length > 2) ? (' 이용하실 수 있는 복지 혜택은, ' + data.welfareGuide) : '';
+      const fullVoice = getCleanHonorificName() + ', ' + safeTitle + ' 통역 결과입니다. 지금 하실 일은, ' + safeAction + ' 쉽게 설명해 드리면, ' + safeEasy + welfareVoice + ' 주의하실 점은, ' + safeWarn;
       speakText(fullVoice, false);
     }
 
     // =========================================================================
-    // 5. 심사위원 시연용 검증 샘플 6종 (장기요양등급 통지서 완벽 수록!)
+    // 6. 심사위원 시연용 검증 샘플 5종 (장기요양인정서 · 복지통지서 · 병원 · 약봉투 · 고지서)
     // =========================================================================
     function loadSample(type) {
       document.getElementById('previewContainer').classList.add('hidden');
-      const n = userProfile.name;
+      const honorName = getCleanHonorificName();
       const samples = {
         longterm: {
           category: '🏛️ 사회보장 · 노인장기요양인정 통지서',
           confidence: '높음',
-          isSmishingDoc: false,
           title: '노인장기요양인정 결정 통지서 (장기요양 4등급)',
-          actionSummary: n + ' 님은 장기요양 4등급으로 인정되셨습니다! 매달 약 134만 원 한도 내에서 요양보호사 방문돌봄과 연간 160만 원 복지용구(보행기·안전손잡이) 지원을 신청하세요.',
-          preservedNumbers: '장기요양등급: 4등급 | 유효기간: 2026.11.01 ~ 2028.10.31 (2년간) | 재가급여 월 한도액: 1,341,000원 | 본인부담률: 일반 15% (감경대상 6~9%)',
+          actionSummary: honorName + '은 장기요양 4등급으로 인정되셨습니다! 매달 1,370,600원 한도 내에서 요양보호사 방문돌봄과 연간 160만 원 복지용구(보행기·안전손잡이) 지원을 신청하세요.',
+          preservedNumbers: '장기요양등급: 4등급 | 유효기간: 2026.11.01 ~ 2028.10.31 (2년간) | 재가급여 월 한도액: 1,370,600원 | 본인부담률: 일반 15% (감경 6~9%)',
           welfareGuide: '① 방문요양(요양보호사 가사·신체활동 지원) ② 주·야간보호센터 이용 ③ 복지용구 급여(성인용 보행기, 미끄럼방지 매트, 목욕의자, 안전손잡이 등 연 160만 원 한도 내 85~100% 국가지원)를 바로 이용하실 수 있습니다.',
-          what: '국민건강보험공단에서 ' + n + ' 님께 국가 돌봄 지원 자격을 공식 승인해 보낸 기쁜 소식의 통지서예요.',
-          easyExplain: '통지서에 적힌 어려운 말 중 "재가급여 월 한도액 1,341,000원"은 현금으로 주는 게 아니라, 한 달에 134만 원어치 돌봄 서비스를 받으실 때 국가가 85%를 대신 내주고 ' + n + ' 님은 15%(약 20만 원 내외)만 부담하시면 된다는 뜻이에요!',
+          what: '국민건강보험공단에서 ' + honorName + '께 국가 돌봄 지원 자격을 공식 승인해 보낸 통지서예요.',
+          easyExplain: '통지서에 적힌 "재가급여 월 한도액 1,370,600원"은 한 달에 약 137만 원어치 방문돌봄 서비스를 이용하실 때 국가가 85%를 대신 내주고 ' + honorName + '은 15%(약 20만 원 내외)만 부담하시면 된다는 뜻이에요!',
           warn: '동봉된 표준장기요양이용계획서를 가지고 동네 재가장기요양기관(방문요양센터)과 계약하셔야 실제 서비스가 시작되며, 유효기간 만료 90일 전 갱신을 꼭 챙기세요.',
-          rawText: '노인장기요양인정서 / 수급자: ' + n + ' / 장기요양등급: 4등급 / 급여종류: 재가급여 / 유효기간: 2026.11.01~2028.10.31 / 월한도액: 1,341,000원',
+          rawText: '노인장기요양인정서 / 수급자: ' + honorName + ' / 장기요양등급: 4등급 / 급여종류: 재가급여 / 유효기간: 2026.11.01~2028.10.31 / 월한도액: 1,370,600원',
           glossary: [
-            { term: '재가급여 (在家給與)', meaning: '요양원에 가지 않고 내 집에서 편안히 지내며 요양보호사 방문·목욕 등을 이용하는 급여' },
-            { term: '복지용구 급여', meaning: '어르신 낙상 예방을 위한 안전손잡이, 지팡이, 성인용보행기 등을 저렴하게 대여·구입하는 혜택' },
-            { term: '표준장기요양이용계획서', meaning: '어떤 돌봄 서비스를 받으면 가장 좋을지 공단이 추천해 준 맞춤 이용 안내표' }
+            { term: '재가급여 (在家給與)', meaning: '요양원에 가지 않고 집에서 편안히 지내며 요양보호사 방문·목욕 등을 이용하는 급여' },
+            { term: '복지용구 급여', meaning: '낙상 예방을 위한 안전손잡이, 지팡이, 성인용보행기 등을 저렴하게 대여·구입하는 혜택' },
+            { term: '표준장기요양이용계획서', meaning: '어떤 돌봄 서비스를 받으면 좋을지 건강보험공단이 추천해 준 맞춤 이용 안내표' }
+          ],
+          hospitalSchedule: { detected: false }
+        },
+        welfare: {
+          category: '💌 사회보장 · 맞춤형 복지급여 통지서',
+          confidence: '높음',
+          title: '기초연금 및 동절기 에너지바우처 신청 안내문',
+          actionSummary: honorName + ', 신분증과 통장 사본을 지참하여 주소지 행정복지센터(주민센터)에 방문하시거나 복지로(129)로 동절기 난방비 바우처를 신청하세요.',
+          preservedNumbers: '에너지바우처 신청기한: 2026년 12월 31일까지 | 동절기 지원금액: 세대당 평균 304,000원 | 상담전화: 보건복지상담센터 129',
+          welfareGuide: '전기·도시가스·지역난방 요금 자동 차감 방식 또는 국민행복카드 바우처 방식 중 편하신 방법을 선택해 겨울철 난방비를 지원받으실 수 있습니다.',
+          what: '관할 시청·주민센터에서 겨울철 난방비 부담을 덜어드리기 위해 보낸 공식 사회보장 복지 안내문이에요.',
+          easyExplain: '문서에 적힌 "요금 차감(가상카드)"은 따로 카드를 들고 다닐 필요 없이 다음 달 도시가스나 전기요금 고지서에서 지원금만큼 자동으로 깎아준다는 뜻이에요!',
+          warn: '신청 기한인 12월 31일이 지나면 올해 지원금을 받으실 수 없으니 기한 전에 주민센터에 꼭 신청하세요.',
+          rawText: '2026년도 에너지바우처 신청 안내 / 신청장소: 읍면동 행정복지센터 / 문의: 129 보건복지상담센터',
+          glossary: [
+            { term: '에너지바우처', meaning: '여름 냉방비와 겨울 난방비(전기·가스·등유)를 국가가 지원해 주는 복지 이용권' },
+            { term: '요금 차감 방식', meaning: '고지서에서 전기·가스 요금이 자동으로 할인되어 청구되는 편리한 방식' }
           ],
           hospitalSchedule: { detected: false }
         },
         biopsy: {
           category: '🔬 병원 조직검사 결과지 (쉬운 말 통역)',
           confidence: '높음',
-          isSmishingDoc: false,
           title: '위 내시경 조직검사 결과 안내서',
-          actionSummary: n + ' 님, 암(악성)이 아닌 단순 염증과 착한 혹(양성) 소견입니다. 11월 25일 오전 10시 소화기내과 진료 시 주치의 선생님께 최종 확인만 받으세요.',
+          actionSummary: honorName + ', 암(악성)이 아닌 단순 염증과 착한 혹(양성) 소견입니다. 11월 25일 오전 10시 소화기내과 진료 시 주치의 선생님께 최종 확인만 받으세요.',
           preservedNumbers: '검체번호: S26-10482 | 외래 예약: 2026-11-25 오전 10:00 | 문의: 소화기내과 (02-000-1234)',
           welfareGuide: '',
           what: '지난번 위 내시경 때 살짝 떼어낸 조직을 현미경으로 정밀 검사한 병리과 결과지예요.',
           easyExplain: '영어로 적힌 복잡한 의학 용어를 쉽게 풀어드리면, 첫째 "Negative for malignancy"는 암세포(악성)가 전혀 발견되지 않았다는 안심 소견이에요! 둘째 "Hyperplastic polyp"은 흔히 생기는 착한 물혹(양성 용종)이라는 뜻이니 걱정하지 않으셔도 됩니다.',
-          warn: '예약된 외래 진료일에 늦지 않도록 아래 버튼을 눌러 [방문 3시간 전 사전 알림]을 꼭 켜두세요.',
+          warn: '예약된 외래 진료일에 늦지 않도록 아래 버튼을 눌러 [병원 방문 3시간 전 사전 알림]을 꼭 켜두세요.',
           rawText: 'Pathology Report (S26-10482) / Stomach endoscopic biopsy: Chronic gastritis, Hyperplastic polyp, Negative for malignancy.',
           glossary: [
             { term: 'Biopsy (생검 / 조직검사)', meaning: '정확한 확인을 위해 조직을 아주 조금 떼어내 현미경으로 살펴보는 검사' },
@@ -1170,30 +1332,11 @@
             note: '신분증·건강보험증 지참 (추가 금식 불필요)'
           }
         },
-        tax: {
-          category: '📄 지방세 납부 고지서',
-          confidence: '높음',
-          isSmishingDoc: false,
-          title: '2026년 재산세(주택분) 납부 고지서',
-          actionSummary: n + ' 님, 11월 30일까지 125,000원을 납부하셔야 연체료가 붙지 않습니다.',
-          preservedNumbers: '납부기한: 2026년 11월 30일 | 납기내 금액: 125,000원 | 납기후 금액(3% 가산금): 128,750원',
-          welfareGuide: '기초연금 수급자이시거나 에너지바우처 대상이신 경우 관할 행정복지센터(주민센터) 또는 복지로(129)를 통해 감면·바우처 혜택을 함께 확인해 보세요.',
-          what: '시청에서 보낸 정식 주택 재산세 세금 고지서입니다.',
-          easyExplain: '"납기 내 체납 시 가산금 3% 부과"는 11월 30일이 지나서 내시면 연체료로 3,750원이 더 붙는다는 뜻이에요.',
-          warn: '송금 전 고지서 원본의 금액과 예금주(시청)를 꼭 대조하세요.',
-          rawText: '2026년 정기분 재산세 고지서 / 납부기한: 2026.11.30 / 납기내 125,000원',
-          glossary: [
-            { term: '滯納 (체납)', meaning: '정해진 날짜까지 세금이나 요금을 내지 못해 밀리는 것' },
-            { term: '加算金 (가산금)', meaning: '기한이 지나 늦게 낼 때 추가로 붙는 연체료' }
-          ],
-          hospitalSchedule: { detected: false }
-        },
         medicine: {
           category: '💊 처방 약봉투 · 복약 안내문',
           confidence: '높음',
-          isSmishingDoc: false,
           title: '내과 처방 약봉투 (혈압·위장 보호약)',
-          actionSummary: n + ' 님, 하루 2번(아침·저녁) 식사 후 30분에 1포씩 물과 함께 드세요.',
+          actionSummary: honorName + ', 하루 2번(아침·저녁) 식사 후 30분에 1포씩 물과 함께 드세요.',
           preservedNumbers: '투약량: 1회 1포 | 횟수: 1일 2회(아침·저녁 식후 30분) | 총 7일분 | 아모디핀정 5mg',
           welfareGuide: '',
           what: '병원 진료 후 약국에서 조제해 준 7일 치 처방 약봉투입니다.',
@@ -1205,36 +1348,21 @@
           ],
           hospitalSchedule: { detected: false }
         },
-        smishing: {
-          category: '🚨 스미싱 판별: [위험 등급]',
+        tax: {
+          category: '📄 지방세 납부 고지서',
           confidence: '높음',
-          isSmishingDoc: true,
-          title: '🚨 [위험] 장기요양 환급금·택배 사칭 스미싱 문자',
-          actionSummary: n + ' 님, 문자 속 파란색 인터넷 주소(링크)를 절대 누르지 마시고 즉시 삭제하세요!',
-          preservedNumbers: '공식 신고·확인처: 118(한국인터넷진흥원), 1332(금융감독원), 112(경찰청)',
-          welfareGuide: '',
-          what: '공공기관이나 택배회사를 사칭해 휴대폰에 악성 앱을 깔게 유도하는 사기 문자입니다.',
-          easyExplain: '건보공단이나 우체국은 절대 문자메시지 인터넷 링크를 눌러 환급금을 신청하라거나 앱을 깔라고 하지 않습니다.',
-          warn: '만약 이미 링크를 누르셨다면 즉시 골든타임 탭에서 보호자에게 알리고 118로 전화하세요.',
-          rawText: '[국외발신] 건강보험 환급금 신청 안내 확인: http://bit.ly/xxxx-fake',
+          title: '2026년 재산세(주택분) 납부 고지서',
+          actionSummary: honorName + ', 11월 30일까지 125,000원을 납부하셔야 연체료가 붙지 않습니다.',
+          preservedNumbers: '납부기한: 2026년 11월 30일 | 납기내 금액: 125,000원 | 납기후 금액(3% 가산금): 128,750원',
+          welfareGuide: '기초연금 수급자이시거나 장기요양 수급 가구이신 경우 관할 행정복지센터(주민센터)에서 감면·바우처 대상 여부를 함께 확인해 보세요.',
+          what: '시청에서 보낸 정식 주택 재산세 세금 고지서입니다.',
+          easyExplain: '"납기 내 체납 시 가산금 3% 부과"는 11월 30일이 지나서 내시면 연체료로 3,750원이 더 붙는다는 뜻이에요.',
+          warn: '송금 전 고지서 원본의 금액과 예금주(시청)를 꼭 대조하세요.',
+          rawText: '2026년 정기분 재산세 고지서 / 납부기한: 2026.11.30 / 납기내 125,000원',
           glossary: [
-            { term: '스미싱 (Smishing)', meaning: '문자메시지로 가짜 인터넷 주소를 보내 금융정보를 빼가는 사기' }
+            { term: '滯納 (체납)', meaning: '정해진 날짜까지 세금이나 요금을 내지 못해 밀리는 것' },
+            { term: '加算金 (가산금)', meaning: '기한이 지나 늦게 낼 때 추가로 붙는 연체료' }
           ],
-          hospitalSchedule: { detected: false }
-        },
-        candy: {
-          category: '📦 식품 / 해외 영문 라벨',
-          confidence: '높음',
-          isSmishingDoc: false,
-          title: '코피코(KOPIKO) 커피맛 사탕 (의약품 아님)',
-          actionSummary: n + ' 님, 약이나 영양제가 아니라 카페인이 들어간 커피 사탕입니다. 저녁에는 드시지 마세요.',
-          preservedNumbers: '1회 제공량(4알)당 당류: 11g | 카페인 함유(Real Coffee Extract)',
-          welfareGuide: '',
-          what: '영어로 적혀 있지만 약이 아니라 커피 추출물로 만든 사탕이에요.',
-          easyExplain: '"Contains Caffeine"은 커피 카페인이 들어있다는 뜻이에요. 밤에 드시면 잠이 안 올 수 있으니 낮에 1~2알만 드세요.',
-          warn: '혈압이나 당뇨가 있으신 경우 하루 1~2알 이내로 가볍게 드세요.',
-          rawText: 'KOPIKO Coffee Candy - Real Coffee Extract (Contains Caffeine)',
-          glossary: [],
           hospitalSchedule: { detected: false }
         }
       };
@@ -1242,11 +1370,11 @@
     }
 
     // =========================================================================
-    // 6. 병원 방문 '3시간 전' 사전 케어 알림 자동 계산 및 음성 안내
+    // 7. 병원 방문 '3시간 전' 사전 케어 알림 자동 계산 및 음성 안내
     // =========================================================================
     let schedules = [
       {
-        name: '전남대병원 소화기내과 (조직검사 결과 상담)',
+        name: '대학병원 소화기내과 (조직검사 결과 상담)',
         date: '2026-11-25',
         clock: '10:00',
         note: '신분증·건강보험증 지참, 아침 금식 불필요'
@@ -1283,6 +1411,7 @@
     function renderSchedules() {
       const list = document.getElementById('scheduleList');
       list.innerHTML = '';
+      const honorName = getCleanHonorificName();
       schedules.forEach((s, idx) => {
         const preAlert = calcThreeHoursBefore(s.clock);
         const korVisit = formatKoreanClock(s.clock);
@@ -1296,7 +1425,7 @@
           <h4 class="text-xl font-black text-slate-950">${s.name}</h4>
           <p class="text-sm font-bold text-slate-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200">🎒 챙기실 것: ${s.note}</p>
           <button type="button" onclick="playScheduleVoice(${idx})" class="w-full py-3 bg-yellow-400 hover:bg-yellow-300 text-slate-950 rounded-xl font-black text-base shadow">
-            🔊 ${userProfile.name} 님 [3시간 전 사전 알림] 목소리 듣기
+            🔊 ${honorName} [3시간 전 사전 알림] 목소리 듣기
           </button>
         `;
         list.appendChild(div);
@@ -1307,9 +1436,9 @@
     function playScheduleVoice(idx) {
       const s = schedules[idx];
       if (!s) return;
-      const preAlert = calcThreeHoursBefore(s.clock);
       const korVisit = formatKoreanClock(s.clock);
-      const msg = `${userProfile.name} 님, 병원 방문 3시간 전 사전 준비 알림입니다! 오늘 ${korVisit}에 ${s.name} 예약이 있으세요. 지금부터 천천히 세수하고 옷을 챙겨 입으시면 시간에 딱 맞습니다. 외출하시기 전에 ${s.note}, 잊지 말고 가방에 꼭 챙기시고 조심히 다녀오세요!`;
+      const honorName = getCleanHonorificName();
+      const msg = `${honorName}, 병원 방문 3시간 전 사전 준비 알림입니다! 오늘 ${korVisit}에 ${s.name} 예약이 있으세요. 지금부터 천천히 식사하시고 외출 준비를 시작하시면 여유 있게 도착하실 수 있습니다. 출발하시기 전에 ${s.note}, 잊지 말고 가방에 꼭 챙기시고 안전하게 다녀오세요!`;
       speakText(msg, true);
     }
 
@@ -1324,7 +1453,7 @@
       document.getElementById('hospName').value = '';
       document.getElementById('hospNote').value = '';
       const preAlert = calcThreeHoursBefore(clock);
-      speakText(`${userProfile.name} 님, ${name} 예약 3시간 전인 ${preAlert}에 미리 준비하실 수 있도록 사전 케어 알림을 맞춰두었습니다.`, true);
+      speakText(`${getCleanHonorificName()}, ${name} 예약 3시간 전인 ${preAlert}에 미리 준비하실 수 있도록 사전 케어 알림을 맞춰두었습니다.`, true);
     }
 
     function addDetectedSchedule() {
@@ -1333,25 +1462,27 @@
       renderSchedules();
       switchTab('alarm');
       const preAlert = calcThreeHoursBefore(pendingDetectedSchedule.clock || '10:00');
-      speakText(`${userProfile.name} 님, 병원 방문 3시간 전인 ${preAlert}에 사전 알림이 울리도록 등록되었습니다.`, true);
+      speakText(`${getCleanHonorificName()}, 병원 방문 3시간 전인 ${preAlert}에 사전 알림이 울리도록 등록되었습니다.`, true);
     }
 
     // =========================================================================
-    // 7. 골든타임 안심망 (119 연결 · 보호자 긴급 SMS · 구급대원 음성 브리핑)
+    // 8. 골든타임 안심망 (119 연결 · 보호자 긴급 SMS · 구급대원 음성 브리핑)
     // =========================================================================
-    function triggerGoldenTimeAlert(target) {
-      speakText(userProfile.name + ' 님의 골든타임 응급 호출이 작동되었습니다. 침착하게 기다려 주세요.', true);
+    function triggerGoldenTimeAlert() {
+      speakText(getCleanHonorificName() + '의 골든타임 응급 호출이 작동되었습니다. 침착하게 기다려 주세요.', true);
     }
 
     function triggerGoldenTimeFamilySMS() {
       const tel = userProfile.guardianTel.replace(/[^0-9]/g, '');
-      const body = encodeURIComponent(`[찍어봐YOU 골든타임 긴급SOS]\n${userProfile.name} 님이 방금 긴급 도움 요청 버튼을 누르셨습니다!\n• 지병/복용약: ${userProfile.medicalNote}\n• 혈액형/등급: ${userProfile.bloodGrade}\n지금 즉시 안부를 확인해 주세요!`);
-      speakText(`보호자분께 ${userProfile.name} 님의 위급 상황과 복용약 정보를 즉시 전송합니다.`, true);
+      const honorName = getCleanHonorificName();
+      const body = encodeURIComponent(`[찍어봐YOU 골든타임 긴급SOS]\n${honorName}께서 방금 긴급 도움 요청 버튼을 누르셨습니다!\n• 지병/복용약: ${userProfile.medicalNote}\n• 혈액형/장기요양등급: ${userProfile.bloodGrade}\n지금 즉시 안부를 확인해 주세요!`);
+      speakText(`보호자분께 ${honorName}의 위급 상황과 장기요양 및 복용약 정보를 즉시 전송합니다.`, true);
       window.location.href = `sms:${tel}?body=${body}`;
     }
 
     function speakEmergencyCard() {
-      const script = `구급대원 및 의료진 여러분께 알립니다. 환자 성함은 ${userProfile.name} 님이며, 혈액형 및 등급은 ${userProfile.bloodGrade}입니다. 현재 기저질환 및 복용 중인 약물은 ${userProfile.medicalNote}이며, 보호자 비상연락처는 ${userProfile.guardianTel}입니다.`;
+      const honorName = getCleanHonorificName();
+      const script = `구급대원 및 의료진 여러분께 알립니다. 환자 성함은 ${honorName}이며, 혈액형 및 장기요양등급은 ${userProfile.bloodGrade}입니다. 현재 기저질환 및 복용 중인 약물은 ${userProfile.medicalNote}이며, 보호자 비상연락처는 ${userProfile.guardianTel}입니다.`;
       speakText(script, true);
     }
 
@@ -1359,29 +1490,36 @@
       const title = document.getElementById('resultTitle').textContent;
       const action = document.getElementById('actionSummary').textContent;
       const nums = document.getElementById('preservedNumbers').textContent;
-      const shareText = `[찍어봐YOU 안심 통역 공유]\n👤 ${userProfile.name} 님 확인 서류\n📌 문서명: ${title}\n💡 핵심 할 일: ${action}\n🔢 원문 숫자: ${nums}`;
+      const shareText = `[찍어봐YOU 안심 통역 공유]\n👤 ${getCleanHonorificName()} 확인 서류\n📌 문서명: ${title}\n💡 핵심 할 일: ${action}\n🔢 원문 숫자: ${nums}`;
       if (navigator.share) {
         navigator.share({ title: '찍어봐YOU 가족 공유', text: shareText }).catch(() => {});
       } else {
         navigator.clipboard.writeText(shareText);
-        speakText('보호자분께 보낼 요약 내용이 복사되었습니다.', true);
+        speakText(getCleanHonorificName() + ', 보호자분께 보낼 요약 내용이 복사되었습니다.', true);
       }
     }
 
+    // =========================================================================
+    // 9. 상단 4대 탭 전환 제어
+    // =========================================================================
     function switchTab(tab) {
       document.getElementById('sectionScan').classList.toggle('hidden', tab !== 'scan');
+      document.getElementById('sectionLongterm').classList.toggle('hidden', tab !== 'longterm');
       document.getElementById('sectionAlarm').classList.toggle('hidden', tab !== 'alarm');
       document.getElementById('sectionGolden').classList.toggle('hidden', tab !== 'golden');
 
       document.getElementById('tabScan').className = (tab === 'scan')
-        ? 'py-3 rounded-xl font-black text-sm bg-yellow-400 text-slate-950 shadow'
-        : 'py-3 rounded-xl font-black text-sm text-slate-200';
+        ? 'py-3 rounded-xl font-black text-xs bg-yellow-400 text-slate-950 shadow'
+        : 'py-3 rounded-xl font-black text-xs text-slate-200';
+      document.getElementById('tabLongterm').className = (tab === 'longterm')
+        ? 'py-3 rounded-xl font-black text-xs bg-blue-500 text-white shadow'
+        : 'py-3 rounded-xl font-black text-xs text-blue-300';
       document.getElementById('tabAlarm').className = (tab === 'alarm')
-        ? 'py-3 rounded-xl font-black text-sm bg-yellow-400 text-slate-950 shadow'
-        : 'py-3 rounded-xl font-black text-sm text-slate-200';
+        ? 'py-3 rounded-xl font-black text-xs bg-yellow-400 text-slate-950 shadow'
+        : 'py-3 rounded-xl font-black text-xs text-slate-200';
       document.getElementById('tabGolden').className = (tab === 'golden')
-        ? 'py-3 rounded-xl font-black text-sm bg-red-600 text-white shadow'
-        : 'py-3 rounded-xl font-black text-sm text-rose-300';
+        ? 'py-3 rounded-xl font-black text-xs bg-red-600 text-white shadow'
+        : 'py-3 rounded-xl font-black text-xs text-rose-300';
     }
   </script>
 </body>
